@@ -1,0 +1,477 @@
+/* --- HTML --- */
+body,
+html
+	font-family Arial
+	/*font-family "PT Sans", sans-serif*/
+	font-family "Raleway", Arial, sans-serif
+	font-size 12px
+	height 100%
+	/*overflow hidden*/
+	width 100%
+	zoom 100%
+
+	clear()
+
+header
+	background-color color-base
+	height 60px
+	left 0
+	overflow hidden
+	position relative
+	top 0
+	z-index 10
+
+	section
+		height 50%
+
+		&.icon-list
+			left 205px
+			position absolute
+			right 0
+			top 0
+
+			ul
+				clear()
+				display inline-block
+				vertical-align top
+
+				&.pull-right
+					margin-right 1em
+					float right
+
+				li
+					display inline-block
+					font-size 1.3em
+					line-height 60px
+					font-weigth bold
+
+					.info-plantel
+						border-bottom 1px solid #fff
+						font-weigth bold
+
+					.info-periodo
+						color color-font
+
+					a
+						color color-font
+
+						fsombra()
+						
+		&.profile
+			height 60px
+			cursor pointer
+			display block
+			float left
+			width 200px
+
+			figure,
+			span
+				display inline-block
+				line-height 60px
+				vertical-align top
+
+			figure
+				height 100%
+
+				img
+					height 100%
+					width 80px
+
+			span
+				&.icono
+					display inline-block
+					text-align center
+					width 35px
+
+					span
+						display inline-block
+						width 100%
+
+						&::before
+							content icon-menu
+							color #EEE
+							font-family  'FontAwesome'
+							font-size  2em
+
+				&.lblUsuario
+					color color-font
+					font-weight bold
+					font-size 1em
+					padding-left 1em
+					width 155px
+
+					fsombra()
+
+			&:hover
+				background-color #575A67
+
+nav,
+main
+	bottom 0
+	left 0
+	padding 70px 1em 0 1em
+	position absolute
+	right 0
+	top 0
+	z-index 1
+
+	transition left 0.8s
+
+	&.is-menu-open
+		left 300px
+
+		transition left 0.3s
+
+main
+	text-align center
+
+	.aside
+		border-right 2px solid #AAA
+		max-width 200px
+		overflow scroll
+		padding 0
+		text-align left
+		width 14%
+		border 1px solid #333
+
+		ul
+			margin 0
+			padding 0
+
+			li
+				display block
+
+				>input
+					display inline-block
+					width 19%
+
+				>a
+					border-bottom 1px solid #333
+					display inline-block
+					color #333
+					font-weight bold
+					text-decoration none
+					width 80%
+
+					&:hover
+						background-color color-base
+						color #EEE
+
+				div
+					margin-left 10px
+
+	.main-content
+		text-align left
+		position relative
+		margin 0 auto
+		max-width 1100px
+		width 85%
+		border 1px solid #333
+		
+		#load_content
+			height 95%
+
+		.menu-base
+			border-top 1px solid #333
+			height 5%
+			margin 0 auto
+			max-width 1303px
+			min-height 30px
+			width 100%
+
+
+			display inline-block
+			vertical-align middle
+
+			ul
+				background-color #AAA
+				margin 0
+				padding 0
+				height 100%
+
+				li
+					float left
+					background-color #EEE
+					border-right 1px solid #333
+					font-weight bold
+					display inline-block
+					height 100%
+					line-height 30px
+					padding 0
+					margin 0
+					margin-right 0px
+
+					&.active,
+					&:hover
+						background-color color-base
+						cursor pointer
+						
+						a
+							color #EEE
+
+					a
+						color #333
+						display block
+						padding 0 0.5em
+						width 100%
+
+	.aside,
+	.main-content
+		display inline-block
+		height 100%
+		vertical-align top
+
+nav
+	background-color color-base
+	left -300px
+	width 300px
+	overflow scroll
+	z-index 9
+
+	transition left 0.8s
+
+	div
+		&.busqueda
+			span
+				position relative
+
+				input
+					border none
+					background-color transparent
+					color gray
+					margin 0
+					padding-left 45px
+
+				&::before
+					content icon-search
+					color gray
+					font-family  'icomoon'
+					height 42px
+					line-height 42px
+					position absolute
+					text-align center
+					top 0
+					width 40px
+					z-index 90
+
+
+	ul
+		clear()
+
+		&.menu-n1,
+		&.search-n1
+			li
+				display block
+				font-weight bold
+				line-height 60px
+
+				a
+					border-bottom 1px solid #555
+					display block
+					color color-font-sm
+					padding 0 1em
+					position relative
+
+					fsombra()
+
+					i
+						position absolute
+						right 1em
+						top 20px
+
+					&:hover
+						color color-hover
+
+				&:first-child
+					a
+						border-top 1px solid #555
+
+				&.isActive
+					> a
+						color color-hover
+
+					ul.menu-n2
+						li.isActive
+							a
+								color color-hover
+
+		&.menu-n2
+			background-color #575A67
+			display none
+			
+			clear()
+
+			li
+				font-size 0.8em
+				line-height 40px
+
+				a
+					border none
+					padding-left 3em
+
+					&:hover
+						color color-hover
+
+				&:first-child
+					a
+						border-top none
+
+		&.search-n1
+			background-color #575A67
+
+			li
+				font-size 0.8em
+				line-height 40px
+
+				a
+					border none
+					padding-left 3em
+
+					&:hover
+						color color-hover
+
+				&:first-child
+					a
+						border-top none
+
+	&.is-menu-open
+		left 0px
+
+		transition left 0.3s
+
+table
+	tbody
+		tr.isSelected
+			background-color #31353D
+
+			td
+				color #EEE
+				font-weight bold
+
+	&.table-content-center
+		th,
+		td
+			font-size 0.6em
+			text-align center
+
+	&.table-custom-parciales
+		width 100%
+		thead
+			tr
+				&.titulo
+					background-color color-base
+					span
+						color #fff
+		tbody
+			tr
+				td
+					&:hover
+						background-color #008080
+						cursor pointer
+						color #fff
+					&.active
+						background-color #008080
+						color #fff
+	
+
+	&.table-vertical
+		margin-top 180px !important
+		thead
+			tr
+				th
+					&.vertical-th 
+						border-top 1px solid transparent !important
+						width 20px
+						position relative
+						margin 0px !important
+						padding 0px !important
+						
+						span
+							border 1px solid #333
+							border-bottom none
+							border-left none
+							/*background-color #FFF !important*/
+							position absolute
+							display inline-block
+							margin 0px !important
+							padding 0px !important
+							transform rotate(270deg)
+							background-color color-base
+							width 180px
+							left -88px
+							bottom 90px !important
+							font-size 10px !important
+							margin-left 10px !important
+							color #fff !important
+							&:last-child
+								border-bottom 1px solid #333
+
+	&.table-custom
+		width 100%
+		margin-top 10px
+		thead
+			tr
+				border 1px solid #D6D6D6
+
+				&.titulo
+					background-color color-base
+					span
+						color #fff
+					label
+						color #fff
+				th
+					&.min
+						width 100px
+
+		tbody
+			tr
+				&.fechaPago:hover
+					background-color color-hover
+					cursor pointer
+					td
+						color #fff
+				td
+					
+					border 1px solid #D6D6D6
+					&.min
+						width 100px
+						
+					&.abrirModalTabla
+						
+						&:hover
+							cursor pointer
+							background-color color-hover
+							color #fff
+					&.tableEmpty
+						background-color #EAEAEA
+
+				&:hover
+					background-color 
+					cursor pointer
+
+				&.isActive
+					background-color rgba(30, 30, 30, 0.2)
+		tfoot
+			tr
+				td
+					border 1px solid white
+		
+		.table-row-full
+			width 100%
+			
+		.table-row-half
+			display inline-block
+			vertical-align top
+			width 50%
+
+	&.pointer
+
+		tbody
+
+			tr
+				&:hover
+					cursor pointer
+					background-color color-hover
+
+					td
+						color #fff

@@ -1,0 +1,370 @@
+/* --- Fondo --- */
+.pnl-login
+	background-color rgba(30, 30, 30, 0.7)
+	box-shadow 3px 3px 10px #333
+	height 60px
+	left 0
+	position relative
+	top 0
+	z-index 1
+
+	.titulo-login
+		color #EEE
+		display block
+		font-weight bold
+		margin 0
+		padding 0
+		text-align center
+		text-shadow 3px 3px 10px #333
+
+.img-fondo
+	left 0
+	position fixed
+	top 0px
+	z-indez -1
+	width 100%
+	height 100%
+
+.form-login
+	background-color rgba(30, 30, 30, 0.7)
+	left 0
+	padding 1em 2em
+	position relative
+	top 150px
+	z-index 1
+
+	label
+		color #EEE
+
+/* --- Controles --- */
+.bb-grid 
+	margin 0 auto
+	
+	thead
+		border 1px solid #DDD
+		background-color #FEFEFE
+		
+		span
+			color #333
+
+		.gv-order 
+			cursor  pointer
+			
+			&.gv-asc strong span::after 
+				content  icon-asc
+				float  right
+				font-family  'icomoon'
+				font-size  1em
+				font-weight  normal !important
+			
+			&.gv-desc strong span::after 
+				content  icon-desc
+				float  right
+				font-family  'icomoon'
+				font-size  1em
+				font-weight  normal !important
+				
+			input 
+				height  1.7em
+				font-weight  normal !important
+			
+		.gv-col-command::before 
+			content  icon-settings
+			font-family  'icomoon'
+			font-size  1.5em
+			font-weight  normal
+	
+	tbody
+		border 1px solid #DDD
+		
+		input[type="checkbox"] 
+			border 1px solid blue !important
+			display  inline-block
+			height  80% !important
+			margin-top  1em
+			width  80% !important
+			
+		tr
+			&.isSelected
+				background-color #31353D
+
+				td
+					color #EEE
+					font-weight bold
+			
+	tfoot
+		border 1px solid transparent
+		background-color white
+		
+		tr 
+			td
+				font-weight normal !important
+
+		.gv-all::before 
+			content  icon-all
+			font-family  'icomoon'
+			font-size  1.7em
+			
+		.gv-begin::before 
+			content  icon-backward
+			font-family  'FontAwesome'
+			font-size  1.7em
+
+		.gv-end::before 
+			content  icon-foward
+			font-family  'FontAwesome'
+			font-size  1.7em
+			
+		.gv-next::before 
+			content  icon-next
+			font-family  'FontAwesome'
+			font-size  1.7em
+
+		.gv-none::before 
+			content  icon-calendar
+			font-family  'icomoon'
+			font-size  1.7em
+			
+		.gv-pager
+			
+			.columns
+				height 30px
+				padding-top 5px
+			
+			a,
+			span,
+			input 
+				color  #333
+				display  inline-block !important
+				line-height  25px
+				vertical-align  top
+				
+			a:hover
+				color  #F22
+				transition-duration  0.5s
+
+		.gv-pages
+			height  25px !important
+			width  50px !important
+
+		.gv-prev
+			margin-top -4px
+			transform  rotate(180deg)
+
+			&::before 
+				content  icon-next
+				font-family  'FontAwesome'
+				font-size  1.7em
+
+.reveal-custom
+	border-radius 11px
+	border-radius 11px
+		
+	.pop-head
+		background-color color-base
+		position absolute
+		top 0px
+		left 0px
+		right 0px
+		padding-bottom 20px
+		
+		height 35px
+		border-top-left-radius 10px
+		border-top-right-radius 10px
+
+		label,
+		p
+			color #fff
+			position absolute
+			top 5px
+			left 10px
+			font-weight bold
+	
+	.pop-body
+		margin-top 25px
+
+	&.large
+		width 85% !important
+
+		margin-left -42.5% !important
+
+.pnlAlert
+	heigh auto
+	margin-top 65px
+	position absolute
+	right 0
+	top 0
+	width 300px
+	z-index 190
+
+	.close
+		font-weight bold
+		opacity 1
+		top 20px
+
+.twitter-typeahead
+	display block
+	width 100%
+
+	&.error
+		padding 0 !important
+
+	.error
+		margin 0 !important
+	
+	.tt-dropdown-menu
+		margin-top -10px
+	&.tt-input
+		background-color #FFF !important
+		&::-webkit-input-placeholder		
+			&::before
+				font-family 'icomoon'
+				content icon-search
+			
+	.tya-clear
+		display none
+		position absolute
+		right 10px
+		top 12px
+
+	.tya-loading
+		display none
+		color #33D
+		position absolute
+		right 30px
+		top 12px
+
+		&::before
+			content icon-spinner
+			font-family 'icomoon'
+
+/* --- Plano de puntos --- */
+.grafica_vectores
+	border 1px solid black
+	height 500px
+	max-width 1000px
+	overflow scroll
+	width 1000px
+
+/*
+.planos{
+    border: 1px solid black;
+    display:inline-block;
+    height: 500px;
+    max-width: 500px;
+    width: 90%;
+}
+*/
+
+/* --- Mapa --- */
+.mapa
+	border 1px solid black
+	display inline-block
+	height 650px
+	width 80%
+
+.opciones
+	background-color #CBCBCB
+	border 1px solid black
+	display inline-block
+	height 650px
+	width 19%
+
+/* --- Graficas --- */
+.gf
+	display inline-block
+	height 400px
+	min-width 650px
+	max-width 650px
+	margin 0 auto
+
+.graficaPlano
+	border 1px solid black
+	display inline-block
+	vertical-align top
+	height 660px
+	width 520px
+
+.graficaPlano3D
+	border 1px solid black
+	display inline-block
+	vertical-align top
+	height 660px
+	width 520px
+
+.estereograma
+	border none
+	display block
+	width 100%
+	margin 0 auto
+	text-align center
+
+/* --- Comportamiento --- */
+.align-top-form
+	margin-top 17px
+
+.align-top
+	margin-top 13px
+
+.icon-spin
+	-webkit-animation spin 2s infinite linear
+	-moz-animation spin 2s infinite linear
+	-o-animation spin 2s infinite linear
+	animation spin 2s infinite linear
+
+.isHidden
+	display none !important
+
+.isHiddenSoft
+	display none
+
+.loading
+	background-color rgba(30, 30, 30, 0.5)
+	height 100%
+	left 0
+	position absolute
+	top 0
+	width 100%
+	z-index 199
+
+	label 
+		background-color #DEDEDE
+		border 1px solid #333
+		color #333
+		font-size 1.1em
+		left 45%
+		padding 0.5em 1em
+		position absolute
+		top 45%
+
+		i
+			color #333
+
+.wrap-layer
+	background-color rgba(30, 30, 30, 0.5)
+	display none
+	bottom 0
+	left 0
+	position absolute
+	right 0
+	top 0
+	z-index 7
+
+	&.is-menu-open
+		display block
+
+.ctm-subtitulo
+	background-color #B91C22
+	color #EEE
+	font-weight bold
+	padding 0.5em 1em
+
+/*.form-content
+	height 100%
+	position relative
+	
+	.pnl-opciones
+		bottom 0
+		position absolute
+		left 0
+		max-width none !important*/
