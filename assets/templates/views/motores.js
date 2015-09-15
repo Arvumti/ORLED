@@ -1,10 +1,11 @@
-/*var MoMotor = Backbone.Model.extend({
+var MoMotor = Backbone.Model.extend({
 	defaults: {
-		idMotor 	    : 0,
-		nombre 			: '',
-		activo			: 1,
+		idMotor 	    :0,
+		nombre 			:'',
+		capacidad		:'',
+		energia 		:'',
 	}
-});*/
+});
 define(['/js/base/viewsBase.js'], function (viewsBase) {
 	/*
 		columns: columnas del grid

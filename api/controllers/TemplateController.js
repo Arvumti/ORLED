@@ -46,10 +46,8 @@ module.exports = {
 		console.log('-------------------------- begin find template --------------------------');
 
 		var tpl = req.param('id');//.toLowerCase();
-		
-		var menus = req.session.user.menus;
 		//var findMenu = true;
-		var findMenu = false;
+		var findMenu = true;
 
 		// for (var i = 0; i < menus.length; i++) {
 		// 	var menu = _.findWhere(menus[i].menus, {pagina:tpl});
@@ -65,35 +63,22 @@ module.exports = {
 			idPlantel: req.session.user.idPlantel,
 		};
 		console.log(params);
+		console.log('Access: ' + findMenu);
 
-		WsService.wsCustomGetData(definition.access, params, 'GetCtmComprobarMenus', function(data) {
-			console.log('GetCtmComprobarMenus: ', data);
-			if(data.data.length > 0 && data.data[0] && data.data[0].res == 1)
-				findMenu = true;
+		console.log('id: ' + tpl);
+		var url = 'assets/templates/views/' + tpl + '.html';
 
-			console.log('Access: ' + findMenu);
-
-			if(!findMenu) {
+		console.log('looking for template: ' + url);
+		console.log('-------------------------- end find template --------------------------');
+		require('fs').readFile(url, function (err, contents) {
+			if (err){
+				console.log(err);
 				res.contentType('text/html');
-				res.send('-1');
+				res.send('');
 			}
 			else {
-				console.log('id: ' + tpl);
-				var url = 'assets/templates/views/' + tpl + '.html';
-
-				console.log('looking for template: ' + url);
-				console.log('-------------------------- end find template --------------------------');
-				require('fs').readFile(url, function (err, contents) {
-					if (err){
-						console.log(err);
-						res.contentType('text/html');
-						res.send('');
-					}
-					else {
-						res.contentType('text/html');
-						res.send(contents);
-					}
-				});
+				res.contentType('text/html');
+				res.send(contents);
 			}
 		});
 	},
