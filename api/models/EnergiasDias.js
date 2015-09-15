@@ -6,9 +6,8 @@
 */
 
 module.exports = {
-
-  attributes: {
-
-  }
+	autoUpdatedAt: true,
+	tableName: 'EnergiasDias',
+	attributes: {
+	}
 };
-
