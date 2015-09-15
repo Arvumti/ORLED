@@ -1,133 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-<<<<<<< HEAD
-	<title>ORLED</title>
-
-	<!-- Viewport mobile tag for sensible mobile support -->
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<meta charset="utf-8">
-
-	<!--STYLES-->
-	<link rel="stylesheet" href="/styles/foundation.min.css">
-	<link rel="stylesheet" href="/styles/icomoon.css">
-	<link rel="stylesheet" href="/styles/main.css">	
-	<!--STYLES END-->
-
-	<link rel="shortcut icon" href="/images/favicon.ico">
-	<!--link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.2.0/css/font-awesome.min.css" />
-	<link href='http://fonts.googleapis.com/css?family=Julius+Sans+One' rel='stylesheet' type='text/css'>
-	<link href='http://fonts.googleapis.com/css?family=Diplomata+SC' rel='stylesheet' type='text/css'-->
-  </head>
-
-  <body>
-	<%- body %>
-	<header>
-		<section class="profile" id="open-button">
-			<span class="icono">
-				<span></span>
-			</span>			
-		</section>
-		<section class="icon-list info-user">
-			<ul class="icon-list-custom">
-				<li id="joyr_first">
-				
-				</li>
-				<li>
-					
-				</li>
-				<li>
-					
-				</li>
-			</ul>
-			<ul class="pull-right">
-				<li>
-					
-				</li>
-				<li>
-					
-				</li>
-			</ul>
-		</section>
-	</header>
- 	<footer class="isHidden">
- 		<p><i class="fa fa-warning"></i> El sistema esta en mantenimiento y puede que algunas funcionalidades no funcionen correctamente</p>
- 	</footer>
-	<nav class="">
-		<div class="busqueda">
-			<span>
-				<input type="text" class="txtBusqueda" placeholder="Busqueda de menu..."/>
-			</span>
-		</div>
-	</nav>
-
-	<main>
-		<section id="load_content"></section>
-	</main>
-
-	<div class="wrap-layer">
-	</div>
-
-	<div class="pnl-print isHidden"></div>
-	  
-	<section class="loading">
-		<label>
-			<i class="icon-spinner tya-loading icon-spin"></i> Cargando...
-		</label>
-	</section>
-
-	<section class="pnlAlert warning ">
-	</section>
-	<div id="popConfirmacion" class="reveal-modal tiny popConfirmacion reveal-custom" data-reveal="data-reveal">
-		<section class="pop-head">
-			<label>Eliminar</label>
-		</section>
-		<section class="pop-body">
-			<label class='pregunta'>¿Desea eliminar el registro seleccionado?</label>
-		</section>
-		<section class="pop-footer">
-			<button type="button" class="button success tiny btn-aceptar aceptar-btn">Aceptar</button>
-			<button type="button" class="button alert tiny btn-cancelar cancelar-btn">Cancelar</button>
-		</section>
-	</div>
-	<div class="tiny reveal-modal  reveal-custom" id="popAdvertencia" data-reveal>
-		<section class="pop-head">
-			<label>Advertencia</label>
-		</section>
-		<section class="pop-body text-left">
-			<label class="mensaje"></label>
-		</section>
-		<section class="pop-footer">
-			<button type="button" class="button tiny success custom-button btn-aceptar aceptar-btn">Aceptar</button>
-		</section>
-	</div>
-=======
-    <title>New Sails App</title>
+    <title>ORLED</title>
 
     <!-- Viewport mobile tag for sensible mobile support -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-    
-    <!--  
-        Stylesheets and Preprocessors
-        ==============================
-
-        You can always bring in CSS files manually with `<link>` tags, or asynchronously
-        using a solution like AMD (RequireJS).  Or, if you like, you can take advantage 
-        of Sails' conventional asset pipeline (boilerplate Gruntfile).
-
-        By default, stylesheets from your `assets/styles` folder are included
-        here automatically (between STYLES and STYLES END). Both CSS (.css) and LESS (.less)
-        are supported. In production, your styles will be minified and concatenated into
-        a single file.
-        
-        To customize any part of the built-in behavior, just edit `tasks/pipeline.js`.
-        For example, here are a few things you could do:
-            
-            + Change the order of your CSS files
-            + Import stylesheets from other directories
-            + Use a different or additional preprocessor, like SASS, SCSS or Stylus
-    -->
+    <meta charset="utf-8">
 
     <!--STYLES-->
     <link rel="stylesheet" href="/styles/Site.css">
@@ -140,144 +18,84 @@
     <link rel="stylesheet" href="/styles/semantic.min.css">
     <link rel="stylesheet" href="/styles/typeahead.css">
     <!--STYLES END-->
+
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <!--link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.2.0/css/font-awesome.min.css" />
+    <link href='http://fonts.googleapis.com/css?family=Julius+Sans+One' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Diplomata+SC' rel='stylesheet' type='text/css'-->
   </head>
 
   <body>
     <%- body %>
+    <header >   
+        <section class="icon-list info-user">
+            <ul class="icon-list-custom">
+                <li id="joyr_first">
+                
+                </li>
+                <li>
+                    
+                </li>
+                <li>
+                    
+                </li>
+            </ul>
+            <ul class="pull-right">
+                <li>
+                    
+                </li>
+                <li>
+                    
+                </li>
+            </ul>
+        </section>
+    </header>
+    <footer class="isHidden">
+        <p><i class="fa fa-warning"></i> El sistema esta en mantenimiento y puede que algunas funcionalidades no funcionen correctamente</p>
+    </footer>
+    <nav class="">
+        <div class="busqueda">
+            <span>
+                <input type="text" class="txtBusqueda" placeholder="Busqueda de menu..."/>
+            </span>
+        </div>
+    </nav>
 
+    <main>
+        <section id="load_content"></section>
+    </main>
 
+    <div class="wrap-layer">
+    </div>
 
-    <!--
-        Client-side Templates
-        ========================
-
-        HTML templates are important prerequisites of modern, rich client applications.
-        To work their magic, frameworks like Backbone, Angular, Ember, and Knockout require
-        that you load these templates client-side.
-
-        By default, your Gruntfile is configured to automatically load and precompile
-        client-side JST templates in your `assets/templates` folder, then
-        include them here automatically (between TEMPLATES and TEMPLATES END).
-        
-        To customize this behavior to fit your needs, just edit `tasks/pipeline.js`.
-        For example, here are a few things you could do:
-
-            + Import templates from other directories
-            + Use a different template engine (handlebars, jade, dust, etc.)
-            + Internationalize your client-side templates using a server-side
-              stringfile before they're served.
-    -->
-
-    <!--TEMPLATES-->
-    
-    <!--TEMPLATES END-->
-
-
-    <!--
-
-      Client-side Javascript
-      ========================
-
-      You can always bring in JS files manually with `script` tags, or asynchronously
-      on the client using a solution like AMD (RequireJS).  Or, if you like, you can 
-      take advantage of Sails' conventional asset pipeline (boilerplate Gruntfile).
-
-      By default, files in your `assets/js` folder are included here
-      automatically (between SCRIPTS and SCRIPTS END).  Both JavaScript (.js) and
-      CoffeeScript (.coffee) are supported. In production, your scripts will be minified
-      and concatenated into a single file.
+    <div class="pnl-print isHidden"></div>
       
-      To customize any part of the built-in behavior, just edit `tasks/pipeline.js`.
-      For example, here are a few things you could do:
-          
-          + Change the order of your scripts
-          + Import scripts from other directories
-          + Use a different preprocessor, like TypeScript
+    
 
-    -->
-
-    <!--SCRIPTS-->
-    <script src="/js/dependencies/sails.io.js"></script>
-    <script src="/js/dependencies/backbone-min.js"></script>
-    <script src="/js/dependencies/backbone.localStorage.js"></script>
-    <script src="/js/dependencies/bootstrap.min.js"></script>
-    <script src="/js/dependencies/foundation.min.js"></script>
-    <script src="/js/dependencies/foundation/foundation.abide.js"></script>
-    <script src="/js/dependencies/foundation/foundation.accordion.js"></script>
-    <script src="/js/dependencies/foundation/foundation.alert.js"></script>
-    <script src="/js/dependencies/foundation/foundation.clearing.js"></script>
-    <script src="/js/dependencies/foundation/foundation.dropdown.js"></script>
-    <script src="/js/dependencies/foundation/foundation.equalizer.js"></script>
-    <script src="/js/dependencies/foundation/foundation.interchange.js"></script>
-    <script src="/js/dependencies/foundation/foundation.joyride.js"></script>
-    <script src="/js/dependencies/foundation/foundation.js"></script>
-    <script src="/js/dependencies/foundation/foundation.magellan.js"></script>
-    <script src="/js/dependencies/foundation/foundation.offcanvas.js"></script>
-    <script src="/js/dependencies/foundation/foundation.orbit.js"></script>
-    <script src="/js/dependencies/foundation/foundation.reveal.js"></script>
-    <script src="/js/dependencies/foundation/foundation.slider.js"></script>
-    <script src="/js/dependencies/foundation/foundation.tab.js"></script>
-    <script src="/js/dependencies/foundation/foundation.tooltip.js"></script>
-    <script src="/js/dependencies/foundation/foundation.topbar.js"></script>
-    <script src="/js/dependencies/handlebars.js"></script>
-    <script src="/js/dependencies/jquery-2.0.3.min.js"></script>
-    <script src="/js/dependencies/jquery-ui.min.js"></script>
-    <script src="/js/dependencies/jquery.datetimepicker.js"></script>
-    <script src="/js/dependencies/lodash.underscore.min.js"></script>
-    <script src="/js/dependencies/loggly.tracker.min.js"></script>
-    <script src="/js/dependencies/require.js"></script>
-    <script src="/js/dependencies/rollbar.js"></script>
-    <script src="/js/dependencies/socket.io.js"></script>
-    <script src="/js/dependencies/typeahead.js"></script>
-    <script src="/js/adapters/standalone-framework.js"></script>
-    <script src="/js/adapters/standalone-framework.src.js"></script>
-    <script src="/js/app.js"></script>
-    <script src="/js/base/base.js"></script>
-    <script src="/js/base/controles.js"></script>
-    <script src="/js/base/min/app.min.js"></script>
-    <script src="/js/base/min/base.min.js"></script>
-    <script src="/js/base/min/controles.min.js"></script>
-    <script src="/js/base/min/viewBase.min.js"></script>
-    <script src="/js/base/router.js"></script>
-    <script src="/js/base/templates.js"></script>
-    <script src="/js/base/viewsBase.js"></script>
-    <script src="/js/graficas/highcharts-3d.js"></script>
-    <script src="/js/graficas/highcharts-3d.src.js"></script>
-    <script src="/js/graficas/highcharts-all.js"></script>
-    <script src="/js/graficas/highcharts-more.js"></script>
-    <script src="/js/graficas/highcharts-more.src.js"></script>
-    <script src="/js/graficas/highcharts.js"></script>
-    <script src="/js/graficas/highcharts.src.js"></script>
-    <script src="/js/graficas/themes/dark-blue.js"></script>
-    <script src="/js/graficas/themes/dark-green.js"></script>
-    <script src="/js/graficas/themes/dark-unica.js"></script>
-    <script src="/js/graficas/themes/gray.js"></script>
-    <script src="/js/graficas/themes/grid-light.js"></script>
-    <script src="/js/graficas/themes/grid.js"></script>
-    <script src="/js/graficas/themes/sand-signika.js"></script>
-    <script src="/js/graficas/themes/skies.js"></script>
-    <script src="/js/main.js"></script>
-    <script src="/js/modules/canvas-tools.js"></script>
-    <script src="/js/modules/canvas-tools.src.js"></script>
-    <script src="/js/modules/dark-unica.js"></script>
-    <script src="/js/modules/data.js"></script>
-    <script src="/js/modules/data.src.js"></script>
-    <script src="/js/modules/drilldown.js"></script>
-    <script src="/js/modules/drilldown.src.js"></script>
-    <script src="/js/modules/exporting.js"></script>
-    <script src="/js/modules/exporting.src.js"></script>
-    <script src="/js/modules/funnel.js"></script>
-    <script src="/js/modules/funnel.src.js"></script>
-    <script src="/js/modules/heatmap.js"></script>
-    <script src="/js/modules/heatmap.src.js"></script>
-    <script src="/js/modules/no-data-to-display.js"></script>
-    <script src="/js/modules/no-data-to-display.src.js"></script>
-    <script src="/js/modules/solid-gauge.js"></script>
-    <script src="/js/modules/solid-gauge.src.js"></script>
-    <script src="/js/servicios/async_test.js"></script>
-    <script src="/js/servicios/depAl.js"></script>
-    <script src="/js/servicios/direcciones.js"></script>
-    <!--SCRIPTS END-->
->>>>>>> origin/master
+    <section class="pnlAlert warning ">
+    </section>
+    <div id="popConfirmacion" class="reveal-modal tiny popConfirmacion reveal-custom" data-reveal="data-reveal">
+        <section class="pop-head">
+            <label>Eliminar</label>
+        </section>
+        <section class="pop-body">
+            <label class='pregunta'>¿Desea eliminar el registro seleccionado?</label>
+        </section>
+        <section class="pop-footer">
+            <button type="button" class="button success tiny btn-aceptar aceptar-btn">Aceptar</button>
+            <button type="button" class="button alert tiny btn-cancelar cancelar-btn">Cancelar</button>
+        </section>
+    </div>
+    <div class="tiny reveal-modal  reveal-custom" id="popAdvertencia" data-reveal>
+        <section class="pop-head">
+            <label>Advertencia</label>
+        </section>
+        <section class="pop-body text-left">
+            <label class="mensaje"></label>
+        </section>
+        <section class="pop-footer">
+            <button type="button" class="button tiny success custom-button btn-aceptar aceptar-btn">Aceptar</button>
+        </section>
+    </div>
   </body>
 </html>
