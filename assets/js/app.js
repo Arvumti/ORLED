@@ -20,39 +20,39 @@ var ViBody = Backbone.View.extend({
 		'keyup .buscarChat': 'keyup_search',
 	},
 	initialize: function() {
-		this.user = null;
-		this.txtBusqueda = this.$el.find('.txtBusqueda');
-		this.infoUser = this.$el.find('section.info-user');
+		// this.user = null;
+		// this.txtBusqueda = this.$el.find('.txtBusqueda');
+		// this.infoUser = this.$el.find('section.info-user');
 
-		this.lblUsuario = this.$el.find('.lblUsuario');
-		this.infoPlantel = this.infoUser.find('.info-plantel');
-		this.infoPeriodo = this.infoUser.find('.info-periodo');
-		this.ventanas=0;
+		// this.lblUsuario = this.$el.find('.lblUsuario');
+		// this.infoPlantel = this.infoUser.find('.info-plantel');
+		// this.infoPeriodo = this.infoUser.find('.info-periodo');
+		// this.ventanas=0;
 
-		this.popLogin = this.$el.find('#popLogin.popLogin');
-		this.popPlanteles = new ViPlantelesUs({parentView:this});
+		// this.popLogin = this.$el.find('#popLogin.popLogin');
+		// this.popPlanteles = new ViPlantelesUs({parentView:this});
 
-		this.txtUsuario = this.popLogin.find('.txtUsuario');
-		this.txtPassword = this.popLogin.find('.txtPassword');
+		// this.txtUsuario = this.popLogin.find('.txtUsuario');
+		// this.txtPassword = this.popLogin.find('.txtPassword');
 
-		this.joyrIndex = this.$el.find('.joyride-index');
-		this.ventanaChat=this.$el.find('.chatOpen');
-		this.buscarChat=this.$el.find('.buscarChat');
-		this.messageNotMatch=this.$el.find('.userNotMatch');
+		// this.joyrIndex = this.$el.find('.joyride-index');
+		// this.ventanaChat=this.$el.find('.chatOpen');
+		// this.buscarChat=this.$el.find('.buscarChat');
+		// this.messageNotMatch=this.$el.find('.userNotMatch');
 
-		this.checkLogin();
-		this.gvChat = this.$el.find('.gvChat');
-		this.fullChat = this.$el.find('.chat');
-		this.gvChatExtra = this.$el.find('.chatOpenHide');
-		this.gvChatZone = this.$el.find('.gvChatZone');
-		this.gvNumChat = this.$el.find('.numChat');
-		this.chatOpenHide = this.$el.find('.chatHiddenTitulo');
-		this.tmp_div_chat = Handlebars.compile(this.$el.find('.tmp_div_chat').html());
-		this.tmp_div_chatuser = Handlebars.compile(this.$el.find('.tmp_div_chatuser').html());
-		this.tmp_div_chatuserHide = Handlebars.compile(this.$el.find('.tmp_div_chatuserHide').html());
-		this.tmp_frm_noaccess = Handlebars.compile(this.$el.find('.tmp_frm_noaccess').html());
+		// this.checkLogin();
+		// this.gvChat = this.$el.find('.gvChat');
+		// this.fullChat = this.$el.find('.chat');
+		// this.gvChatExtra = this.$el.find('.chatOpenHide');
+		// this.gvChatZone = this.$el.find('.gvChatZone');
+		// this.gvNumChat = this.$el.find('.numChat');
+		// this.chatOpenHide = this.$el.find('.chatHiddenTitulo');
+		// this.tmp_div_chat = Handlebars.compile(this.$el.find('.tmp_div_chat').html());
+		// this.tmp_div_chatuser = Handlebars.compile(this.$el.find('.tmp_div_chatuser').html());
+		// this.tmp_div_chatuserHide = Handlebars.compile(this.$el.find('.tmp_div_chatuserHide').html());
+		// this.tmp_frm_noaccess = Handlebars.compile(this.$el.find('.tmp_frm_noaccess').html());
 
-		this.$el.find('.date').fdatepicker({format: 'dd-mm-yyyy'});
+		// this.$el.find('.date').fdatepicker({format: 'dd-mm-yyyy'});
 	},
 	/*-------------------------- Base --------------------------*/
 	logout: function (argument) {

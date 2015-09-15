@@ -24,7 +24,7 @@ require.config({
         'handlebars'    : 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min',
         'foundation'    : 'http://cdn.jsdelivr.net/foundation/5.2.2/js/foundation.min',
         
-        'fdatepicker'   : 'dependencies/foundation-datepicker',
+        'fdatepicker'   : 'dependencies/jquery.datetimepicker',
         //'foundation'    : 'dependencies/foundation.min',
         'faccordeon'    : 'dependencies/foundation/foundation.accordion',
         'fabide'        : 'dependencies/foundation/foundation.abide',
@@ -37,13 +37,13 @@ require.config({
         /*'socket.io'     : 'dependencies/socket.io',
         'sails.io'      : 'dependencies/sails.io',*/
         'templates'     : 'base/templates',
-        //'base'          : 'base/base.js?bust='+bust,
-        //'controles'     : 'base/controles',
-        //'app'           : 'app.js?bust='+bust,
+        'base'          : 'base/base.js?bust='+bust,
+        'controles'     : 'base/controles',
+        'app'           : 'app.js?bust='+bust,
         
-        'base'          : 'base/min/base.min.js?bust='+bust,
-        'controles'     : 'base/min/controles.min.js?bust='+bust,
-        'app'           : 'base/min/app.min.js?bust='+bust,
+        // 'base'          : 'base/min/base.min.js?bust='+bust,
+        // 'controles'     : 'base/min/controles.min.js?bust='+bust,
+        // 'app'           : 'base/min/app.min.js?bust='+bust,
     },
     shim: {
         'lodash'        : { exports:'_' },
