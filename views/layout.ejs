@@ -1,101 +1,149 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>ORLED</title>
+	<title>ORLED</title>
 
-    <!-- Viewport mobile tag for sensible mobile support -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta charset="utf-8">
+	<!-- Viewport mobile tag for sensible mobile support -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta charset="utf-8">
 
-    <!--STYLES-->
-    <link rel="stylesheet" href="/styles/Site.css">
-    <link rel="stylesheet" href="/styles/font-awesome.min.css">
-    <link rel="stylesheet" href="/styles/foundation.min.css">
-    <link rel="stylesheet" href="/styles/icomoon.css">
-    <link rel="stylesheet" href="/styles/jquery.datetimepicker.css">
-    <link rel="stylesheet" href="/styles/main.css">
-    <link rel="stylesheet" href="/styles/search.css">
-    <link rel="stylesheet" href="/styles/semantic.min.css">
-    <link rel="stylesheet" href="/styles/typeahead.css">
-    <!--STYLES END-->
+	<!--STYLES-->
+	<link rel="stylesheet" href="/styles/Site.css">
+	<link rel="stylesheet" href="/styles/font-awesome.min.css">
+	<link rel="stylesheet" href="/styles/foundation.min.css">
+	<link rel="stylesheet" href="/styles/icomoon.css">
+	<link rel="stylesheet" href="/styles/jquery.datetimepicker.css">
+	<link rel="stylesheet" href="/styles/main.css">
+	<link rel="stylesheet" href="/styles/search.css">
+	<link rel="stylesheet" href="/styles/semantic.min.css">
+	<link rel="stylesheet" href="/styles/typeahead.css">
+	<!--STYLES END-->
 
-    <link rel="shortcut icon" href="/images/favicon.ico">
-    <!--link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.2.0/css/font-awesome.min.css" />
-    <link href='http://fonts.googleapis.com/css?family=Julius+Sans+One' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Diplomata+SC' rel='stylesheet' type='text/css'-->
+	<link rel="shortcut icon" href="/images/favicon.ico">
+	<!--link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.2.0/css/font-awesome.min.css" />
+	<link href='http://fonts.googleapis.com/css?family=Julius+Sans+One' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Diplomata+SC' rel='stylesheet' type='text/css'-->
   </head>
 
   <body>
-    <%- body %>
-    <header >   
-        <section class="icon-list info-user">
-            <ul class="icon-list-custom">
-                <li id="joyr_first">
-                
-                </li>
-                <li>
-                    
-                </li>
-                <li>
-                    
-                </li>
-            </ul>
-            <ul class="pull-right">
-                <li>
-                    
-                </li>
-                <li>
-                    
-                </li>
-            </ul>
-        </section>
-    </header>
-    <footer class="isHidden">
-        <p><i class="fa fa-warning"></i> El sistema esta en mantenimiento y puede que algunas funcionalidades no funcionen correctamente</p>
-    </footer>
-    <nav class="">
-        <div class="busqueda">
-            <span>
-                <input type="text" class="txtBusqueda" placeholder="Busqueda de menu..."/>
-            </span>
-        </div>
-    </nav>
+	<%- body %>
+	<header>
+		<section class="profile" id="open-button">
+			<span class="icono">
+				<span></span>
+			</span>			
+		</section>
+		<section class="icon-list info-user">
+			<ul class="icon-list-custom">
+				<li id="joyr_first">
+				
+				</li>
+				<li>
+					
+				</li>
+				<li>
+					
+				</li>
+			</ul>
+			<ul class="pull-right">
+				<li>
+					
+				</li>
+				<li>
+					
+				</li>
+			</ul>
+		</section>
+	</header>
+ 	<footer class="isHidden">
+ 		<p><i class="fa fa-warning"></i> El sistema esta en mantenimiento y puede que algunas funcionalidades no funcionen correctamente</p>
+ 	</footer>
+	<nav class="">
+		<div class="busqueda">
+			<span>
+				<input type="text" class="txtBusqueda" placeholder="Busqueda de menu..."/>
+			</span>
+		</div>
+	</nav>
 
-    <main>
-        <section id="load_content"></section>
-    </main>
+	<main>
+		<section id="load_content"></section>
+	</main>
 
-    <div class="wrap-layer">
-    </div>
+	<div class="wrap-layer">
+	</div>
 
-    <div class="pnl-print isHidden"></div>
-      
+	<div class="pnl-print isHidden"></div>
+	  
+	<section class="loading">
+		<label>
+			<i class="icon-spinner tya-loading icon-spin"></i> Cargando...
+		</label>
+	</section>
+
+	<section class="pnlAlert warning ">
+	</section>
+	<div id="popConfirmacion" class="reveal-modal tiny popConfirmacion reveal-custom" data-reveal="data-reveal">
+		<section class="pop-head">
+			<label>Eliminar</label>
+		</section>
+		<section class="pop-body">
+			<label class='pregunta'>¿Desea eliminar el registro seleccionado?</label>
+		</section>
+		<section class="pop-footer">
+			<button type="button" class="button success tiny btn-aceptar aceptar-btn">Aceptar</button>
+			<button type="button" class="button alert tiny btn-cancelar cancelar-btn">Cancelar</button>
+		</section>
+	</div>
+	<div class="tiny reveal-modal  reveal-custom" id="popAdvertencia" data-reveal>
+		<section class="pop-head">
+			<label>Advertencia</label>
+		</section>
+		<section class="pop-body text-left">
+			<label class="mensaje"></label>
+		</section>
+		<section class="pop-footer">
+			<button type="button" class="button tiny success custom-button btn-aceptar aceptar-btn">Aceptar</button>
+		</section>
+	</div>
+
+    <script type="text/javascript" data-main="js/main" src="js/dependencies/require.js"></script>
+
+    <script type="text/template-handlebars-x" class="tmp_ul_menus_bs">
+        {{#menus}}
+            {{#if menus}}
+                <li class="has-submenu">
+                    <a href="#{{pagina}}">{{nombre}} <i class="fa fa-fw fa-caret-right"></i></a>
+                    <ul class="menu-n2">
+                        {{#menus}}
+                            <li><a href="#{{pagina}}">{{nombre}}</a></li>
+                        {{/menus}}
+                    </ul>
+                </li>
+            {{else}}
+                <li><a href="#{{pagina}}">{{nombre}}</a></li>
+            {{/if}}
+        {{/menus}}
+    </script>
+
+    <script type="text/template-handlebars-x" class="tmp_frm_noaccess">
+        <section id="noAccess">
     
+            <div class="content verificarTabla">
+                <div class="row">
+                    <div class="small-12 medium-centered columns">
+                        <ul class="ptbl-formularios pricing-table pricing-custom">
+                            <li class="title">Restriccion</li>
+                            <li class="bullet-item">
+                                <span class="text-center">No tiene acceso a este menu</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
-    <section class="pnlAlert warning ">
-    </section>
-    <div id="popConfirmacion" class="reveal-modal tiny popConfirmacion reveal-custom" data-reveal="data-reveal">
-        <section class="pop-head">
-            <label>Eliminar</label>
         </section>
-        <section class="pop-body">
-            <label class='pregunta'>¿Desea eliminar el registro seleccionado?</label>
-        </section>
-        <section class="pop-footer">
-            <button type="button" class="button success tiny btn-aceptar aceptar-btn">Aceptar</button>
-            <button type="button" class="button alert tiny btn-cancelar cancelar-btn">Cancelar</button>
-        </section>
-    </div>
-    <div class="tiny reveal-modal  reveal-custom" id="popAdvertencia" data-reveal>
-        <section class="pop-head">
-            <label>Advertencia</label>
-        </section>
-        <section class="pop-body text-left">
-            <label class="mensaje"></label>
-        </section>
-        <section class="pop-footer">
-            <button type="button" class="button tiny success custom-button btn-aceptar aceptar-btn">Aceptar</button>
-        </section>
-    </div>
+    </script>
+
   </body>
 </html>
