@@ -27,12 +27,7 @@
 
   <body>
 	<%- body %>
-	<header>
-		<section class="profile" id="open-button">
-			<span class="icono">
-				<span></span>
-			</span>			
-		</section>
+	<header >	
 		<section class="icon-list info-user">
 			<ul class="icon-list-custom">
 				<li id="joyr_first">
@@ -75,11 +70,7 @@
 
 	<div class="pnl-print isHidden"></div>
 	  
-	<section class="loading">
-		<label>
-			<i class="icon-spinner tya-loading icon-spin"></i> Cargando...
-		</label>
-	</section>
+	
 
 	<section class="pnlAlert warning ">
 	</section>
@@ -106,44 +97,5 @@
 			<button type="button" class="button tiny success custom-button btn-aceptar aceptar-btn">Aceptar</button>
 		</section>
 	</div>
-
-    <script type="text/javascript" data-main="js/main" src="js/dependencies/require.js"></script>
-
-    <script type="text/template-handlebars-x" class="tmp_ul_menus_bs">
-        {{#menus}}
-            {{#if menus}}
-                <li class="has-submenu">
-                    <a href="#{{pagina}}">{{nombre}} <i class="fa fa-fw fa-caret-right"></i></a>
-                    <ul class="menu-n2">
-                        {{#menus}}
-                            <li><a href="#{{pagina}}">{{nombre}}</a></li>
-                        {{/menus}}
-                    </ul>
-                </li>
-            {{else}}
-                <li><a href="#{{pagina}}">{{nombre}}</a></li>
-            {{/if}}
-        {{/menus}}
-    </script>
-
-    <script type="text/template-handlebars-x" class="tmp_frm_noaccess">
-        <section id="noAccess">
-    
-            <div class="content verificarTabla">
-                <div class="row">
-                    <div class="small-12 medium-centered columns">
-                        <ul class="ptbl-formularios pricing-table pricing-custom">
-                            <li class="title">Restriccion</li>
-                            <li class="bullet-item">
-                                <span class="text-center">No tiene acceso a este menu</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-        </section>
-    </script>
-
   </body>
 </html>
