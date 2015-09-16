@@ -17,8 +17,8 @@ module.exports.models = {
   * connections (see `config/connections.js`)                                *
   *                                                                          *
   ***************************************************************************/
-  connection: 'mysqlOrledLocal',
-  //connection: 'mysqlOrledRmote',
+  //connection: 'mysqlOrledLocal',
+  connection: 'mysqlOrledRemote',
 
   /***************************************************************************
   *                                                                          *
