@@ -15,6 +15,14 @@ var bust = (new Date()).getTime();//'150905';//
 require.config({
     //urlArgs: "bust="+bust,
     waitSeconds: 600,
+    config: {
+        'bar': {
+            size: 'large'
+        },
+        'baz': {
+            color: 'blue'
+        }
+    },
     paths: {
         //'jquery'        : 'ddependencies/jquery-2.0.3.min',
         //'jqueryui'      : 'dependencies/jquery-ui.min',
@@ -58,7 +66,7 @@ require.config({
         'bblocalStorage': { deps:['backbone'] },
         /*'socket.io'     : { deps:['jquery'] },
         'sails.io'      : { deps:['socket.io'] },*/
-        'base'          : { deps:['jquery', 'backbone', 'rollbar'] },
+        'base'          : { deps:['jquery', 'backbone', 'rollbar', 'foundation'] },
         'controles'     : { deps:['base'] },
         'templates'     : { deps:['controles'] },
         'app'           : { deps:['base'/*, 'sails.io'*/] },

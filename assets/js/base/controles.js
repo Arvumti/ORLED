@@ -7,7 +7,7 @@ var CoGridList = Backbone.Collection.extend({
         this.paginate = {
             page: 1,
             total: 0,
-            pageSize: 10
+            pageSize: -1,//10,
         };
     },
     getMax: function() {
@@ -49,26 +49,22 @@ var CoGridList = Backbone.Collection.extend({
         var initTime = new Date();
         
         $.getJSON(this.url, {data: this.paginate, aggregation:aggrs}, function(data) {
-            if(data.errmsg && data.errmsg.length > 0) {
-                app.ut.message({text:'Error en el grid, consulte al administrador del sistema'});
-                app.ut.logging({info:data, tipo:'grid', url:that.url});
-            }
-
             var endTime = new Date();
             console.log('Tiempo de espuesta: ' + (endTime - initTime));
             console.log('Recibo: ');
             console.log(data);
             
-            that.paginate.total = data.total;
+            if(that.pageSize == -1)
+                that.paginate.total = data.data.length;
+            else
+                that.paginate.total = data.total;
             _.each(data.data, function(row) {
-                row[that.pk] = row[that.pk].toString();
+                row[that.pk] = row[that.pk];//.toString();
                 that.add(new MoRow(row));
             });
             
             dfd.resolve(data);
         }).fail(function(xhr) {
-            app.ut.message({text:'Error en el grid, consulte al administrador del sistema'});
-            app.ut.logging({xhr:xhr, tipo:'grid', url:that.url});
             console.log(xhr);
         });
         
@@ -166,7 +162,7 @@ var ViGrid = Backbone.View.extend({
         this.totalWidth = (options.width || this.totalWidth) + 20;
         this.$el.css({width:this.totalWidth});
         
-        var command = _.defaults((options.command || {}), {select:false});
+        var command = _.defaults((options.command || {}), {select:false, filter:false});
         this.config = {
             columns: cols,
             command: command,
@@ -191,6 +187,8 @@ var ViGrid = Backbone.View.extend({
         var totalCols = this.config.columns.length + (this.config.isComAct ? 1 : 0);
         
         this.tagName = options.elem || 'table';
+        //this.$el.addClass('table-scroll');
+        this.$el.addClass('table-full');
         var allnone = '';
         if(command.select)
             allnone = '<div class="small-8 columns"> \
@@ -206,11 +204,11 @@ var ViGrid = Backbone.View.extend({
             this.tfoot = this.$el.children('.tfoot');
             this.tfoot.css({width:this.totalWidth-20});
 
-            this.tmpHead = Handlebars.compile('<article>{{#columns}}<div style="width:{{width}}px">{{nombre}}</div>{{/columns}}</article>');
-            this.tmpBody = Handlebars.compile('{{#rows}}<article>{{#.}}<div style="width:{{width}}px">{{GetValue .}}</div>{{/.}}</article>{{/rows}}');
+            this.tmpHead = Handlebars.compile('<article>{{#columns}}<div style="width:{{width}}px;max-width:{{width}}px">{{nombre}}</div>{{/columns}}</article>');
+            this.tmpBody = Handlebars.compile('{{#rows}}<article>{{#.}}<div style="width:{{width}}px;max-width:{{width}}px">{{GetValue .}}</div>{{/.}}</article>{{/rows}}');
         }
         else {
-            this.$el.html('<thead></thead><tbody></tbody><tfoot><tr><td colspan="' + totalCols + '" class="gv-pager row"> \
+            this.$el.html('<thead></thead><tbody></tbody><tfoot class="isHidden"><tr><td colspan="' + totalCols + '" class="gv-pager row"> \
                             <div class="small-4 columns"> \
                                 <a class="gv-begin" href="#"></a>\
                                 <a class="gv-prev" href="#"></a>\
@@ -226,10 +224,10 @@ var ViGrid = Backbone.View.extend({
             this.body = this.$el.children('tbody');
             this.tfoot = this.$el.children('tfoot');
 
-            this.tmpHead = Handlebars.compile('<tr>{{#if isComAct}}<th class="gv-col-command"></i></th>{{/if}}{{#columns}}<th style="width:{{width}}px" data-field="{{field}}" class="gv-order"><strong><span>{{nombre}} </span><input type="text" class="gv-filter"/></strong></th>{{/columns}}</tr>');
+            this.tmpHead = Handlebars.compile('<tr>{{#if isComAct}}<th class="gv-col-command"></i></th>{{/if}}{{#columns}}<th style="width:{{width}}px;max-width:{{width}}px;" data-field="{{field}}" class="gv-order"><strong><span>{{nombre}} </span>{{#if command.filter}}<input type="text" class="gv-filter"/>{{/if}}</strong></th>{{/columns}}</tr>');
             this.tmpBody = Handlebars.compile('{{#rows}}<tr data-pkey="{{key}}" data-cid="{{cid}}"> \
                                                     {{#if command.select}}<td class="col-command"><input type="checkbox"/></td>{{/if}} \
-                                                    {{#data}}<td>{{GetValue .}}</td>{{/data}} \
+                                                    {{#data}}<td style="width:{{width}}px;max-width:{{width}}px;">{{GetValue .}}</td>{{/data}} \
                                                 </tr>{{/rows}}');
         }
         
@@ -249,8 +247,8 @@ var ViGrid = Backbone.View.extend({
 
                 item.value = (dia.length == 1 ? '0' + dia : dia) + '-' + (mes.length == 1 ? '0' + mes : mes) + '-' + anio;
             }
-            else if (item.helper) {
-                item.value = Handlebars.helpers[item.helper](item.value);
+            else if(item.ref && item.ref != 'none') {
+                item.value = Handlebars.helpers.GetRef(item.value, item.ref);
             }
             else if(typeof item.value === "string") {
                 item.value = item.value.replace(/&amp;/g, "&");
@@ -300,14 +298,18 @@ var ViGrid = Backbone.View.extend({
                 valor = model.get(cols[j].field);
             else {
                 var subcontent = cols[j].field.split('.');
-                valor = model.get(subcontent[0])[subcontent[1]];
+                var part = model.get(subcontent[0]);
+                if(part)
+                    valor = part[subcontent[1]];
+                else
+                    valor = '-';
             }
                                   
             row.data.push({
                 value: valor,
                 type: this.config.columns[j].type || 'none',
-                helper: this.config.columns[j].helper || '',
-                //width: this.config.columns[j].width,
+                ref: this.config.columns[j].ref || 'none',
+                width: this.config.columns[j].width,
             });
         }
         
@@ -315,6 +317,9 @@ var ViGrid = Backbone.View.extend({
     },
     /*-------------------------- Base --------------------------*/
     render: function(data){
+        if(this.collection.paginate.pageSize == -1)
+            this.tfoot.addClass('isHidden');
+
         var rows = [];
         var cols = _.extend([], this.config.columns);
         
@@ -332,14 +337,18 @@ var ViGrid = Backbone.View.extend({
                     valor = r.get(cols[j].field);
                 else {
                     var subcontent = cols[j].field.split('.');
-                    valor = r.get(subcontent[0])[subcontent[1]];
+                    var part = r.get(subcontent[0]);
+                    if(part)
+                        valor = part[subcontent[1]];
+                    else
+                        valor = '-';
                 }
                 
                 row.data.push({
                     value: valor,
                     type: this.config.columns[j].type || 'none',
-                    helper: this.config.columns[j].helper || '',
-                    //width: this.config.columns[j].width,
+                    ref: this.config.columns[j].ref || 'none',
+                    width: this.config.columns[j].width,
                 });
             }
             rows.push(row);
@@ -372,6 +381,90 @@ var ViGrid = Backbone.View.extend({
         
         return this;
     },
+    fake_event: function(e) {
+        e.stopPropagation();
+    },
+    addTR: function(model) {
+        debugger
+        this.collection.add(model);
+        var row = this.getDataRow(model);
+        
+        var rowHTML = this.tmpBody({rows:row});     
+        this.body.prepend(rowHTML);
+    },
+    modifyTR: function(data) {
+        var busqueda = {};
+        busqueda[this.config.extras.primaryKey] = data[this.config.extras.primaryKey];
+
+        var model = this.collection.findWhere(busqueda);
+        model.set(data);
+        var row = this.getDataRow(model);
+        
+        var rowHTML = this.tmpBody({rows:row});
+        var tr = this.body.find('[data-cid="' + model.cid + '"]');
+        tr.html($(rowHTML).html());
+    },
+    focus: function(elem) {
+        this.body.children('.isSelected').removeClass('isSelected');
+                
+        var currSelect = elem;
+        currSelect.addClass('isSelected');
+        var bRow = this.collection.get(currSelect.data('cid'));
+        this.aggregates.selRow = bRow.toJSON();
+    },
+    filter: function(filtro, value) {
+        var that = this;
+        var res = _.findWhere(this.aggregates.filter, filtro);
+        if(res === undefined) {
+            filtro.query = value;
+            this.aggregates.filter.push(filtro);
+        }
+        else {
+            res.query = value;
+        }
+
+        this.collection.reset();
+        this.collection.paginate.page = 1;
+        var res = this.collection.init(this.aggregates);
+
+        res.then(function(data) {
+            that.render(data);
+        });
+    },
+    /*-------------------------- Eventos Pasivos --------------------------*/
+    doSearch: function(search) {
+        var model = app.currView.gvGrid.collection.find(search);
+        var tr = null;
+        if(model) {
+            tr = app.currView.gvGrid.body.find('[data-cid="' + model.cid + '"]');
+            this.focus(tr);
+        }
+
+        return {model:model, tr:tr};
+    },
+    doFilter: function(jArr) {
+        var that = this;
+        that.collection.reset();
+        that.collection.paginate.page = 1;
+        
+        this.aggregates.filter.splice(0);
+        this.aggregates.filter = jArr;
+        var res = this.collection.init(this.aggregates);
+
+        res.then(function(data) {
+            that.render(data);
+        });
+    },
+    doResetFilter: function() {
+        var that = this;
+        this.aggregates.filter.splice(0);
+        var res = this.collection.init(this.aggregates);
+
+        res.then(function(data) {
+            that.render(data);
+        });
+    },
+    /*-------------------------- Eventos --------------------------*/
     click_onSelect: function(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -398,11 +491,46 @@ var ViGrid = Backbone.View.extend({
     click_onTr: function(e) {
         e.preventDefault();
         e.stopPropagation();
-        this.body.children('.isSelected').removeClass('isSelected');
                 
         var currSelect = $(e.currentTarget);
-        currSelect.addClass('isSelected');
-        var bRow = this.collection.get(currSelect.data('cid'));
+        this.focus(currSelect);
+    },
+    click_onTrDown: function() {
+        if(this.body.children('tr').length == 0)
+            return;
+
+        var old_tr = this.body.children('.isSelected');
+        var new_tr = old_tr.next();
+
+        if(new_tr.length == 0)
+            new_tr = this.body.children('tr:first-child');
+
+        old_tr.removeClass('isSelected');
+        new_tr.addClass('isSelected');
+        var scroll = new_tr.height() * new_tr.prevAll().length;
+        console.log(scroll);
+        this.body.scrollTop(scroll);
+
+        var bRow = this.collection.get(new_tr.data('cid'));
+        this.aggregates.selRow = bRow.toJSON();
+    },
+    click_onTrUp: function() {
+        if(this.body.children('tr').length == 0)
+            return;
+
+        var old_tr = this.body.children('.isSelected');
+        var new_tr = old_tr.prev();
+
+        if(new_tr.length == 0)
+            new_tr = this.body.children('tr:last-child');
+
+        old_tr.removeClass('isSelected');
+        new_tr.addClass('isSelected');
+        var scroll = new_tr.height() * new_tr.prevAll().length;
+        console.log(scroll);
+        this.body.scrollTop(scroll);
+
+        var bRow = this.collection.get(new_tr.data('cid'));
         this.aggregates.selRow = bRow.toJSON();
     },
     click_onBeing: function(e) {
@@ -571,7 +699,10 @@ var ViGrid = Backbone.View.extend({
 
                 var elem = $(e.currentTarget);
                 var field = elem.parents('th').data('field');
-                var filtro = {field:field};        
+                var filtro = {field:field};
+
+                //that.filter(filtro, elem.val());
+
                 var res = _.findWhere(that.aggregates.filter, filtro);
                 if(res === undefined) {
                     filtro.query = elem.val();
@@ -587,6 +718,7 @@ var ViGrid = Backbone.View.extend({
                 res.then(function(data) {
                     that.render(data);
                 });
+
             }, time);
         }
         else
@@ -602,28 +734,6 @@ var ViGrid = Backbone.View.extend({
             this.keypress_onFilter(e);
         }
     },
-    fake_event: function(e) {
-        e.stopPropagation();
-    },
-    addTR: function(model) {
-        this.collection.add(model);
-        var row = this.getDataRow(model);
-        
-        var rowHTML = this.tmpBody({rows:row});     
-        this.body.prepend(rowHTML);
-    },
-    modifyTR: function(data) {
-        var busqueda = {};
-        busqueda[this.config.extras.primaryKey] = data[this.config.extras.primaryKey];
-
-        var model = this.collection.findWhere(busqueda);
-        model.set(data);
-        var row = this.getDataRow(model);
-        
-        var rowHTML = this.tmpBody({rows:row});
-        var tr = this.body.find('[data-cid="' + model.cid + '"]');
-        tr.html($(rowHTML).html());
-    }
 });
 /*
     CLIENTE:

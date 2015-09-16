@@ -270,7 +270,7 @@ var ViPopSaveABC = Backbone.View.extend({
         this.crud = 1;
         this.pk = data.pk;
         
-        this.form.find('.date').fdatepicker({format: 'dd-mm-yyyy'});
+        //this.form.find('.date').fdatepicker({format: 'dd-mm-yyyy'});
 
         var tyas = this.form.find('.tya');
         /*for (var i = 0; i < tyas.length; i++) {

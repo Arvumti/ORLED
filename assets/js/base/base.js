@@ -1215,8 +1215,14 @@ function loadAsync(modulo, deps) {
 
 					load_content.append(app.views.main.tmp_frm_noaccess({}));
 				}
-				else
-					load_content.append(data);
+				else {
+					//load_content.append(data);
+					var html = $(data).appendTo(load_content);
+					html.find('.datetime').datetimepicker({
+						timepicker: true,
+						format: 'Y-m-d'
+					});
+				}
 
 				require(dirsJS, function (async) {
 					app.currView = app.views[modulo] || (app.views[modulo] = new async.view());
