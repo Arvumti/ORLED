@@ -1,11 +1,20 @@
 var MoBombas = Backbone.Model.extend({
 	defaults: {
-		idBomba			 		: 0,
-		idAdeudo 				: 0,
-		idPlantel 				: 0,
-		obligatorio 			: 0,
-		valor					: 0,
-		activo					: 1,
+		idBomba				:0,
+		nombre				:'',
+		alturaMaxima		:0,
+		alturaMinima		:0,
+		eficiencia 			:0,
+		precioDistribuidor	:0,
+		precioLista			:0,
+		precioPublico		:0,
+		flujoMaximo			:0,
+		idCable				:0,
+		idGenerador			:0,
+		idMotor				:0,
+		idSalida			:0,
+		idTubo				:0,
+
 	}
 });
 define(['/js/base/viewsBase.js'], function (viewsBase) {
@@ -53,9 +62,12 @@ define(['/js/base/viewsBase.js'], function (viewsBase) {
 			};
 
 			var columns = [
-				{nombre:'Generador', field:'nombre', width:1000},
+				{nombre:'Bombas', field:'nombre', width:1000},
+				{nombre:'Altura Mínima', field:'alturaMinima', width:200},
+				{nombre:'Altura Máxima', field:'alturaMaxima', width:1000},
+				{nombre:'Eficiencia', field:'eficiencia', width:1000},
 			];
-			viewsBase.abc.prototype.initialize.call(this, columns, null);		
+			viewsBase.abc.prototype.initialize.call(this, columns, null);
 		},
 	});
 	return {view: ViBombas};
