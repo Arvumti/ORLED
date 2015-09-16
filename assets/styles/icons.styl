@@ -89,6 +89,7 @@ icon-lock = '\e62b'
 icon-clipboard = '\e9b8'
 icon-send = '\e62c'
 icon-logout = '\f032'
+icon-hoja = '\e630'
 icomoon()
 	font-family 'icomoon'
 
@@ -100,6 +101,9 @@ fsombra(x = 3px, y = 3px, d = 10px, c = #333)
 	text-shadow x y d c
 .icon-send::before
 	content icon-send
+	icomoon()
+.icon-hoja::before
+	content icon-hoja
 	icomoon()
 .icon-lock::before
 	content icon-locks

@@ -21,7 +21,8 @@ var ViBody = Backbone.View.extend({
 	},
 	initialize: function() {
 		// this.user = null;
-		// this.txtBusqueda = this.$el.find('.txtBusqueda');
+		this.txtBusqueda = this.$el.find('.txtBusqueda');		
+		this.hojita = this.$el.find('.hojita');		
 		// this.infoUser = this.$el.find('section.info-user');
 
 		// this.lblUsuario = this.$el.find('.lblUsuario');
@@ -376,8 +377,11 @@ var ViBody = Backbone.View.extend({
 		elem.addClass('isActive');
 	},
 	click_open_menu: function(e) {
+		var that=this;
 
 		$('nav, main, .wrap-layer').toggleClass('is-menu-open');
+		that.hojita.toggleClass('menuOpen');
+		debugger
 
 		if($('nav, main, .wrap-layer').hasClass('is-menu-open')) {
 			this.txtBusqueda.val('');

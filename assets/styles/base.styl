@@ -11,7 +11,9 @@ html
 	zoom 100%
 
 	clear()
-
+body
+	background url("/images/fondoOrled.png") no-repeat 50% 50% !important
+	background-size 450px 450px !important
 header
 	background-color color-base
 	height 60px
@@ -57,11 +59,9 @@ header
 						fsombra()
 						
 		&.profile
-			height 60px
-			cursor pointer
+			height 60px		
 			display block
 			float left
-			width 200px
 
 			figure,
 			span
@@ -100,9 +100,18 @@ header
 					width 155px
 
 					fsombra()
+			i
+				font-size 40px
+				color #fff
+				margin-top 10px !important
+				margin-left 20px !important
+				position absolute
+				&:hover
+					color #74EA65
+				&.menuOpen
+					color #74EA65
 
-			&:hover
-				background-color color-hover
+			
 	&.sinFondo
 		background-color #fff !important
 nav,
@@ -222,7 +231,7 @@ main
 		vertical-align top
 
 nav
-	background-color color-base
+	background-color #006CAB
 	left -300px
 	width 300px
 	overflow scroll
@@ -232,15 +241,17 @@ nav
 
 	div
 		&.busqueda
+			margin-top 70px !important
 			span
 				position relative
 
 				input
 					border none
-					background-color transparent
-					color gray
+					background-color #fff
+					color 
 					margin 0
 					padding-left 45px
+					border-radius 5px
 
 				&::before
 					content icon-search
