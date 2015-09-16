@@ -164,7 +164,7 @@ var ViBase = Backbone.View.extend({
 var ViABC = Backbone.View.extend({
     /*-------------------------- Base --------------------------*/
     initialize: function(columns, popAction, specials) {
-        this.gvDatosEl = this.$el.find('.gvDatos');
+        this.gvDatosEl = this.$el.find('.gv-datos');
         
         this.model || (this.model = app.models.moRow);
         this.extras || (this.extras = {locked:[], clean:[]});
