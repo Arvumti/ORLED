@@ -208,7 +208,7 @@ var ViGrid = Backbone.View.extend({
             this.tmpBody = Handlebars.compile('{{#rows}}<article>{{#.}}<div style="width:{{width}}px;max-width:{{width}}px">{{GetValue .}}</div>{{/.}}</article>{{/rows}}');
         }
         else {
-            this.$el.html('<thead></thead><tbody></tbody><tfoot class="isHidden"><tr><td colspan="' + totalCols + '" class="gv-pager row"> \
+            this.$el.html('<thead></thead><tbody class="text-left"></tbody><tfoot class="isHidden"><tr><td colspan="' + totalCols + '" class="gv-pager row"> \
                             <div class="small-4 columns"> \
                                 <a class="gv-begin" href="#"></a>\
                                 <a class="gv-prev" href="#"></a>\

@@ -9,6 +9,12 @@ module.exports = {
 	autoUpdatedAt: true,
 	tableName: 'Paises',
 	attributes: {
+		idPais: {
+			type: 'integer',
+			primaryKey: true,
+			autoIncrement:true,
+			unique: true,
+		},
 		nombre: {
 			type: 'string',
 		},

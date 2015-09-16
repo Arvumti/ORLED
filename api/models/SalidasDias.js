@@ -9,5 +9,11 @@ module.exports = {
 	autoUpdatedAt: true,
 	tableName: 'SalidasDias',
 	attributes: {
+		idSalidaDia: {
+			type: 'integer',
+			primaryKey: true,
+			autoIncrement:true,
+			unique: true,
+		},
 	}
 };

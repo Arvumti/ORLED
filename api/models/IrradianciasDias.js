@@ -9,6 +9,12 @@ module.exports = {
 	autoUpdatedAt: true,
 	tableName: 'IrradianciasDias',
 	attributes: {
+		idIrradianciaDia: {
+			type: 'integer',
+			primaryKey: true,
+			autoIncrement:true,
+			unique: true,
+		},
 		enero: {
 			type: 'float',
 		},
