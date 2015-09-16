@@ -187,8 +187,6 @@ var ViGrid = Backbone.View.extend({
         var totalCols = this.config.columns.length + (this.config.isComAct ? 1 : 0);
         
         this.tagName = options.elem || 'table';
-        //this.$el.addClass('table-scroll');
-        this.$el.addClass('table-full');
         var allnone = '';
         if(command.select)
             allnone = '<div class="small-8 columns"> \
@@ -204,11 +202,11 @@ var ViGrid = Backbone.View.extend({
             this.tfoot = this.$el.children('.tfoot');
             this.tfoot.css({width:this.totalWidth-20});
 
-            this.tmpHead = Handlebars.compile('<article>{{#columns}}<div style="width:{{width}}px;max-width:{{width}}px">{{nombre}}</div>{{/columns}}</article>');
-            this.tmpBody = Handlebars.compile('{{#rows}}<article>{{#.}}<div style="width:{{width}}px;max-width:{{width}}px">{{GetValue .}}</div>{{/.}}</article>{{/rows}}');
+            this.tmpHead = Handlebars.compile('<article>{{#columns}}<div style="width:{{width}}px">{{nombre}}</div>{{/columns}}</article>');
+            this.tmpBody = Handlebars.compile('{{#rows}}<article>{{#.}}<div style="width:{{width}}px">{{GetValue .}}</div>{{/.}}</article>{{/rows}}');
         }
         else {
-            this.$el.html('<thead></thead><tbody class="text-left"></tbody><tfoot class="isHidden"><tr><td colspan="' + totalCols + '" class="gv-pager row"> \
+            this.$el.html('<thead></thead><tbody></tbody><tfoot><tr><td colspan="' + totalCols + '" class="gv-pager row"> \
                             <div class="small-4 columns"> \
                                 <a class="gv-begin" href="#"></a>\
                                 <a class="gv-prev" href="#"></a>\
@@ -224,10 +222,10 @@ var ViGrid = Backbone.View.extend({
             this.body = this.$el.children('tbody');
             this.tfoot = this.$el.children('tfoot');
 
-            this.tmpHead = Handlebars.compile('<tr>{{#if isComAct}}<th class="gv-col-command"></i></th>{{/if}}{{#columns}}<th style="width:{{width}}px;max-width:{{width}}px;" data-field="{{field}}" class="gv-order"><strong><span>{{nombre}} </span>{{#if command.filter}}<input type="text" class="gv-filter"/>{{/if}}</strong></th>{{/columns}}</tr>');
+            this.tmpHead = Handlebars.compile('<tr>{{#if isComAct}}<th class="gv-col-command"></i></th>{{/if}}{{#columns}}<th style="width:{{width}}px" data-field="{{field}}" class="gv-order"><strong><span>{{nombre}} </span><input type="text" class="gv-filter"/></strong></th>{{/columns}}</tr>');
             this.tmpBody = Handlebars.compile('{{#rows}}<tr data-pkey="{{key}}" data-cid="{{cid}}"> \
                                                     {{#if command.select}}<td class="col-command"><input type="checkbox"/></td>{{/if}} \
-                                                    {{#data}}<td style="width:{{width}}px;max-width:{{width}}px;">{{GetValue .}}</td>{{/data}} \
+                                                    {{#data}}<td>{{GetValue .}}</td>{{/data}} \
                                                 </tr>{{/rows}}');
         }
         
