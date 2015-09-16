@@ -7,32 +7,52 @@
 	</div>
 	<div class="modal-save reveal-modal reveal-custom small" data-reveal='data-reveal'>
 		<div class="pop-head">
-			<label>Catalago de tubos</label>
+			<label>Catalogo de tubos</label>
+		</div>
+		<form class="form-data pop-body" data-abide>
+			<div class="row">
+				<div class="small-12 columns">
+					<label>
+						Nombre del tubo: <small>requerida</small>
+						<input type="text" placeholder="Nombre del tubo" data-field="nombre" maxlength="100" required/>
+					</label>
+					<small class="error">El nombre del tubo es requerido.</small>
+				</div>
+				<div class="small-4 columns">
+					<label>
+						Tipo de tubo: <small>requerida</small>
+						<input type="text" placeholder="tipo del tubo" data-field="tipo" maxlength="100" required/>
+					</label>
+					<small class="error">El tipo del tubo es requerido.</small>
+				</div>
+				<div class="small-4 columns">
+					<label>
+						Diámetro: <small>requerida</small>
+						<input type="text" placeholder="Diámetro del tubo" data-field="tipo" maxlength="100" required/>
+					</label>
+					<small class="error">El tipo del tubo es requerido.</small>
+				</div>
+				<div class="small-4 columns">
+					<label>
+						Largo: <small>requerida</small>
+						<input type="text" placeholder="Largo del tubo" data-field="largo" maxlength="100" required/>
+					</label>
+					<small class="error">El largo del tubo es requerido.</small>
+				</div>
+			</div>
+		</form>
+		<div class="row pop-footer">
+			<div class="small-12 columns">
+				<button type="button" class="btn-aceptar tiny success button guardar-btn">Guardar</button>
+				<button type="button" class="btn-cancelar tiny alert button cancelar-btn">Cancelar</button>
+			</div>
 		</div>
 	</div>
-	<form class="form-data pop-body" data-abide>
-		<div class="row">
-			<div class="small-12 columns">
-				<label>
-					Nombre del tubo: <small>requerida</small>
-					<input type="text" placeholder="Nombre del tubo" data-field="nombre" maxlength="100" required/>
-				</label>
-				<!--<small class="error">El nombre del tubo es requerido.</small>-->
-			</div>
-			<div class="small-6 columns">
-				<label>
-					Tipo del tubo: <small>requerida</small>
-					<input type="text" placeholder="Tipo del tubo" data-field="tipo" maxlength="100" required/>
-				</label>
-				<!--<small class="error">El tipo del tubo es requerido.</small>-->
-			</div>
-			<div class="small-6 columns">
-				<label>
-					Medida: <small>requerida</small>
-					<input type="text" placeholder="Medida del tubo" data-field="medida" maxlength="100" required/>
-				</label>
-				<!--<small class="error">La medida del tubo es requerido.</small>-->
-			</div>
+	<div class="row">
+		<div class="small-12 columns">
+			<button type="button" class="btnAdd btn-nuevo tiny button success agregar-btn">Agregar</button>
+			<button type="button" class="btn-modificar tiny button modificar-btn">Modificar</button>
+			<button type="button" class="btn-eliminar tiny button alert cancelar-btn">Desactivar</button>
 		</div>
-	</form>
+	</div>
 </section>

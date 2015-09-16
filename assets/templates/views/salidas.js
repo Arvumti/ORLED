@@ -1,8 +1,7 @@
-var MoGenerador = Backbone.Model.extend({
+var MoSalida = Backbone.Model.extend({
 	defaults: {
-		idGenerador 	: 0,
-		nombre			: '',
-		diagrama 		: '',
+		idTubo	 	    : 0,
+		nombre 			: '',
 	}
 });
 define(['/js/base/viewsBase.js'], function (viewsBase) {
@@ -12,16 +11,16 @@ define(['/js/base/viewsBase.js'], function (viewsBase) {
 		pk: primary key
 		url: ruta del api
 	*/
-	var ViGeneradores = viewsBase.abc.extend({
-		el: '#generadores',
+	var ViSalidas = viewsBase.abc.extend({
+		el: '#salidas',
 		events: {},
 		initialize: function() {
-			this.pk = 'idGenerador';
-			this.url = '/generadores';
-			this.model = MoGenerador;
+			this.pk = 'idSalida';
+			this.url = '/salidas';
+			this.model = MoSalida;
 
 			this.extras = {
-				clean: ['nombre'],
+				clean: ['nombre','tipo','diametro','largo'],
 			};
 
 			var columns = [
@@ -34,5 +33,5 @@ define(['/js/base/viewsBase.js'], function (viewsBase) {
 			};
 		},
 	});
-	return {view:ViGeneradores};
+	return {view:ViSalidas};
 });

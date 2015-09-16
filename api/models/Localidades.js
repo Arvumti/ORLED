@@ -14,10 +14,10 @@ module.exports = {
 		},
 		
 		latitud: {
-			type: 'float',
+			type: 'string',
 		},
 		longitud: {
-			type: 'float',
+			type: 'string',
 		},
 
 		idEstado: {

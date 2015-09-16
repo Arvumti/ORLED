@@ -1,8 +1,10 @@
 var MoTubo = Backbone.Model.extend({
 	defaults: {
-		idTubo	 	    : 0,
-		nombre 			: '',
-		activo			: 1,
+		idTubo	 	    :0,
+		nombre 			:'',
+		diametro 		:0,
+		largo 			:'',
+		tipo 			:'',
 	}
 });
 define(['/js/base/viewsBase.js'], function (viewsBase) {
@@ -21,13 +23,14 @@ define(['/js/base/viewsBase.js'], function (viewsBase) {
 			this.model = MoTubo;
 
 			this.extras = {
-				clean: ['nombre','tipo','medida'],
+				clean: ['nombre','tipo','diametro','largo'],
 			};
 
 			var columns = [
-				{nombre:'Nombre', field:'nombre', width:500},
-				{nombre:'Tipo', field:'tipo', width:250},
-				{nombre:'Medida', field:'medida', width:250},
+				{nombre:'Nombre', field:'nombre', width:400},
+				{nombre:'Tipo', field:'tipo', width:200},
+				{nombre:'Diámetro', field:'diametro', width:200},
+				{nombre:'Largo', field:'largo', width:200},
 			];
 			viewsBase.abc.prototype.initialize.call(this, columns);
 

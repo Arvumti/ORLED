@@ -22,6 +22,18 @@ module.exports = {
 		eficiencia: {
 			type: 'float',
 		},
+		precioDistribuidor: {
+			type: 'float',
+		},
+		precioLista: {
+			type: 'float',
+		},
+		precioPublico: {
+			type: 'float',
+		},
+		flujoMaximo: {
+			type: 'float',
+		},
 
 		idCable: {
 			model: 'Cables',
