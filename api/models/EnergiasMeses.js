@@ -9,5 +9,11 @@ module.exports = {
 	autoUpdatedAt: true,
 	tableName: 'EnergiasMeses',
 	attributes: {
+		idEnergiaMes: {
+			type: 'integer',
+			primaryKey: true,
+			autoIncrement:true,
+			unique: true,
+		},
 	}
 };
