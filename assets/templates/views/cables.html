@@ -9,16 +9,29 @@
 		<div class="pop-head">
 			<label>Catalogo de cables</label>
 		</div>
-	</div>
-	<form class="form-data pop-body" data-abide>
-		<div class="row">
+		<form class="form-data pop-body" data-abide>
+			<div class="row">
+				<div class="small-12 columns">
+					<label>
+						Nombre del cable: <small>requerida</small>
+						<input type="text" placeholder="Nombre del cable" data-field="nombre" maxlength="100" required/>
+					</label>
+					<small class="error">El nombre de la cable es requerido.</small>
+				</div>
+			</div>
+		</form>
+		<div class="row pop-footer">
 			<div class="small-12 columns">
-				<label>
-					Nombre del cable: <small>requerida</small>
-					<input type="text" placeholder="Nombre del cable" data-field="nombre" maxlength="100" required/>
-				</label>
-				<!--<small class="error">El nombre de la cable es requerido.</small>-->
+				<button type="button" class="btn-aceptar tiny success button guardar-btn">Guardar</button>
+				<button type="button" class="btn-cancelar tiny alert button cancelar-btn">Cancelar</button>
 			</div>
 		</div>
-	</form>
+	</div>
+	<div class="row">
+		<div class="small-12 columns">
+			<button type="button" class="btnAdd btn-nuevo tiny button success agregar-btn">Agregar</button>
+			<button type="button" class="btn-modificar tiny button modificar-btn">Modificar</button>
+			<button type="button" class="btn-eliminar tiny button alert cancelar-btn">Desactivar</button>
+		</div>
+	</div>
 </section>

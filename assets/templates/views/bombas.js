@@ -49,7 +49,7 @@ define(['/js/base/viewsBase.js'], function (viewsBase) {
 			};
 
 			this.extras = {
-				clean: ['idAdeudo','valor'],
+				clean: ['idCable','idTubo','idSalida','idMotor','alturaMin','alturaMax','eficiencia'],
 			};
 
 			var columns = [

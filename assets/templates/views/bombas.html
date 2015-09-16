@@ -9,65 +9,102 @@
 		<div class="pop-head">
 			<label>Catalogo de bombas</label>
 		</div>
-	</div>
-	<form class="form-data pop-body" data-abide>
-		<div class="row">
+		<form class="form-data pop-body" data-abide>
+			<div class="row">
+				<div class="small-12 columns">
+					<label>
+						Nombre de la bomba: <small>requerida</small>
+						<input type="text" placeholder="Nombre de la bomba" data-field="nombre" maxlength="100" required/>
+					</label>
+					<small class="error">El nombre de la bomba es requerido.</small>
+				</div>
+				<div class="small-12 columns">
+					<label>
+						Generador: <small>requerido</small>
+						<input type="text" placeholder="Nombre del generador" data-field="idGenerador" class="tya" required/>
+					</label>
+					<small class="error">El generador es requerido.</small>
+				</div>
+				<div class="small-6 columns">
+					<label>
+						Cable: <small>requerido</small>
+						<input type="text" placeholder="Nombre del cable" data-field="idCable" class="tya" required/>
+					</label>
+					<small class="error">El cable es requerido.</small>
+				</div>
+				<div class="small-6 columns">
+					<label>
+						Salida: <small>requerido</small>
+						<input type="text" placeholder="Salida de agua" data-field="idSalida" class="tya" required/>
+					</label>
+					<small class="error">El cable es requerido.</small>
+				</div>
+				<div class="small-6 columns">
+					<label>
+						Motor: <small>requerido</small>
+						<input type="text" placeholder="Motor de la bomba" data-field="idMotor" class="tya" required/>
+					</label>
+					<small class="error">El cable es requerido.</small>
+				</div>
+				<div class="small-4 columns">
+					<label>
+						Altura Mínima: <small>requerida</small>
+						<input type="text" placeholder="Altura Minima" data-field="alturaMinima" maxlength="100" required/>
+					</label>
+					<small class="error">La altura mínima es requerido.</small>
+				</div>
+				<div class="small-4 columns">
+					<label>
+						Altura Máxima: <small>requerida</small>
+						<input type="text" placeholder="Altura Máxima" data-field="alturaMaxima" maxlength="100" required/>
+					</label>
+					<small class="error">El nombre de la bomba es requerido.</small>
+				</div>
+				<div class="small-4 columns">
+					<label>
+						Eficiencia: <small>requerida</small>
+						<input type="text" placeholder="Eficiencia de la bomba" data-field="eficiencia" maxlength="100" required/>
+					</label>
+					<small class="error">La eficiencia de la bomba es requerido.</small>
+				</div>
+				<div class="small-4 columns">
+					<label>
+						Precio Distribuidor:
+						<input type="text" placeholder="Precio para distribuidor" data-field="precioDistribuidor" maxlength="100">
+					</label>
+				</div>
+				<div class="small-4 columns">
+					<label>
+						Precio de lista:
+						<input type="text" placeholder="Precio de lista" data-field="precioLista" maxlength="100" >
+					</label>
+				</div>
+				<div class="small-4 columns">
+					<label>
+						Precio Publico:
+						<input type="text" placeholder="Precio para publico" data-field="precioPublico" maxlength="100"/>
+					</label>
+				</div>
+				<div class="small-4 columns">
+					<label>
+						Flujo Máximo:
+						<input type="text" placeholder="Flujo máximo de la bomba" data-field="flujoMaximo" maxlength="100"/>
+					</label>
+				</div>
+			</div>
+		</form>
+		<div class="row pop-footer">
 			<div class="small-12 columns">
-				<label>
-					Nombre de la bomba: <small>requerida</small>
-					<input type="text" placeholder="Nombre de la bomba" data-field="nombre" maxlength="100" required/>
-				</label>
-				<small class="error">El nombre de la bomba es requerido.</small>
-			</div>
-			<div class="small-6 columns">
-				<label>
-					Generador: <small>requerido</small>
-					<input type="text" placeholder="Nombre del generador" data-field="idGenerador" class="tya" required/>
-				</label>
-				<small class="error">El generador es requerido.</small>
-			</div>
-			<div class="small-6 columns">
-				<label>
-					Cable: <small>requerido</small>
-					<input type="text" placeholder="Nombre del cable" data-field="idCable" class="tya" required/>
-				</label>
-				<small class="error">El cable es requerido.</small>
-			</div>
-			<div class="small-6 columns">
-				<label>
-					Salida: <small>requerido</small>
-					<input type="text" placeholder="Salida de agua" data-field="idSalida" class="tya" required/>
-				</label>
-				<small class="error">El cable es requerido.</small>
-			</div>
-			<div class="small-6 columns">
-				<label>
-					Motor: <small>requerido</small>
-					<input type="text" placeholder="Motor de la bomba" data-field="idMotor" class="tya" required/>
-				</label>
-				<small class="error">El cable es requerido.</small>
-			</div>
-			<div class="small-4 columns">
-				<label>
-					Altura Mínima: <small>requerida</small>
-					<input type="text" placeholder="Altura Minima" data-field="alturaMin" maxlength="100" required/>
-				</label>
-				<small class="error">La altura mínima es requerido.</small>
-			</div>
-			<div class="small-4 columns">
-				<label>
-					Altura Máxima: <small>requerida</small>
-					<input type="text" placeholder="Altura Máxima" data-field="alturaMax" maxlength="100" required/>
-				</label>
-				<small class="error">El nombre de la bomba es requerido.</small>
-			</div>
-			<div class="small-4 columns">
-				<label>
-					Eficiencia: <small>requerida</small>
-					<input type="text" placeholder="Eficiencia de la bomba" data-field="nombre" maxlength="100" required/>
-				</label>
-				<small class="error">La eficiencia de la bomba es requerido.</small>
+				<button type="button" class="btn-aceptar tiny success button guardar-btn">Guardar</button>
+				<button type="button" class="btn-cancelar tiny alert button cancelar-btn">Cancelar</button>
 			</div>
 		</div>
-	</form>
+	</div>
+	<div class="row">
+		<div class="small-12 columns">
+			<button type="button" class="btnAdd btn-nuevo tiny button success agregar-btn">Agregar</button>
+			<button type="button" class="btn-modificar tiny button modificar-btn">Modificar</button>
+			<button type="button" class="btn-eliminar tiny button alert cancelar-btn">Desactivar</button>
+		</div>
+	</div>
 </section>
