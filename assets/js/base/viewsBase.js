@@ -164,6 +164,7 @@ var ViBase = Backbone.View.extend({
 var ViABC = Backbone.View.extend({
     /*-------------------------- Base --------------------------*/
     initialize: function(columns, popAction, specials) {
+        this.pk = this.pk || 'id'; 
         this.gvDatosEl = this.$el.find('.gv-datos');
         
         this.model || (this.model = app.models.moRow);
