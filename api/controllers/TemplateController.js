@@ -56,13 +56,6 @@ module.exports = {
 		// 		break;
 		// 	}
 		// }
-
-		var params = {
-			menu: tpl,
-			idUsuario: req.session.user.idUsuario,
-			idPlantel: req.session.user.idPlantel,
-		};
-		console.log(params);
 		console.log('Access: ' + findMenu);
 
 		console.log('id: ' + tpl);

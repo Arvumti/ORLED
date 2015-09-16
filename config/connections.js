@@ -40,9 +40,9 @@ module.exports.connections = {
   * Run: npm install sails-mysql                                             *
   *                                                                          *
   ***************************************************************************/
-  mysqlOrled: {
+  mysqlOrledRemote: {
     adapter: 'sails-mysql',
-    host: '192.168.0.16',
+    host: 'local.arvumti.com',
     user: 'admin_orled',
     password: 'rcn0L0iVgn',
     database: 'admin_orled'

@@ -50,7 +50,7 @@ require.config({
         'typeahead'     : { deps:['jquery'] },
         'foundation'    : { deps:['jquery'] },
         'jqueryui'      : { deps:['jquery'] },
-        'backbone'      : { deps:['lodash'] },
+        'backbone'      : { deps:['lodash', 'jquery'] },
         'fdatepicker'   : { deps:['foundation'] },
         'faccordeon'    : { deps:['foundation'] },
         'fabide'        : { deps:['foundation'] },
