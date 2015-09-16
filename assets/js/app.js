@@ -16,11 +16,11 @@ var ViBody = Backbone.View.extend({
 		'click div .inactive': 'click_OpenNewChat',
 		'click div .tituloChat-custom label': 'click_ChangeChat',
 		'click .chatButonShowHide': 'showHideChatComplete',
-		'keyup .chatOpen textarea': 'keyup_message',
+		'keyup .chatOpen textarea': 'keyup_message',		
 		'keyup .buscarChat': 'keyup_search',
 	},
 	initialize: function() {
-		// this.user = null;
+		// this.user = null;		
 		this.txtBusqueda = this.$el.find('.txtBusqueda');		
 		this.hojita = this.$el.find('.hojita');		
 		// this.infoUser = this.$el.find('section.info-user');
@@ -224,7 +224,7 @@ var ViBody = Backbone.View.extend({
 	click_plantel: function(e) {
 		e.preventDefault();
 		this.popPlanteles.render(this.user.planteles);
-	},
+	},	
 	resetInput: function() {
 		this.buscarChat.val('');
 		this.gvChat.find('label').parents('.chat-user').removeClass('isHidden');
@@ -265,7 +265,7 @@ var ViBody = Backbone.View.extend({
 	click_chatOpenClose: function(e) {
 		var elem=$(e.currentTarget).parents('div .chatOpen');
 		elem.toggleClass("close");
-	},
+	},	
 	showHideChatComplete: function(e) {
 		var that=this;
 		var elem=$(e.currentTarget);
@@ -380,17 +380,15 @@ var ViBody = Backbone.View.extend({
 		var that=this;
 
 		$('nav, main, .wrap-layer').toggleClass('is-menu-open');
-		that.hojita.toggleClass('menuOpen');
-		debugger
+		that.hojita.toggleClass('menuOpen');		
 
 		if($('nav, main, .wrap-layer').hasClass('is-menu-open')) {
 			this.txtBusqueda.val('');
 			this.keyup_txtBusqueda({currentTarget:this.txtBusqueda});
-		}
+		}		
 	},
 	keyup_txtBusqueda: function(e) {
 		var busqueda = $(e.currentTarget).val();
-
 		if(busqueda.length > 0) {
 			$('ul.menu-n1').addClass('isHidden');
 			$('ul.search-n1').removeClass('isHidden');

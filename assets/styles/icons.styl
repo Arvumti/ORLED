@@ -90,6 +90,9 @@ icon-clipboard = '\e9b8'
 icon-send = '\e62c'
 icon-logout = '\f032'
 icon-hoja = '\e630'
+icon-hoja2 = '\e62d'
+icon-datosPapel = '\e631'
+icon-cable = '\e632'
 icomoon()
 	font-family 'icomoon'
 
@@ -102,8 +105,17 @@ fsombra(x = 3px, y = 3px, d = 10px, c = #333)
 .icon-send::before
 	content icon-send
 	icomoon()
+.icon-datosPapel::before
+	content icon-datosPapel
+	icomoon()
+.icon-cable::before
+	content icon-cable
+	icomoon()
 .icon-hoja::before
 	content icon-hoja
+	icomoon()
+.icon-hoja2::before
+	content icon-hoja2
 	icomoon()
 .icon-lock::before
 	content icon-locks
