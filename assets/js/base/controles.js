@@ -7,7 +7,7 @@ var CoGridList = Backbone.Collection.extend({
         this.paginate = {
             page: 1,
             total: 0,
-            pageSize: -1,//10,
+            pageSize: 10,
         };
     },
     getMax: function() {
@@ -706,9 +706,6 @@ var ViGrid = Backbone.View.extend({
                 var elem = $(e.currentTarget);
                 var field = elem.parents('th').data('field');
                 var filtro = {field:field};
-
-                //that.filter(filtro, elem.val());
-
                 var res = _.findWhere(that.aggregates.filter, filtro);
                 if(res === undefined) {
                     filtro.query = elem.val();
@@ -724,7 +721,6 @@ var ViGrid = Backbone.View.extend({
                 res.then(function(data) {
                     that.render(data);
                 });
-
             }, time);
         }
         else

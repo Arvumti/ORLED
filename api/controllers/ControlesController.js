@@ -40,6 +40,7 @@ module.exports = {
 		var aggregation = req.param('aggregation');// [{'selRow':'', 'selRows':[]}];//
 		//console.log(data);
 		console.log(aggregation);
+		console.log('filter: ', aggregation['filter']);
 
 		if(req.session['aggregation'] === undefined)
 			req.session['aggregation'] = _.defaults({}, {selRow: null, selRows: [], dselRows: [], tipo: 'none', oreder: {}, filter: []});;
@@ -200,6 +201,7 @@ module.exports = {
 			criteria = {};
 
 		console.log(params);
+		console.log(params.aggregation);
 		if(params.data.pageSize == -1) {
 			var fn = sails.models[model].find();
 			var associations = sails.models[model].associations;
