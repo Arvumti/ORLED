@@ -390,10 +390,19 @@ var ViGrid = Backbone.View.extend({
         this.body.prepend(rowHTML);
     },
     modifyTR: function(data) {
+        var that = this;
+        var primaryKey = this.config.extras.primaryKey;
         var busqueda = {};
-        busqueda[this.config.extras.primaryKey] = data[this.config.extras.primaryKey].toString();
+        busqueda[primaryKey] = data[primaryKey].toString();
 
-        var model = this.collection.findWhere(busqueda);
+        var model = this.collection.find(function(item){ 
+            try {
+                return item.get(primaryKey).toString() == data[primaryKey].toString(); 
+            }
+            catch(ex) {
+                return false;
+            }
+        });
         model.set(data);
         var row = this.getDataRow(model);
         
