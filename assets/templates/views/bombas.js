@@ -1,4 +1,4 @@
-/*var MoBombas = Backbone.Model.extend({
+var MoBombas = Backbone.Model.extend({
 	defaults: {
 		idBomba			 		: 0,
 		idAdeudo 				: 0,
@@ -7,7 +7,7 @@
 		valor					: 0,
 		activo					: 1,
 	}
-}); */
+});
 define(['/js/base/viewsBase.js'], function (viewsBase) {
 	/*
 		columns: columnas del grid
@@ -55,7 +55,7 @@ define(['/js/base/viewsBase.js'], function (viewsBase) {
 			var columns = [
 				{nombre:'Generador', field:'nombre', width:1000},
 			];
-			viewsBase.abc.prototype.initialize.call(this, columns, null, specials);		
+			viewsBase.abc.prototype.initialize.call(this, columns, null);		
 		},
 	});
 	return {view: ViBombas};

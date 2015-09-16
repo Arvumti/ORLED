@@ -58,7 +58,7 @@ require.config({
         'bblocalStorage': { deps:['backbone'] },
         /*'socket.io'     : { deps:['jquery'] },
         'sails.io'      : { deps:['socket.io'] },*/
-        'base'          : { deps:['jquery', 'backbone', 'rollbar'] },
+        'base'          : { deps:['jquery', 'backbone', 'rollbar', 'foundation'] },
         'controles'     : { deps:['base'] },
         'templates'     : { deps:['controles'] },
         'app'           : { deps:['base'/*, 'sails.io'*/] },

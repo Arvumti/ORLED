@@ -1,10 +1,10 @@
-/*var MoTubo = Backbone.Model.extend({
+var MoTubo = Backbone.Model.extend({
 	defaults: {
 		idTubo	 	    : 0,
 		nombre 			: '',
 		activo			: 1,
 	}
-});*/
+});
 define(['/js/base/viewsBase.js'], function (viewsBase) {
 	/*
 		columns: columnas del grid
