@@ -34,7 +34,24 @@ module.exports.routes = {
 
   '/': {
     view: 'homepage'
-  }
+  },
+
+  'GET /template/find/*:id?' : {
+    controller    : 'Template',
+    action        : 'find'
+  },
+  'GET /template/get/*:id?' : {
+    controller    : 'Template',
+    action        : 'getTemplate'
+  },
+  'GET /controles/grid/*:model?' : {
+    controller    : 'Controles',
+    action        : 'grid'
+  },
+  'GET /controles/tya/*:model?' : {
+    controller    : 'Controles',
+    action        : 'tya'
+  },
 
   /***************************************************************************
   *                                                                          *

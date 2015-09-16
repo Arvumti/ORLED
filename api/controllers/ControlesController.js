@@ -21,15 +21,17 @@ function toCapitalizeFL(str)
 module.exports = {
 	getData: function (req, res, datosBase){
 		console.log('============================== DATOS BASE ==============================');
-		console.log(datosBase)
+		//console.log(datosBase)
 		console.log('============================== INIT REQUEST ==============================');
 		var initTime = new Date();
-		if(datosBase.errnum > 0 || datosBase.errnum < 0) {
+		if(datosBase.errnum > 0) {
 			console.log('============================== ERROR ==============================');
-			res.json({data:null, errnum:datosBase.errnum, errmsg:datosBase.errmsg, proc:datosBase.proc});
-			return;
+			res.json({errnum:datosBase.errnum, errmsg:datosBase.errmsg});
 		}
+		var total = datosBase.total;
 		datosBase = datosBase.data;
+		if(!datosBase)
+			datosBase = Array();
 		//console.log(req.query);
 		//console.log(req.body);
 		
@@ -47,8 +49,8 @@ module.exports = {
 		var filtro = ses_aggr['filter'] || [];
 
 		var fil = false;
-		// if(filtro.length > 0)
-		// 	fil = true;
+		if(filtro.length > 0)
+			fil = true;
 
 		var jRes = [],
 			page = parseInt(data['page']),
@@ -62,7 +64,7 @@ module.exports = {
 					var valor = filtro[index],
 						field_filter = '';
 					
-					//console.log(valor['field'])
+					console.log(valor['field'])
 					//console.log(valor['field'].indexOf('.') == -1)
 					if(valor['field'].indexOf('.') == -1)
 						field_filter = row[valor['field']].toString();
@@ -71,7 +73,7 @@ module.exports = {
 						field_filter = row;
 						//console.log(ffileds)
 						
-						for(var fi=0; fi < ffileds.length ;fi++) {
+						for(var fi=0; fi < ffileds.length; fi++) {
 							//console.log(ffileds[fi])
 							field_filter = field_filter[ffileds[fi]];
 						}
@@ -79,7 +81,41 @@ module.exports = {
 						field_filter = field_filter.toString();
 					}
 					
-					filOk = field_filter.indexOf(valor['query']) >= 0;
+					var query = valor['query'];
+					console.log('=== typeof query == object ===');
+					console.log(typeof query);
+					console.log(typeof query == 'object');
+					if(typeof query == 'object') {
+						console.log('op: ', query.op);
+						try {
+							switch(query.op) {
+								case '>':
+									filOk = parseFloat(field_filter) > parseFloat(query.val);
+									break;
+								case '<':
+									filOk = parseFloat(field_filter) < parseFloat(query.val);
+									break;
+								case '>=':
+									filOk = parseFloat(field_filter) >= parseFloat(query.val);
+									break;
+								case '<=':
+									filOk = parseFloat(field_filter) <= parseFloat(query.val);
+								case '=':
+									filOk = field_filter == query.val;
+									break;
+								default:
+									filOk = false;
+									break;
+							}
+							console.log(field_filter, ' :: ', query.val, ' :: ', filOk);
+						}
+						catch(err) {
+							console.log('Err: ', err);
+							filOk = false;
+						}
+					}
+					else 
+						filOk = field_filter.indexOf(query) >= 0;
 					if(!filOk)
 						break;
 				}
@@ -105,8 +141,11 @@ module.exports = {
 					datos.reverse();
 			}      
 		}
-		
-		for(var i = (page-1)*pageSize; i < (((page-1)*pageSize)+pageSize) && i < datos.length; i++) {
+
+		if(!datos)
+			datos = Array();
+
+		for(var i = 0; i < datos.length; i++) {
 			jRes.push(datos[i]);
 		}
 		
@@ -148,10 +187,10 @@ module.exports = {
 		var endTime = new Date();
 		console.log('============================== SEND RESPONSE:: Tiempo de espuesta: ' + (endTime-initTime) + ' Datos: ' + datos.length + ' - DatosBase: ' + datosBase.length + ' ==============================');
 		//console.log(datos);
-		res.json({data: jRes, total: datos.length, aggregation: aggregation, session: req.session['aggregation']});
+		res.json({data: jRes, total: total, aggregation: aggregation, session: req.session['aggregation']});
 	},
 	grid: function(req, res) {
-		var model = req.param('model');
+		var model = req.param('model').toLowerCase();
 
 		console.log("======================= busqueda GRID =========================");
 		console.log(req.param('model'));
@@ -161,219 +200,72 @@ module.exports = {
 			criteria = {};
 
 		console.log(params);
-		console.log('================ has user =====================');
-		var specials = {};
-		if(params.aggregation.specials) {
-			console.log(params.aggregation.specials[0])
-			for (var i = 0; i < params.aggregation.specials.length; i++) {
-				var agsp = params.aggregation.specials[i];
-				if(agsp.to == 'u'/* && req.session.user.tipo != 7*/)
-					specials[agsp.field] = req.session.user[agsp.field];
-				else
-					specials[agsp.field] = agsp.value;
-			}
-		}
-
-		console.log("======================= especiales =========================");
-		console.log(specials);
-
-		criteria.where = _.defaults({}, specials);
-		WsService.getParamsWU(req, criteria.where, modelo, 'grid');
-
-		if(criteria.where)
-			criteria.where = WsService.JSONize(criteria.where);
-		else
-			criteria = null;
-
-		var filtroOr = [];
-		var filtroAnd = [];
-		var orderby = [];
-		var likeArr = [];
-		var like = '';
-		var sort = '';
-
-		for (var key in criteria.where)
-			filtroAnd.push("\"" + key + "\" = '" + criteria.where[key] + "'");
-
-		console.log('================ Order by =====================');
-		if(params.aggregation.order && params.aggregation.order.orden != 0) {
-			var order = '';
-
-			if(params.aggregation.order.orden == -1)
-				order = 'DESC';
-
-			orderby.push("\"" + params.aggregation.order.field + "\" " + order);
-		}
-
-		if(params.aggregation.filter)
-			for (var i = 0; i < params.aggregation.filter.length; i++) {
-				var row = params.aggregation.filter[i];
-				filtroOr.push("UPPER(\"" + row.field + "\") LIKE UPPER('%" + row.query + "%')");
+		if(params.data.pageSize == -1) {
+			var fn = sails.models[model].find();
+			var associations = sails.models[model].associations;
+			for(var i=0; i<associations.length; i++) {
+				fn.populate(associations[i].alias);
 			}
 
-		if(filtroOr.length > 0)
-			likeArr.push(filtroOr.join(' OR '));
-		if(filtroAnd.length > 0)
-			likeArr.push(filtroAnd.join(' AND '));
+			fn.exec(function(err, docs) {
+				//console.log(docs);
+				sails.controllers.controles.getData(req, res, {data:docs, total:0});
+			});
+		}
+		else {
+			sails.models[model].count(function(err, conunt) {
+				console.log('count: ', conunt);
 
-		var params = {
-			'P_XML-XMLTYPE-OUT': '',
-			'P_WHERE-VARCHAR2-IN': '',
-			'P_SORT-VARCHAR2-IN': '',
-		};
+				var fn = sails.models[model].find().skip((params.data.page-1)*params.data.pageSize).limit(parseInt(params.data.pageSize, 10));
+				var associations = sails.models[model].associations;
+				for(var i=0; i<associations.length; i++) {
+					fn.populate(associations[i].alias);
+				}
 
-		console.log('likeArr: ', likeArr);
-		if(likeArr.length > 0)
-			params['P_WHERE-VARCHAR2-IN'] = ' WHERE ' + likeArr.join(' AND ');
-
-		if(orderby.length > 0)
-			params['P_SORT-VARCHAR2-IN'] = ' ORDER BY ' + orderby.join(', ');
-
-		console.log('================ Like =====================');
-		console.log(like);
-		console.log(sort);
-
-		console.log('================ Criteria =====================');
-		console.log(criteria);
-
-		WsService.wsGetData(model, params, function(data) {
-			console.log(data);
-			sails.controllers.controles.getData(req, res, data);
-		}, true);
+				fn.exec(function(err, docs) {
+					//console.log(docs);
+					sails.controllers.controles.getData(req, res, {data:docs, total:conunt});
+				});
+			});
+		}
 	},
 	tya: function(req, res) {
-		var model = req.param('model'),
-			query = req.param('query'),
-			def = req.param('def'),
-			filters = JSON.parse(JSON.stringify(req.param('filters'))),
-			where = JSON.parse(JSON.stringify(req.param('where'))),
-			sorts = JSON.parse(JSON.stringify(req.param('sorts'))),
-			custom = req.param('custom') || '',
-			displayKey = JSON.parse(JSON.stringify(req.param('displayKey')));
+		var criteria = _.merge({}, req.params.all(), req.body);
+
+		var model = criteria.model.toLowerCase(),
+			query = criteria.query,
+			filters = criteria.filters || {},
+			where = criteria.where || {},
+			sorts = criteria.sorts || {},
+			displayKey = criteria.displayKey || {};
 
 		console.log('====')
 		console.log(query);
 		console.log(filters);
-		console.log(def);
-		console.log(model.toLowerCase());
 		console.log(where);
-		console.log(custom);
 		console.log(sorts);
+		console.log(model);
 		console.log('====')
 
-		if(testOrak) {
-			if(custom) {
-				var definition = sails.controllers[model.toLowerCase()].getDefinicion(def);
-				var params = {};
-				for (var i = 0; i < where.length; i++)
-					params[where[i].field] = where[i].value;
+		var filtroOr = {
+			or: [],
+		};
+		for (var i = 0; i < filters.length; i++) {
+			var filter = {};
+			filter[filters[i].filter] = {contains:query};
+			filtroOr.or.push(filter);
+		}
 
-				params.idUsuario = req.session.user.idUsuario;
-				params.idPlantel = req.session.user.idPlantel;
-
-				WsService.wsCustomGetData(definition, params, custom, function(data) {
-					res.json(data);
-				});
+		console.log(filtroOr);
+		console.log(model);
+		sails.models[model].find()/*.populateAll()*/.where(filtroOr).exec(function(err, docs) {
+			console.log('err: ', err);
+			for (var i = 0; i < docs.length; i++) {
+				docs[i].dKey = docs[i][displayKey];
 			}
-			else {
-				var xml = js2xmlparser("filters", {filters:filters});
-				//console.log(xml);
-
-				/*var where = '', sort = '';
-				ora.exec('call "Get' + toCapitalize(model) + '"(:1, :2, :3)', [new ora.conf.OutParam(ora.conf.OCCICURSOR), where, sort], function(results) {
-					res.json(results.returnParam);
-				});*/
-				var filtroOr = [],
-					filtroAnd = [],
-					orderby = [];
-
-				if(filters.length > 0) {
-					for (var i = 0; i < filters.length; i++)
-						filtroOr.push("UPPER(\"" + filters[i].filter + "\") LIKE UPPER('%" + query + "%')");
-
-					filtroOr[0] = '( ' + filtroOr[0];
-					filtroOr[filtroOr.length - 1] += ' )';
-				}
-
-				for (var i = 0; i < where.length; i++) {
-					var val_where = where[i].value;
-					if(where[i].to == 'u')
-						val_where = req.session.user[where[i].field];
-					
-					filtroAnd.push("\"" + where[i].field + "\" = '" + val_where + "'");
-				}
-
-				for (var i = 0; i < sorts.length; i++) {
-					var order = '';
-
-					if(sorts[i].order == -1)
-						order = 'DESC';
-
-					orderby.push("\"" + sorts[i].field + "\" " + order);
-				}
-
-				var like = '',
-					sort = '',
-					whereIns = '',
-					whereAct = '';
-
-				var params = {
-					'P_XML-XMLTYPE-OUT': '',
-					'P_WHERE-VARCHAR2-IN': '',
-					'P_SORT-VARCHAR2-IN': '',
-				};
-
-				if(orderby.length > 0)
-					params['P_SORT-VARCHAR2-IN'] = ' ORDER BY ' + orderby.join(', ')
-
-				var definition = sails.models[model.toLowerCase()].definition;
-
-				if(definition.idInstitucion)
-					filtroAnd.push('\"idInstitucion\" = ' + req.session.user.idInstitucion);
-
-				if(definition.activo)
-					filtroAnd.push('\"activo\" = 1');
-
-				var likeArr = Array();
-				if(filtroOr.length > 0)
-					likeArr.push(filtroOr.join(' OR '));
-
-				if(filtroAnd.length > 0)
-					likeArr.push(filtroAnd.join(' AND '));
-				
-				if(filtroOr.length > 0 || filtroAnd.length > 0)
-					params['P_WHERE-VARCHAR2-IN'] = ' WHERE ' + likeArr.join(' AND ');
-
-				//console.log('likeArr: ', filtroAnd);
-
-				console.log('=== begin like & sort ===');
-				console.log(like);
-				console.log(sort);
-				console.log('=== end like & sort ===');
-				WsService.wsGetData(model, params, function(data) {
-					res.json(data);
-				}, true);
-			}			
-		}
-		else {
-			model = req.param('model').toLowerCase();
-			var filtroOr = {
-				or: [],
-			};
-			for (var i = 0; i < filters.length; i++) {
-				var xxx = {};
-				xxx[filters[i].filter] = {contains:query};
-				filtroOr.or.push(xxx);
-			};
-			console.log(filtroOr);
-			sails.models[model].find().where(filtroOr).exec(function(err, docs) {
-				for (var i = 0; i < docs.length; i++) {
-					docs[i].dKey = docs[i][displayKey];
-				}
-				console.log(docs);
-				res.json(docs);
-			});
-		}
+			console.log(docs);
+			res.json({data:docs});
+		});
 	},
 };
 

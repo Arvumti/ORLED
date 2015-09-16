@@ -15,6 +15,14 @@ var bust = (new Date()).getTime();//'150905';//
 require.config({
     //urlArgs: "bust="+bust,
     waitSeconds: 600,
+    config: {
+        'bar': {
+            size: 'large'
+        },
+        'baz': {
+            color: 'blue'
+        }
+    },
     paths: {
         //'jquery'        : 'ddependencies/jquery-2.0.3.min',
         //'jqueryui'      : 'dependencies/jquery-ui.min',
