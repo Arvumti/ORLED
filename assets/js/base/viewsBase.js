@@ -74,12 +74,17 @@ var ViBase = Backbone.View.extend({
             
             if(elem.length > 0) {
                 if(elem.hasClass('tya')) {
-                    var tyaData = {};
+                    var template = elem.data('template'),
+                        dKey;
+                    if(!data[name])
+                        continue;
+                    else if(template)
+                        dKey = template(data[name]);
+                    else
+                        dKey = data[name][elem.data('dKey')];
 
-                    tyaData[name] = data[name];
-                    if(tyaData[name]) {
-                        tyaData['nombre'] = data['dKey' + name];
-                        tyaData['dKey'] = data['dKey' + name];
+                    var tyaData = _.defaults({dKey:dKey}, data[name]);
+                    if(tyaData) {
                         elem.data('current', tyaData).val(tyaData.dKey).blur();
                     }
                     else
@@ -372,6 +377,7 @@ var ViPopSaveABC = Backbone.View.extend({
         return data;
     },
     setData: function(data) {
+        debugger
         ViBase.prototype.setData.call(this, data, this.form);
     },
     save: function() {
