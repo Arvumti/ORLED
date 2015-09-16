@@ -198,7 +198,7 @@ var ViABC = Backbone.View.extend({
         switch(data.crud) {
             case 1:
                 for(var key in data) 
-                    data[key] = (data[key] || '').toString();
+                    data[key] = (data[key] === undefined || data[key] == null ? '' : data[key]).toString();
                 var mrow = new this.model(data);
                 this.gvGrid.addTR(mrow);
                 break;
@@ -388,6 +388,7 @@ var ViPopSaveABC = Backbone.View.extend({
         else
             _.defaults(json, this.modelBase.defaults);
 
+        json.crud = this.crud;
         var upForm;
         if(this.mode.upload)
             upForm = this.form;

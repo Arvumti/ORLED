@@ -2,9 +2,9 @@ var MoTubo = Backbone.Model.extend({
 	defaults: {
 		idTubo	 	    :0,
 		nombre 			:'',
-		diametro 		:0,
-		largo 			:'',
-		tipo 			:'',
+		diametro 		:0.0,
+		largo 			:0.0,
+		tipo 			:1,
 	}
 });
 define(['/js/base/viewsBase.js'], function (viewsBase) {

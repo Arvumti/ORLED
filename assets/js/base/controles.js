@@ -385,7 +385,6 @@ var ViGrid = Backbone.View.extend({
         e.stopPropagation();
     },
     addTR: function(model) {
-        debugger
         this.collection.add(model);
         var row = this.getDataRow(model);
         
@@ -394,7 +393,7 @@ var ViGrid = Backbone.View.extend({
     },
     modifyTR: function(data) {
         var busqueda = {};
-        busqueda[this.config.extras.primaryKey] = data[this.config.extras.primaryKey];
+        busqueda[this.config.extras.primaryKey] = data[this.config.extras.primaryKey].toString();
 
         var model = this.collection.findWhere(busqueda);
         model.set(data);
