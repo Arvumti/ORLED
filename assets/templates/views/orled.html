@@ -1,28 +1,108 @@
-<section id="inicio">
-	<div class="row">
-		<h3>Orled</h3>
-	</div>
-	<div class="row">
-		<table class="gv-datos"></table>
-	</div>
-	<dl class="tabs tabs-custom tbsDatosSolicitante" data-tab>
-		<dd class="active"><a href="#entradas">
-			<i class="icon-datosPapel"></i>
-			<span>Entradas</span>
-			</a>
-		</dd>
-		<dd><a href="#cableado">
-			<i class="icon-cable"></i>
-			<span>Cableado</span>
-			</a>
-		</dd>		
-	</dl>
-	<div class="tabs-content tabs-content-custom">
-		<div class="content active"  id="entradas">
-			<p>Entradas</p>
-		</div>
-		<div class="content"  id="cableado">
-			<p>Salidas</p>
+<section id="inicio">	
+	<div>
+		<div class="small-12 columns">
+			<table class="table table-custom">
+				<thead>
+					<tr class="titulo">
+						<th><span>Sistemas de bombeo</span></th>
+						<th><span>Generador PV</span></th>
+						<th><span>ETATRACK</span></th>
+						<th><span>Accesorios</span></th>
+						<th><span>Cable</span></th>
+						<th><span>Tubo Ø D</span></th>
+						<th><span>Tubo Ø S</span></th>
+						<th><span>Altura</span></th>
+						<th><span>Output</span></th>
+						<th><span>Eficiencia</span></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>100</td>
+						<td>100</td>
+						<td>100</td>
+						<td>100</td>
+						<td>100</td>
+						<td>100</td>
+						<td>100</td>
+						<td>100</td>
+						<td>100</td>
+						<td>100</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>	
+		<dl class="tabs tabs-custom" data-tab>
+			<dd class="active"><a href="#entradas">
+				<i class="icon-datosPapel"></i>
+				<span>Entradas</span>
+				</a>
+			</dd>
+			<dd><a href="#cableado">
+				<i class="icon-cable"></i>
+				<span>Cableado</span>
+				</a>
+			</dd>		
+		</dl>
+		<div class="tabs-content tabs-content-custom">
+			<div class="content active"  id="entradas">
+				<aside class="pnl-datos">
+					<fieldset>
+						<legend>General</legend>
+						<div class="small-12 columns">
+							<p>Lugar</p>
+							<input type="text" placeholder="Pais" data-field="idPais" class="tya" required/>
+						</div>
+						<div class="small-12 columns">
+							<input type="text" placeholder="Estado" data-field="idEstado" class="tya" required/>
+						</div>
+						<div class="small-6 columns text-center">
+							<small>Angulo de inclinación</small>
+							<input type="number" data-field="anguloInclinacion" required/>°
+						</div>
+						<div class="small-6 columns text-center">
+							<small>Pérdida por suciedad</small>
+							<input type="number" data-field="perdidaSuciedad" required/>m
+						</div>
+						<div class="small-6 columns text-center">
+							<small>Temp. del agua</small>
+							<input type="number" data-field="tempAgua" required/>°C
+						</div>
+						<div class="small-6 columns text-center">
+							<small>Cable del motor</small>
+							<input type="number" data-field="cableMoto" required/>m
+						</div>
+						<div class="small-12 columns text-center">
+							<p>Lado de descarga</p>						
+						</div>
+						<div class="small-12 columns text-center">
+							<small>Altura dinámica</small>
+							<input type="number" data-field="alturaDinamica" required/>m
+						</div>	
+						<div class="small-12 columns text-center">
+							<input type="checkbox" data-field="idLongitudTuberia"/> Longitud de la tubería					
+						</div>
+						<div class="small-12 columns text-center">							
+							<input type="number" data-field="longitudTuberia" required/>m
+						</div>
+						<div class="small-12 columns text-center">
+							<p class="text-center">Requerimientos del suministro</p>						
+						</div>
+						<div class="small-12 columns text-center">
+							<small>Rendimiento diario requerido</small>
+						</div>
+						<div class="small-12 columns text-center">							
+							<input type="number" data-field="longitudTuberia" required/>m³
+						</div>
+						<div class="small-12 columns">							
+							<button class="button expand">Calcular</button>
+						</div>
+					</fieldset>
+				</aside>
+			</div>
+			<div class="content"  id="cableado">
+				<p>Salidas</p>
+			</div>
 		</div>
 	</div>
 </section>

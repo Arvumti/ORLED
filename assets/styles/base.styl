@@ -234,7 +234,7 @@ main
 		height 100%
 		vertical-align top
 .LoadContent
-	margin-top 7% !important
+	margin-top 3% !important
 nav
 	background-color #006CAB
 	left -300px
@@ -369,27 +369,6 @@ table
 		td
 			font-size 0.6em
 			text-align center
-
-	&.table-custom-parciales
-		width 100%
-		thead
-			tr
-				&.titulo
-					background-color color-base
-					span
-						color #fff
-		tbody
-			tr
-				td
-					&:hover
-						background-color #008080
-						cursor pointer
-						color #fff
-					&.active
-						background-color #008080
-						color #fff
-	
-
 	&.table-vertical
 		margin-top 180px !important
 		thead
@@ -430,7 +409,7 @@ table
 				border 1px solid #D6D6D6
 
 				&.titulo
-					background-color color-base
+					background-color color-base2
 					span
 						color #fff
 					label
@@ -491,3 +470,53 @@ table
 
 					td
 						color #fff
+.tabs
+	&.tabs-custom
+		dd
+			&.active				
+				a
+					background-color #00A4FF
+					i,span
+						color #fff
+					
+			a
+				background-color color-base
+				
+				&:hover
+					background-color #00A4FF
+					i,span
+						color #fff
+			i,
+			span
+				display block
+				text-align center
+				color #fff
+				font-size 12px
+			i
+				color #fff
+				font-size 22px
+
+	.tab-title
+		&.error
+			a
+				background-color #A55 !important
+.tabs-content-custom
+	padding-left 10px
+	padding-right 10px
+	background-color #fff
+.pnl-datos
+	border-right 2px solid #AAA
+	overflow scroll
+	padding 0
+	text-align left
+	width 19%
+	height 100%
+	min-height 550px
+	overflow-x hidden
+	overflow-y hidden
+	margin-left -10px
+	margin-top -14px
+	margin-bottom -14px
+	background-color #ECECEC
+	legend
+		background-color #ECECEC !important
