@@ -556,6 +556,7 @@ function utilerias() {
 	// { header, body, dataID, fnA, fnC }
 	function Message (json) {
 		
+		debugger
 		var message = json.text || '',
 			auto_close = json.auto_close === undefined ? false : json.auto_close,
 			time = json.time || 2000,
