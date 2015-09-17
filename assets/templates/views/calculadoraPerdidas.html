@@ -1,6 +1,102 @@
 <section id="calculadoraPerdidas">
 	<div class="row"> 
-	<h3 align="center"> Calculadora de Perdidas de carga en tuberias</h3>
+		<h2 align="center"> Calculadora de Perdidas de carga en tuberias</h2>
 	</div>
-	<p align="center">Seleciona el metodo</p>
- </section>
+	<div class="small-12 columns" align="justify" >
+		<label>Selecciona un metodo</label>
+		<br>
+		<div class="small-6 columns">
+			<label>
+				<input type="radio" name="metodo" data-field="metodoWillHaz"/> William-Hazens
+			</label>
+		</div>
+		<div class="small-6 columns">
+			<label>
+				<input type="radio" name="metodo" data-field="metodoManning"/> Manning
+			</label>
+		</div>
+	</div>
+
+<!-- ============================ William-Hazen ============================ --> 
+	<div class="small-12 colimns">
+		<div class="small-6 columns" >
+			<label>
+				Longitud de la linea de conduccion: L(m)=<input type="text " data-field="longitud"/> 
+			</label>
+		</div>
+		<div class="small-6 columns">
+			<label>
+				Coeficiente dado en la tabla: C=<input type="text " data-field="coeficiente"/> 
+			</label>
+		</div>
+		<div class="small-6 columns">
+			<label>
+				Diferencia de altura de descarga: <input type="text " name="metodo" data-field="altura"/> metros
+			</label>
+		</div>
+		<div class="small-12 columns">
+			<label>
+				Diametro de la tuberia: D(mm)=<input type="text " data-field="diametroD"/> 
+			</label>
+		</div>
+		<div class="small-12 columns">
+			<label>
+				<input type="text " data-field="random" disabled/> 
+			</label>
+		</div>
+		<br>
+		<div class="small-12 columns">
+			<table>
+				<thead>
+					<tr >
+						<th><span>Q (l/s)</span></th>
+						<th><span>V (m/s)</span></th>
+						<th><span>h (m)</span></th>
+						<th><span>Htotal</span></th>
+					</tr>
+				</thead>
+				<tbody>								
+					<tr>
+						<td>10.0</td>
+						<td>0.55</td>
+						<td>3.22</td>
+						<td>57.22 metros</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="small-12 columns">
+			<label>
+				Diametro de la tuberia <input type="text " data-field="diametroTuberia"/> metros
+			</label>
+		</div>
+		<table>
+			<thead>
+				<tr>
+					<th><span>"C"</span></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th>140</th>
+				</tr>
+				<tr>
+					<th>100</th>
+				</tr>
+				<tr>
+					<th>130</th>
+				</tr>
+				<tr>
+					<th>130-140</th>
+				</tr>
+				<tr>
+					<th>140-150</th>
+				</tr>
+				<tr>
+					<th>120</th>
+				</tr>
+
+			</tbody>
+		</table>
+	</div>
+</section>
