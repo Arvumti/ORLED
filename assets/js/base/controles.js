@@ -7,7 +7,7 @@ var CoGridList = Backbone.Collection.extend({
         this.paginate = {
             page: 1,
             total: 0,
-            pageSize: -1,//10,
+            pageSize: 10,
         };
     },
     getMax: function() {
@@ -390,10 +390,19 @@ var ViGrid = Backbone.View.extend({
         this.body.prepend(rowHTML);
     },
     modifyTR: function(data) {
+        var that = this;
+        var primaryKey = this.config.extras.primaryKey;
         var busqueda = {};
-        busqueda[this.config.extras.primaryKey] = data[this.config.extras.primaryKey].toString();
+        busqueda[primaryKey] = data[primaryKey].toString();
 
-        var model = this.collection.findWhere(busqueda);
+        var model = this.collection.find(function(item){ 
+            try {
+                return item.get(primaryKey).toString() == data[primaryKey].toString(); 
+            }
+            catch(ex) {
+                return false;
+            }
+        });
         model.set(data);
         var row = this.getDataRow(model);
         
@@ -697,9 +706,6 @@ var ViGrid = Backbone.View.extend({
                 var elem = $(e.currentTarget);
                 var field = elem.parents('th').data('field');
                 var filtro = {field:field};
-
-                //that.filter(filtro, elem.val());
-
                 var res = _.findWhere(that.aggregates.filter, filtro);
                 if(res === undefined) {
                     filtro.query = elem.val();
@@ -715,7 +721,6 @@ var ViGrid = Backbone.View.extend({
                 res.then(function(data) {
                     that.render(data);
                 });
-
             }, time);
         }
         else

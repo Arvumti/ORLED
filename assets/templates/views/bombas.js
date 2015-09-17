@@ -62,10 +62,10 @@ define(['/js/base/viewsBase.js'], function (viewsBase) {
 			};
 
 			var columns = [
-				{nombre:'Bombas', field:'nombre', width:1000},
+				{nombre:'Bombas', field:'nombre', width:400},
 				{nombre:'Altura Mínima', field:'alturaMinima', width:200},
-				{nombre:'Altura Máxima', field:'alturaMaxima', width:1000},
-				{nombre:'Eficiencia', field:'eficiencia', width:1000},
+				{nombre:'Altura Máxima', field:'alturaMaxima', width:200},
+				{nombre:'Eficiencia', field:'eficiencia', width:200},
 			];
 			viewsBase.abc.prototype.initialize.call(this, columns, null);
 		},

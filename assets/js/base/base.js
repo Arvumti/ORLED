@@ -556,7 +556,6 @@ function utilerias() {
 	// { header, body, dataID, fnA, fnC }
 	function Message (json) {
 		
-		debugger
 		var message = json.text || '',
 			auto_close = json.auto_close === undefined ? false : json.auto_close,
 			time = json.time || 2000,
@@ -1271,7 +1270,8 @@ var app = {
 	socket: {},
 };
 
-define(['js/base/router.js'], function (router) {
+define(['js/base/router.js', 'js/base/templates.js'], function (router, templates) {
+	app.templates = new templates();
 	bases();
 
 	Handlebars.registerHelper('GetGlFecha', function(fecha) {

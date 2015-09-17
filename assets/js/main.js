@@ -15,14 +15,6 @@ var bust = (new Date()).getTime();//'150905';//
 require.config({
     //urlArgs: "bust="+bust,
     waitSeconds: 600,
-    config: {
-        'bar': {
-            size: 'large'
-        },
-        'baz': {
-            color: 'blue'
-        }
-    },
     paths: {
         //'jquery'        : 'ddependencies/jquery-2.0.3.min',
         //'jqueryui'      : 'dependencies/jquery-ui.min',
@@ -44,7 +36,6 @@ require.config({
         'rollbar'       : 'dependencies/rollbar',        
         /*'socket.io'     : 'dependencies/socket.io',
         'sails.io'      : 'dependencies/sails.io',*/
-        'templates'     : 'base/templates',
         'base'          : 'base/base.js?bust='+bust,
         'controles'     : 'base/controles',
         'app'           : 'app.js?bust='+bust,
@@ -66,14 +57,13 @@ require.config({
         'bblocalStorage': { deps:['backbone'] },
         /*'socket.io'     : { deps:['jquery'] },
         'sails.io'      : { deps:['socket.io'] },*/
-        'base'          : { deps:['jquery', 'backbone', 'rollbar', 'foundation'] },
+        'base'          : { deps:['handlebars', 'backbone', 'rollbar', 'foundation', 'jquery'] },
         'controles'     : { deps:['base'] },
-        'templates'     : { deps:['controles'] },
         'app'           : { deps:['base'/*, 'sails.io'*/] },
     }
 });
 
-require(['jquery', /*'socket.io', 'socket.io'*/, 'rollbar', 'base', 'lodash', 'backbone', 'bblocalStorage', 'templates', 'controles', 'handlebars', 'foundation', 'jqueryui', 'faccordeon', 'fabide', 'ftab', 'typeahead', 'fdatepicker', 'app'], function () {
+require(['jquery', /*'socket.io', 'socket.io'*/, 'rollbar', 'base', 'lodash', 'backbone', 'bblocalStorage', 'controles', 'handlebars', 'foundation', 'jqueryui', 'faccordeon', 'fabide', 'ftab', 'typeahead', 'fdatepicker', 'app'], function () {
     console.log('ok');
     app.ut.hide();
 });

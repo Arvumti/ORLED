@@ -184,5 +184,5 @@ function templates(){
 }
 
 define([], function () {
-	app.templates = new templates();
+	return templates;
 });
