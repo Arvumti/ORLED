@@ -1,17 +1,16 @@
-define(['/js/base/viewsBase.js'], function (viewsBase) {
+define(['/js/base/viewsBase.js'],function (viewsBase) {
 	var ViOrled = Backbone.View.extend({
 		el: '#orled',
-		events: {			
+		events: {
 		},
 		initialize: function() {
-			var that = this;			
-			this.fks = {				
-			};						
+			var that = this;
+			this.fks = {
+			};
 
 			this.gvBombas = this.$el.find('.gvBombas');
 			this.tmp_bombas = Handlebars.compile(this.$el.find('.tmp_bombas').html());
-			that.bombas();			
-
+			that.bombas();	
 		},
 		/*------------------------- Base -----------------------------*/
 		render: function() {
@@ -25,19 +24,18 @@ define(['/js/base/viewsBase.js'], function (viewsBase) {
 			function done(data) {
 				debugger
 				console.log(data);
-				if(data) {					
+				if(data) {
 					var that = this;
 					var info= data.data;
 					var tr = that.tmp_bombas(info);
 					that.gvBombas.html(tr);
 				}
 			}
-			
 		},
 		/*------------------------- Eventos -----------------------------*/
 		click_buscar: function() {
 			this.form.submit();
 		},	
 	});
-    return {view:ViOrled};
+	return {view:ViOrled};
 });
