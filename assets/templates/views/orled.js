@@ -2,17 +2,20 @@ var deps = [
 	'/js/base/viewsBase.js',
 	'/templates/views/mapaElementos.js',
 	'/templates/views/principal/graficas.js',
+	'/templates/views/principal/cableado.js'
 ];
 
-define(deps, function (viewsBase, mapaElementos, graficas) {
+define(deps, function (viewsBase, mapaElementos, graficas, cableado) {
 	var ViOrled = Backbone.View.extend({
 		el: '#orled',
 		events: {
-			'click .btn-calcular' :'click_Calcular',
-			'change [data-field="idLongitudTuberia"]': 'change_idLongitudTuberia',			
+			'click .btn-calcular' :'click_calcular',
+			//'click .tab-cableado' : 'click_tabCableado',
+			'click .tabs a' : 'click_tabs',
+			'change [data-field="idLongitudTuberia"]': 'change_idLongitudTuberia',
 		},
 		initialize: function() {
-			var that = this;			
+			var that = this;
 			this.fks = {
 				idPais: {
 					url: 'paises',
@@ -22,7 +25,7 @@ define(deps, function (viewsBase, mapaElementos, graficas) {
 					url: 'estados',
 					filters: [{filter:'nombre'}],
 				},
-			};						
+			};
 			var tyas = this.$el.find('.tya');
 			viewsBase.popAbc.prototype.linkFks.call(this, tyas, this.fks);
 			this.gvBombas = this.$el.find('.gvBombas');
@@ -31,6 +34,7 @@ define(deps, function (viewsBase, mapaElementos, graficas) {
 			that.bombas();
 			//hi :D
 			this.subContent = this.$el.find('.sub-content');
+			this.subContentCableado = this.$el.find('.sub-content-cableado');
 			this.subViews = {
 				mapaElementos: {
 					elem: $(mapaElementos.html).appendTo(this.subContent),
@@ -40,8 +44,11 @@ define(deps, function (viewsBase, mapaElementos, graficas) {
 					elem: $(graficas.html).appendTo(this.subContent),
 					view: new graficas.view({parentView:this}),
 				},
+				cableado: {
+					elem: $(cableado.html).appendTo(this.subContentCableado),
+					view: new cableado.view({parentView:this}),
+				},
 			};	
-			//this.subViews.graficas.close();
 		},
 		/*------------------------- Base -----------------------------*/
 		render: function() {
@@ -74,9 +81,26 @@ define(deps, function (viewsBase, mapaElementos, graficas) {
 		click_buscar: function() {
 			this.form.submit();
 		},	
-		click_Calcular: function(){
-			this.parentView.graficas.render();
-			this.parentView.mapaElementos.close();
+		click_calcular: function(){
+			debugger
+			this.subViews.graficas.view.render();
+			debugger
+			this.subViews.mapaElementos.view.close();
+		},
+		click_tabs: function(e) {
+			debugger
+			var href = $(e.currentTarget).attr('href');
+			switch(href) {
+				case '#entradas':
+					this.subViews.mapaElementos.view.close();
+					this.subViews.graficas.view.render();
+				break;
+				case '#cableado':
+					this.subViews.graficas.view.close();
+					this.subViews.mapaElementos.view.close();
+					this.subViews.cableado.view.render();
+				break;
+			}
 		},
 	});
 	return {view:ViOrled};
