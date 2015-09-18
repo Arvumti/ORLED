@@ -111,7 +111,7 @@ define(deps, function (viewsBase, highcharts) {
 					column: {
 					stacking: 'normal',
 					}
-				},	
+				},
 				series: [{
 					name: 'Total anual: ',
 					color: jDatos.color,
