@@ -47,9 +47,9 @@ define(deps, function (viewsBase, mapaElementos) {
 			var valor = $(e.currentTarget).prop("checked");
 			debugger
 			if(valor)
-				that.longTube.prop('disabled', true);
+				that.longTube.disabled = false
 			else
-				that.longTube.prop('disabled', false);
+				that.longTube.disabled = true
 		},
 		bombas: function() {
 			var that = this;
