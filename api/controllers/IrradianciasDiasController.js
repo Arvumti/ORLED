@@ -6,13 +6,20 @@
  */
 
 module.exports = {
+	find: function(req, res, next) {
+		SaveService.find(req, res, next, IrradianciasDias);
+	},
+	populate: function(req, res, next) {
+		SaveService.find(req, res, next, IrradianciasDias, true);
+	},
 	PromedioDia: function (req, res, next) {
 		var idLocalidad = req.param('idLocalidad') || 0;
 		var query = ' \
 			SELECT 	ROUND((enero+febrero+marzo+abril+mayo+junio+julio+agosto+septiembre+octubre+noviembre+diciembre)/12, 3) promedio,  \
 					hora \
 			FROM IrradianciasDias \
-			WHERE idLocalidad = ' + idLocalidad;
+			WHERE hora < 19 \
+			AND idLocalidad = ' + idLocalidad;
 
 		IrradianciasDias.query(query, function(err, rows) { 
 			res.json(rows);

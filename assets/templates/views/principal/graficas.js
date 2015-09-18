@@ -1,9 +1,10 @@
 var deps = [
 	'/js/base/viewsBase.js',
 	'/js/graficas/highcharts.js',
+	'text!/templates/views/principal/graficas.html',
 ];
 
-define(deps, function (viewsBase, highcharts) {
+define(deps, function (viewsBase, highcharts, html) {
 	/*
 		columns: columnas del grid
 		model: modelo [opcional]
@@ -13,7 +14,7 @@ define(deps, function (viewsBase, highcharts) {
 	var ViGraficas = Backbone.View.extend({
 		el: '#graficas',
 		events: {
-			'click .btn-calcular' :'click_llenarGrafica',
+			//'click .btn-calcular' :'click_llenarGrafica',
 			'click .tipo-grafica' :'click_tipoGrafica',
 		},
 		initialize: function() {
@@ -58,8 +59,11 @@ define(deps, function (viewsBase, highcharts) {
 		/*------------------------- Base -----------------------------*/
 		render: function() {
 			viewsBase.abc.prototype.render.call(this);
+			debugger
+			this.llenarGrafica();
 		},
 		close: function() {
+			debugger
 			viewsBase.abc.prototype.close.call(this);
 		},
 		/*------------------------- Eventos -----------------------------*/
@@ -111,7 +115,7 @@ define(deps, function (viewsBase, highcharts) {
 					column: {
 					stacking: 'normal',
 					}
-				},	
+				},
 				series: [{
 					name: 'Total anual: ',
 					color: jDatos.color,
@@ -199,7 +203,8 @@ define(deps, function (viewsBase, highcharts) {
 
 			//this.crear_GraficaMes(datos);
 		},
-		click_llenarGrafica: function(e){
+		///click_llenarGrafica: function(e){
+		llenarGrafica: function(e){
 			var that = this;
 			debugger
 
@@ -271,5 +276,5 @@ define(deps, function (viewsBase, highcharts) {
 			}*/
 		},
 	});
-	return {view: ViGraficas};
+	return {view: ViGraficas, html:html};
 });
