@@ -214,6 +214,7 @@ define(deps, function (viewsBase, highcharts) {
 				that.chkIrracion.prop("checked", true);
 				var energia = Object(),
 					output = Object();
+					debugger
 				for(var key in datos) {
 					var porcentaje = (((datos[key]*500)*3)/100)
 					energia[key] = parseFloat(parseFloat(((datos[key] * 500)-porcentaje)/1000).toFixed(2));
