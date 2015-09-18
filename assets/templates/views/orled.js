@@ -27,6 +27,7 @@ define(deps, function (viewsBase, mapaElementos) {
 			this.longTube = this.$el.find('.longTube');
 			this.tmp_bombas = Handlebars.compile(this.$el.find('.tmp_bombas').html());
 			that.bombas();
+			//hi :D
 			this.subContent = this.$el.find('.sub-content');
 			this.subViews = {
 				mapaElementos: {
