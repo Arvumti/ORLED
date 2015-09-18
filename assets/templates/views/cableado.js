@@ -5,8 +5,8 @@ define(['/js/base/viewsBase.js'], function (viewsBase) {
 		pk: primary key
 		url: ruta del api
 	*/
-	var viMapaElementos = Backbone.View.extend({
-		el: '#mapaElementos',
+	var viCableado = Backbone.View.extend({
+		el: '#cableado',
 		events: {
 		},
 		initialize: function() {
@@ -18,7 +18,7 @@ define(['/js/base/viewsBase.js'], function (viewsBase) {
 		close: function() {
 			viewsBase.abc.prototype.close.call(this);
 		},
-		/*------------------------- Eventos -----------------------------*/
+		/*------------------------- Eventos --------------------------*/
 	});
-	return {view: viMapaElementos};
+	return {view: viCableado};
 });

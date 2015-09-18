@@ -20,7 +20,7 @@ define(deps, function (viewsBase, highcharts) {
 			debugger
 			this.PnlGraficaMes = this.$el.find('.pnl-grafica-mes');
 			this.PnlGraficaDia = this.$el.find('.pnl-grafica-dia');
-			this.ChkIrracion = this.$el.find('.irracion');
+			this.chkIrracion = this.$el.find('.irracion');
 
 			this.optionsGraficas = {
 				irradianciaMes: {
@@ -66,7 +66,7 @@ define(deps, function (viewsBase, highcharts) {
 		crear_GraficaMes: function(jDatos){
 			debugger
 			var that = this;
-			var datos = _.values(_.pick(jDatos.datos, 'enero', 'febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre', 'promedio'));
+			var datos = _.values(jDatos.datos);
 			that.PnlGraficaMes.highcharts({
 				chart: {
 					type: 'column'
@@ -123,7 +123,7 @@ define(deps, function (viewsBase, highcharts) {
 		crear_GraficaHora: function(jDatos){
 			debugger
 			var that = this;
-			var datos = _.values(_.pick(jDatos.datos, 'enero', 'febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre', 'promedio'));
+			var datos = _.values(jDatos.datos);
 			that.PnlGraficaDia.highcharts({
 				chart: {
 					type: 'column'
@@ -207,33 +207,67 @@ define(deps, function (viewsBase, highcharts) {
 
 			app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:1}},done:doneI});
 			function doneI (data) {
-				that.optionsGraficas.irradianciaMes.datos = data[0] || Object();
+				var datos = data[0] || Object();
+				datos = _.pick(datos, 'enero', 'febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre', 'promedio');
+				that.optionsGraficas.irradianciaMes.datos = datos;
 				that.crear_GraficaMes(that.optionsGraficas.irradianciaMes);
-				that.ChkIrracion.prop("checked", true);
+				that.chkIrracion.prop("checked", true);
+				var energia = Object(),
+					output = Object();
+				for(var key in datos) {
+					var porcentaje = (((datos[key]*500)*3)/100)
+					energia[key] = parseFloat(parseFloat(((datos[key] * 500)-porcentaje)/1000).toFixed(2));
+					output[key] = parseFloat(parseFloat(datos[key] * 1000).toFixed(2));
+				}
+				that.optionsGraficas.energiaMes.datos = energia;
+				that.optionsGraficas.salidaMes.datos = output;
 			}
-			app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:1}},done:doneE});
-			function doneE (data) {
-				that.optionsGraficas.energiaMes.datos = data[0] || Object();
-			}
-			app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:1}},done:doneO});
+			//app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:1}},done:doneE});
+			//function doneE (data) {
+			//	that.optionsGraficas.energiaMes.datos = data[0] || Object();
+			//}
+			/*app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:1}},done:doneO});
 			function doneO (data) {
 				that.optionsGraficas.salidaMes.datos = data[0] || Object();
-			}
+			}*/
 
 			/*-------------------------------Datos por hora----------------------------------*/
-			app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:1}},done:doneIH});
+			//app.ut.request({url:'/IrradianciasDias/PromedioDia', data:{where:{idLocalidad:1}},done:doneIH);
+			app.ut.request({url:'/IrradianciasDias/PromedioDia', data:{idLocalidad:1},done:doneIH});
 			function doneIH (data) {
-				that.optionsGraficas.irradianciaDia.datos = data[0] || Object();
+				debugger
+				var datos = Object();
+
+				for (var i = 0; i < data.length; i++) {
+					var hora = data[i].hora;
+					var promedio = data[i].promedio;
+
+					datos[hora] = promedio;
+				}
+
+				that.optionsGraficas.irradianciaDia.datos = datos;
 				that.crear_GraficaHora(that.optionsGraficas.irradianciaDia);
+				var energia = Object(),
+					output = Object();
+				for(var key in datos) {
+					debugger
+					var porcentaje = (((datos[key]*500)*3)/100)
+					energia[key] = parseFloat(parseFloat(((datos[key] * 500)-porcentaje)/1000).toFixed(2));
+					output[key] = parseFloat(parseFloat(datos[key] * 1000).toFixed(2));
+				}
+				that.optionsGraficas.energiaDia.datos = energia;
+				that.optionsGraficas.salidaDia.datos = output;
+				//that.optionsGraficas.irradianciaDia.datos = data[0] || Object();
+				//that.crear_GraficaHora(that.optionsGraficas.irradianciaDia);
 			}
-			app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:1}},done:doneEH});
+			/*app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:1}},done:doneEH});
 			function doneEH (data) {
 				that.optionsGraficas.energiaDia.datos = data[0] || Object();
 			}
 			app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:1}},done:doneOH});
 			function doneOH (data) {
 				that.optionsGraficas.salidaDia.datos = data[0] || Object();
-			}
+			}*/
 		},
 	});
 	return {view: ViGraficas};
