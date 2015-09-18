@@ -1,12 +1,14 @@
 var deps = [
 	'/js/base/viewsBase.js',
 	'/templates/views/mapaElementos.js',
+	'/templates/views/principal/graficas.js',
 ];
 
-define(deps, function (viewsBase, mapaElementos) {
+define(deps, function (viewsBase, mapaElementos, graficas) {
 	var ViOrled = Backbone.View.extend({
 		el: '#orled',
 		events: {
+			'click .btn-calcular' :'click_Calcular',
 			'change [data-field="idLongitudTuberia"]': 'change_idLongitudTuberia',			
 		},
 		initialize: function() {
@@ -33,7 +35,12 @@ define(deps, function (viewsBase, mapaElementos) {
 					elem: $(mapaElementos.html).appendTo(this.subContent),
 					view: new mapaElementos.view({parentView:this}),
 				},
-			};
+				graficas: {
+					elem: $(graficas.html).appendTo(this.subContent),
+					view: new graficas.view({parentView:this}),
+				},
+			};	
+			//this.subViews.graficas.close();
 		},
 		/*------------------------- Base -----------------------------*/
 		render: function() {
@@ -86,6 +93,10 @@ define(deps, function (viewsBase, mapaElementos) {
 		click_buscar: function() {
 			this.form.submit();
 		},	
+		click_Calcular: function(){
+			this.parentView.graficas.render();
+			this.parentView.mapaElementos.close();
+		},
 	});
 	return {view:ViOrled};
 });
