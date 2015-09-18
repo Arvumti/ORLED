@@ -8,8 +8,10 @@ define(['/js/base/viewsBase.js'], function (viewsBase) {
 			this.fks = {				
 			};						
 
-			//this.gvCredencial = this.$el.find('.gvCredencial');
-			//this.tmp_Credencial = Handlebars.compile(this.$el.find('.tmp_Credencial').html());						
+			this.gvBombas = this.$el.find('.gvBombas');
+			this.tmp_bombas = Handlebars.compile(this.$el.find('.tmp_bombas').html());
+			that.bombas();			
+
 		},
 		/*------------------------- Base -----------------------------*/
 		render: function() {
@@ -18,8 +20,19 @@ define(['/js/base/viewsBase.js'], function (viewsBase) {
 		close: function() {
 			viewsBase.abc.prototype.close.call(this);
 		},
-		buscar: function() {
-			var that = this;
+		bombas: function() {
+			app.ut.request({url:'/bombas',done:done});
+			function done(data) {
+				debugger
+				console.log(data);
+				if(data) {					
+					var that = this;
+					var info= data.data;
+					var tr = that.tmp_bombas(info);
+					that.gvBombas.html(tr);
+				}
+			}
+			
 		},
 		/*------------------------- Eventos -----------------------------*/
 		click_buscar: function() {
