@@ -26,7 +26,7 @@ define(['/js/base/viewsBase.js'], function (viewsBase) {
 			};
 
 			var columns = [
-				{nombre:'Nombre', field:'nombre', width:1000},
+				{nombre:'Nombre', field:'nombre', width:500},
 				{nombre:'Energia', field:'energia', width:250},
 				{nombre:'Capacidad', field:'capacidad', width:250},
 			];

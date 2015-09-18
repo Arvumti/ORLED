@@ -34,8 +34,8 @@ define(['/js/base/viewsBase.js'], function (viewsBase) {
 			};
 
 			var columns = [
-				{nombre:'Estado', field:'nombre', width:400},
-				{nombre:'País', field:'idPais.nombre', width:200},
+				{nombre:'Estado', field:'nombre', width:500},
+				{nombre:'País', field:'idPais.nombre', width:500},
 			];
 			viewsBase.abc.prototype.initialize.call(this, columns, null);
 		},

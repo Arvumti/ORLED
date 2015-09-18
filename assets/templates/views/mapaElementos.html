@@ -1,7 +1,20 @@
 <section id="mapaElementos">
 	<div class="row">
+		<div class="small-4 columns right">
+			<div class="panel">
+				<h5>Cable motor.</h5>
+				<p>Cable entre regulador y unidad de bomba.</p>
+			</div>
+		</div>
 		<div class="small-12 columns">
-		<img src="images/bomba.png">
+			<img src="images/mapaElementos.jpg" width="1000px" border="0"  height="500px" usemap="#partesBomba">
+			<map name="partesBomba">
+				<area shape="poly"coords="148,154,44">
+			</map>
 		</div>
 	</div>
+	<script type="text/template-handlebars-x" class="tmp_div_caracteristicas">
+		<h5>{{#nombre}}</h5>
+		<p>{{#descripcion}}</p>
+	</script>
 </section>
