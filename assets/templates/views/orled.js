@@ -23,23 +23,11 @@ define(deps, function (viewsBase, mapaElementos) {
 			};						
 			var tyas = this.$el.find('.tya');
 			viewsBase.popAbc.prototype.linkFks.call(this, tyas, this.fks);
-			debugger
 			this.gvBombas = this.$el.find('.gvBombas');
 			this.longTube = this.$el.find('.longTube');
 			this.tmp_bombas = Handlebars.compile(this.$el.find('.tmp_bombas').html());
 			that.bombas();
-		},
-		initialize: function() {
-			var that = this;
-			this.fks = {
-			};
-
-			this.gvBombas = this.$el.find('.gvBombas');
-			this.tmp_bombas = Handlebars.compile(this.$el.find('.tmp_bombas').html());
-			//that.bombas();
-
 			this.subContent = this.$el.find('.sub-content');
-
 			this.subViews = {
 				mapaElementos: {
 					elem: $(mapaElementos.html).appendTo(this.subContent),
@@ -59,19 +47,18 @@ define(deps, function (viewsBase, mapaElementos) {
 			var valor = $(e.currentTarget).prop("checked");
 			debugger
 			if(valor)
-				that.find('[data-field="longitudTuberia"]').prop('disabled', true);
+				that.longTube.prop('disabled', true);
 			else
-				that.find('[data-field="longitudTuberia"]').prop('disabled', false);
+				that.longTube.prop('disabled', false);
 		},
 		bombas: function() {
 			var that = this;
-			app.ut.request({url:'/bombas', done:done});
+			app.ut.request({url:'/bombas/populate', done:done});
 			function done(data) {
-				debugger
 				console.log(data);
 				if(data) {
 					var info = data;
-					var tr = that.tmp_bombas(info);
+					var tr = that.tmp_bombas({bombas:info});
 					that.gvBombas.html(tr);
 				}
 			}
