@@ -21,11 +21,17 @@
 							<fieldset>
 								<legend>General</legend>
 								<div class="small-12 columns">
-									<p>Lugar</p>
-									<input type="text" placeholder="Pais" data-field="idPais" class="tya"/>
+									<label>
+										<p>Lugar</p>
+										<input type="text" placeholder="Pais" data-field="idPais" class="tya" required/>
+									</label>
+									<small class="error">El campo es requerido.</small>
 								</div>
 								<div class="small-12 columns">
-									<input type="text" placeholder="Estado" data-field="idEstado" class="tya"/>
+									<label>
+										<input type="text" placeholder="Estado" data-field="idEstado" class="tya" required/>
+									</label>
+									<small class="error">El campo es requerido.</small>
 								</div>
 								<div class="small-6 columns text-center">
 									<div class="small-11 columns text-center">
@@ -133,10 +139,21 @@
 						<th><span>Output</span></th>
 						<th><span>Eficiencia</span></th>
 					</tr>
+					<tr>
+						<th><input type="text" min="0"/></th>
+						<th><input type="text" min="0"/></th>
+						<th></th>
+						<th></th>
+						<th><input type="text" min="0"/></th>
+						<th></th>
+						<th></th>
+						<th></th>
+						<th></th>
+					</tr>
 				</thead>
 				<tbody>
 					{{#bombas}}
-						<tr>
+						<tr class="selectCell">
 							<td>{{nombreBomba}}</td>
 							<td>{{generador}}</td>
 							<td>{{etatrack}}</td>
