@@ -25,6 +25,7 @@ define(deps, function (viewsBase, mapaElementos) {
 			viewsBase.popAbc.prototype.linkFks.call(this, tyas, this.fks);
 			debugger
 			this.gvBombas = this.$el.find('.gvBombas');
+			this.longTube = this.$el.find('.longTube');
 			this.tmp_bombas = Handlebars.compile(this.$el.find('.tmp_bombas').html());
 			that.bombas();
 		},
@@ -35,7 +36,7 @@ define(deps, function (viewsBase, mapaElementos) {
 
 			this.gvBombas = this.$el.find('.gvBombas');
 			this.tmp_bombas = Handlebars.compile(this.$el.find('.tmp_bombas').html());
-			that.bombas();
+			//that.bombas();
 
 			this.subContent = this.$el.find('.sub-content');
 
@@ -54,12 +55,13 @@ define(deps, function (viewsBase, mapaElementos) {
 			viewsBase.abc.prototype.close.call(this);
 		},
 		change_idLongitudTuberia: function(e) {
+			var that=this;
 			var valor = $(e.currentTarget).prop("checked");
 			debugger
 			if(valor)
-				this.documentosEntregados.find('[data-field="longitudTuberia"]').prop('disabled', true);
+				that.find('[data-field="longitudTuberia"]').prop('disabled', true);
 			else
-				this.documentosEntregados.find('[data-field="longitudTuberia"]').prop('disabled', false);
+				that.find('[data-field="longitudTuberia"]').prop('disabled', false);
 		},
 		bombas: function() {
 			app.ut.request({url:'/bombas', done:done});
