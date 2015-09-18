@@ -130,23 +130,34 @@
 						<th><span>ETATRACK</span></th>
 						<th><span>Accesorios</span></th>
 						<th><span>Cable</span></th>
-						<th><span>Tubo Ø D</span></th>
+						<th><span>Tubo Ø D</span></th>						
 						<th><span>Altura</span></th>
 						<th><span>Output</span></th>
 						<th><span>Eficiencia</span></th>
 					</tr>
+					<tr>
+						<th><input type="text" min="0"/></th>
+						<th><input type="text" min="0"/></th>
+						<th></th>
+						<th></th>
+						<th><input type="text" min="0"/></th>
+						<th></th>
+						<th></th>
+						<th></th>
+						<th></th>
+					</tr>
 				</thead>
 				<tbody>
 					{{#bombas}}
-						<tr>
-							<td>{{nombre}}</td>
-							<td>{{idGenerador}}</td>
-							<td>100</td>
-							<td>100</td>
-							<td>{{idCable}}</td>
-							<td>{{idTubo}}</td>
+						<tr class="selectCell">
+							<td>{{nombreBomba}}</td>
+							<td>{{generador}}</td>
+							<td>{{etatrack}}</td>
+							<td>{{accesorios}}</td>
+							<td>{{cable}}</td>
+							<td>{{tubo}}</td>						
 							<td>{{alturaMinima}}...{{alturaMinima}}</td>
-							<td>{{idSalida}}</td>
+							<td>{{salida}}</td>
 							<td>{{eficiencia}}</td>
 						</tr>
 					{{/bombas}}
