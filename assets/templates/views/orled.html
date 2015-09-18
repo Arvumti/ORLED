@@ -21,11 +21,17 @@
 							<fieldset>
 								<legend>General</legend>
 								<div class="small-12 columns">
-									<p>Lugar</p>
-									<input type="text" placeholder="Pais" data-field="idPais" class="tya"/>
+									<label>
+										<p>Lugar</p>
+										<input type="text" placeholder="Pais" data-field="idPais" class="tya" required/>
+									</label>
+									<small class="error">El campo es requerido.</small>
 								</div>
 								<div class="small-12 columns">
-									<input type="text" placeholder="Estado" data-field="idEstado" class="tya"/>
+									<label>
+										<input type="text" placeholder="Estado" data-field="idEstado" class="tya" required/>
+									</label>
+									<small class="error">El campo es requerido.</small>
 								</div>
 								<div class="small-6 columns text-center">
 									<div class="small-11 columns text-center">

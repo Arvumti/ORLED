@@ -29,5 +29,8 @@ module.exports = {
 		idEstado: {
 			model: 'Estados',
 		},
+		idPais: {
+			model: 'Paises',
+		},
 	}
 };
