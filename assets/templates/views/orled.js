@@ -27,7 +27,6 @@ define(deps, function (viewsBase, mapaElementos) {
 			this.longTube = this.$el.find('.longTube');
 			this.tmp_bombas = Handlebars.compile(this.$el.find('.tmp_bombas').html());
 			that.bombas();
-			//hi :D
 			this.subContent = this.$el.find('.sub-content');
 			this.subViews = {
 				mapaElementos: {
@@ -56,9 +55,29 @@ define(deps, function (viewsBase, mapaElementos) {
 			app.ut.request({url:'/bombas/populate', done:done});
 			function done(data) {
 				console.log(data);
+				var arrDatosBombas=Array();
 				if(data) {
 					var info = data;
-					var tr = that.tmp_bombas({bombas:info});
+					debugger
+					for (var i = 0; i < info.length; i++) {
+						info[i]
+						var bomba = {
+							nombreBomba: info[i].nombre,
+							alturaMinima: info[i].alturaMinima,
+							alturaMaxima: info[i].alturaMaxima,							
+							eficiencia: info[i].eficiencia,							
+							generador: info[i].idGenerador.nombre,
+							etatrack: '',
+							accesorios:'',
+							cable: info[i].idCable.nombre,
+							tubo: info[i].idTubo.nombre,
+							salida: info[i].idSalida.nombre,
+
+						}
+						arrDatosBombas.push(bomba);
+
+					};
+					var tr = that.tmp_bombas({bombas:arrDatosBombas});
 					that.gvBombas.html(tr);
 				}
 			}
