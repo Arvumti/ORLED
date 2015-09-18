@@ -1,4 +1,9 @@
-define(['/js/base/viewsBase.js'], function (viewsBase) {
+var deps = [
+	'/js/base/viewsBase.js',
+	'text!/templates/views/mapaElementos.html',
+];
+
+define(deps, function (viewsBase, html) {
 	/*
 		columns: columnas del grid
 		model: modelo [opcional]
@@ -20,5 +25,5 @@ define(['/js/base/viewsBase.js'], function (viewsBase) {
 		},
 		/*------------------------- Eventos -----------------------------*/
 	});
-	return {view: viMapaElementos};
+	return {view: viMapaElementos, html:html};
 });

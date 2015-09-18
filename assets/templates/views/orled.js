@@ -1,4 +1,9 @@
-define(['/js/base/viewsBase.js'],function (viewsBase) {
+var deps = [
+	'/js/base/viewsBase.js',
+	'/templates/views/mapaElementos.js',
+];
+
+define(deps, function (viewsBase, mapaElementos) {
 	var ViOrled = Backbone.View.extend({
 		el: '#orled',
 		events: {
@@ -10,7 +15,16 @@ define(['/js/base/viewsBase.js'],function (viewsBase) {
 
 			this.gvBombas = this.$el.find('.gvBombas');
 			this.tmp_bombas = Handlebars.compile(this.$el.find('.tmp_bombas').html());
-			that.bombas();	
+			that.bombas();
+
+			this.subContent = this.$el.find('.sub-content');
+
+			this.subViews = {
+				mapaElementos: {
+					elem: $(mapaElementos.html).appendTo(this.subContent),
+					view: new mapaElementos.view({parentView:this}),
+				},
+			};
 		},
 		/*------------------------- Base -----------------------------*/
 		render: function() {
@@ -20,7 +34,7 @@ define(['/js/base/viewsBase.js'],function (viewsBase) {
 			viewsBase.abc.prototype.close.call(this);
 		},
 		bombas: function() {
-			app.ut.request({url:'/bombas',done:done});
+			app.ut.request({url:'/bombas', done:done});
 			function done(data) {
 				debugger
 				console.log(data);
