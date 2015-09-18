@@ -32,15 +32,15 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado) {
 			this.longTube = this.$el.find('.longTube');
 			this.tmp_bombas = Handlebars.compile(this.$el.find('.tmp_bombas').html());
 			that.bombas();
-			this.subContent = this.$el.find('.sub-content');
-			this.subContentCableado = this.$el.find('.sub-content-cableado');
+			this.subContentEntradas = this.$el.find('.sub-content.pnl-entradas');
+			this.subContentCableado = this.$el.find('.sub-content.pnl-cableado');
 			this.subViews = {
 				mapaElementos: {
-					elem: $(mapaElementos.html).appendTo(this.subContent),
+					elem: $(mapaElementos.html).appendTo(this.subContentEntradas),
 					view: new mapaElementos.view({parentView:this}),
 				},
 				graficas: {
-					elem: $(graficas.html).appendTo(this.subContent),
+					elem: $(graficas.html).appendTo(this.subContentEntradas),
 					view: new graficas.view({parentView:this}),
 				},
 				cableado: {
@@ -55,14 +55,6 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado) {
 		},
 		close: function() {
 			viewsBase.abc.prototype.close.call(this);
-		},
-		change_idLongitudTuberia: function(e) {
-			var that=this;
-			var valor = $(e.currentTarget).prop("checked");
-			if(valor)
-				that.longTube.attr('disabled', false);
-			else
-				that.longTube.attr('disabled', true).val('');
 		},
 		bombas: function() {
 			var that = this;
@@ -97,6 +89,14 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado) {
 			}
 		},
 		/*------------------------- Eventos -----------------------------*/
+		change_idLongitudTuberia: function(e) {
+			var that=this;
+			var valor = $(e.currentTarget).prop("checked");
+			if(valor)
+				that.longTube.attr('disabled', false);
+			else
+				that.longTube.attr('disabled', true).val('');
+		},
 		click_buscar: function() {
 			this.form.submit();
 		},	
@@ -110,15 +110,15 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado) {
 			debugger
 			var href = $(e.currentTarget).attr('href');
 			switch(href) {
-				case '#entradas':
+			/*	case '#entradas':
 					this.subViews.mapaElementos.view.close();
 					this.subViews.graficas.view.render();
-				break;
+					break;*/
 				case '#cableado':
-					this.subViews.graficas.view.close();
-					this.subViews.mapaElementos.view.close();
+					//this.subViews.graficas.view.close();
+					//this.subViews.mapaElementos.view.close();
 					this.subViews.cableado.view.render();
-				break;
+					break;
 			}
 		},
 	});
