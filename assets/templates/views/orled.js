@@ -34,13 +34,13 @@ define(deps, function (viewsBase, mapaElementos) {
 			viewsBase.abc.prototype.close.call(this);
 		},
 		bombas: function() {
+			var that = this;
 			app.ut.request({url:'/bombas', done:done});
 			function done(data) {
 				debugger
 				console.log(data);
 				if(data) {
-					var that = this;
-					var info= data.data;
+					var info = data;
 					var tr = that.tmp_bombas(info);
 					that.gvBombas.html(tr);
 				}
