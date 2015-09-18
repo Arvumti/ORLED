@@ -22,15 +22,15 @@
 								<legend>General</legend>
 								<div class="small-12 columns">
 									<p>Lugar</p>
-									<input type="text" placeholder="Pais" data-field="idPais" class="tya" required/>
+									<input type="text" placeholder="Pais" data-field="idPais" class="tya"/>
 								</div>
 								<div class="small-12 columns">
-									<input type="text" placeholder="Estado" data-field="idEstado" class="tya" required/>
+									<input type="text" placeholder="Estado" data-field="idEstado" class="tya"/>
 								</div>
 								<div class="small-6 columns text-center">
 									<div class="small-11 columns text-center">
 										<small>Angulo de inclinación</small>
-										<input type="number" data-field="anguloInclinacion" required/>
+										<input type="number" min="0" data-field="anguloInclinacion"/>
 									</div>
 									<div class="small-1 columns">						
 										<p class="simboloInput">°</p>
@@ -39,7 +39,7 @@
 								<div class="small-6 columns text-center">							
 									<div class="small-11 columns text-center">
 										<small>Pérdida por suciedad</small>
-										<input type="number" data-field="perdida" required/>
+										<input type="number" min="0" data-field="perdida"/>
 									</div>
 									<div class="small-1 columns">						
 										<p class="simboloInput">m</p>
@@ -48,7 +48,7 @@
 								<div class="small-6 columns text-center">							
 									<div class="small-11 columns text-center">
 										<small>Temp. del agua</small>
-										<input type="number" data-field="temperatura" required/>
+										<input type="number" min="0" data-field="temperatura"/>
 									</div>
 									<div class="small-1 columns">						
 										<p class="simboloInput">°C</p>
@@ -57,7 +57,7 @@
 								<div class="small-6 columns text-center">							
 									<div class="small-11 columns text-center">
 										<small>Cable del motor</small>
-										<input type="number" data-field="cable" required/>
+										<input type="number" min="0" data-field="cable"/>
 									</div>
 									<div class="small-1 columns">						
 										<p class="simboloInput">m</p>
@@ -69,18 +69,20 @@
 								<div class="small-5 small-centered columns text-center">							
 									<div class="small-11 columns text-center">
 										<small>Altura dinámica</small>
-										<input type="number" data-field="altura" required/>
+										<input type="number" min="0" data-field="altura"/>
 									</div>
 									<div class="small-1 columns">						
 										<p class="simboloInput">m</p>
 									</div>
 								</div>	
 								<div class="small-12 columns text-center">
-									<input type="checkbox" data-field="idLongitudTuberia"/> Longitud de la tubería					
+									<label>										
+										<input type="checkbox" data-field="idLongitudTuberia"/> Longitud de la tubería
+									</label>
 								</div>
 								<div class="small-5 small-centered columns text-center">											
 									<div class="small-11 columns text-center">								
-										<input type="number" data-field="longitudTuberia" disabled="disabled" class="longTube" />
+										<input type="number" min="0" data-field="longitudTuberia" disabled="disabled" class="longTube" />
 									</div>
 									<div class="small-1 columns">						
 										<p class="simboloInput">m</p>
@@ -94,7 +96,7 @@
 								</div>
 								<div class="small-5 small-centered	 columns text-center">	
 									<div class="small-11 columns text-center">								
-										<input type="number" data-field="longitudTuberia" required/>
+										<input type="number" min="0" data-field="longitudTuberia"/>
 									</div>
 									<div class="small-1 columns">						
 										<p class="simboloInput">m³</p>

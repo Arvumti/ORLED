@@ -45,11 +45,10 @@ define(deps, function (viewsBase, mapaElementos) {
 		change_idLongitudTuberia: function(e) {
 			var that=this;
 			var valor = $(e.currentTarget).prop("checked");
-			debugger
 			if(valor)
-				that.longTube.disabled = false
+				that.longTube.attr('disabled', false);
 			else
-				that.longTube.disabled = true
+				that.longTube.attr('disabled', true).val('');
 		},
 		bombas: function() {
 			var that = this;
