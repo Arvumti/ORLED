@@ -6,6 +6,12 @@
  */
 
 module.exports = {
+	find: function(req, res, next) {
+		SaveService.find(req, res, next, IrradianciasDias);
+	},
+	populate: function(req, res, next) {
+		SaveService.find(req, res, next, IrradianciasDias, true);
+	},
 	PromedioDia: function (req, res, next) {
 		var idLocalidad = req.param('idLocalidad') || 0;
 		var query = ' \

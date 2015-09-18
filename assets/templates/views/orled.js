@@ -25,22 +25,12 @@ define(deps, function (viewsBase, mapaElementos, graficas) {
 			};						
 			var tyas = this.$el.find('.tya');
 			viewsBase.popAbc.prototype.linkFks.call(this, tyas, this.fks);
-			debugger
 			this.gvBombas = this.$el.find('.gvBombas');
+			this.longTube = this.$el.find('.longTube');
 			this.tmp_bombas = Handlebars.compile(this.$el.find('.tmp_bombas').html());
 			that.bombas();
-		},
-		initialize: function() {
-			var that = this;
-			this.fks = {
-			};
-
-			this.gvBombas = this.$el.find('.gvBombas');
-			this.tmp_bombas = Handlebars.compile(this.$el.find('.tmp_bombas').html());
-			that.bombas();
-
+			//hi :D
 			this.subContent = this.$el.find('.sub-content');
-
 			this.subViews = {
 				mapaElementos: {
 					elem: $(mapaElementos.html).appendTo(this.subContent),
@@ -51,7 +41,7 @@ define(deps, function (viewsBase, mapaElementos, graficas) {
 					view: new graficas.view({parentView:this}),
 				},
 			};	
-			this.subViews.graficas.close();
+			//this.subViews.graficas.close();
 		},
 		/*------------------------- Base -----------------------------*/
 		render: function() {
@@ -61,22 +51,21 @@ define(deps, function (viewsBase, mapaElementos, graficas) {
 			viewsBase.abc.prototype.close.call(this);
 		},
 		change_idLongitudTuberia: function(e) {
+			var that=this;
 			var valor = $(e.currentTarget).prop("checked");
-			debugger
 			if(valor)
-				this.documentosEntregados.find('[data-field="longitudTuberia"]').prop('disabled', true);
+				that.longTube.attr('disabled', false);
 			else
-				this.documentosEntregados.find('[data-field="longitudTuberia"]').prop('disabled', false);
+				that.longTube.attr('disabled', true).val('');
 		},
 		bombas: function() {
-			app.ut.request({url:'/bombas', done:done});
+			var that = this;
+			app.ut.request({url:'/bombas/populate', done:done});
 			function done(data) {
-				debugger
 				console.log(data);
 				if(data) {
-					var that = this;
-					var info= data.data;
-					var tr = that.tmp_bombas(info);
+					var info = data;
+					var tr = that.tmp_bombas({bombas:info});
 					that.gvBombas.html(tr);
 				}
 			}

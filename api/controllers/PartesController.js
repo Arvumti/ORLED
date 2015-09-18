@@ -6,6 +6,11 @@
  */
 
 module.exports = {
-	
+	find: function(req, res, next) {
+		SaveService.find(req, res, next, Partes);
+	},
+	populate: function(req, res, next) {
+		SaveService.find(req, res, next, Partes, true);
+	},
 };
 
