@@ -42,7 +42,7 @@ module.exports.connections = {
   ***************************************************************************/
   mysqlOrledRemote: {
     adapter: 'sails-mysql',
-    host: 'local.arvumti.com',
+    host: '177.244.221.52',
     user: 'admin_orled',
     password: 'rcn0L0iVgn',
     database: 'admin_orled'
