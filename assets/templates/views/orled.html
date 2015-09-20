@@ -124,6 +124,25 @@
 			</div>
 		</div>
 	</div>
+	<div class="reveal-modal reveal-custom small modal-items" id="itemsModal" data-reveal='data-reveal'>
+		<div class="pop-head">
+			<label>Catalogo de Elementos</label>
+		</div>
+		<form class="form-data pop-body" data-abide>
+			<div class="row contenedorScroll-y">
+				<div class="gvItems"></div>				
+			</div>
+		</form>
+		<div class="small-4 small-centered columns">
+		</div>
+
+		<div class="row pop-footer">
+			<div class="small-4 small-centered columns">
+				<button type="button" class="btn-aceptar tiny success button aceptar-btn">Aceptar</button>
+				<button type="button" class="btn-cancelar tiny alert button cancelar-btn">Cancelar</button>
+			</div>
+		</div>
+	</div>
 	<script type="text/template-handlebars-x" class="tmp_bombas">
 		<div class="small-12 columns">
 			<table class="table table-custom">
@@ -139,12 +158,12 @@
 						<th><span>Output</span></th>
 						<th><span>Eficiencia</span></th>
 					</tr>
-					<tr>
-						<th><input type="text" min="0"/></th>
-						<th><input type="text" min="0"/></th>
+					<tr class="menuInput">
+						<th><input type="text" class="nombreBombaTabla"/><i class="icon-menu openItemModal" data-valor="1"></i></th>
+						<th><input type="text" class="nombreGenerador"/><i class="icon-menu openItemModal" data-valor="2"></i></th>
 						<th></th>
 						<th></th>
-						<th><input type="text" min="0"/></th>
+						<th><input type="text" class="nombreCable isHidden"/><i class="icon-menu isHidden" data-valor="3"></i></th>
 						<th></th>
 						<th></th>
 						<th></th>
@@ -153,7 +172,7 @@
 				</thead>
 				<tbody>
 					{{#bombas}}
-						<tr class="selectCell">
+						<tr class="selectCell" data-nombreBomba="{{nombreBomba}}" data-generador="{{generador}}" data-cable="{{cable}}">
 							<td>{{nombreBomba}}</td>
 							<td>{{generador}}</td>
 							<td>{{etatrack}}</td>
@@ -168,5 +187,21 @@
 				</tbody>
 			</table>
 		</div>	
+	</script>
+	<script type="text/template-handlebars-x" class="tmp_items">
+		<table class="table table-custom">
+			<thead>
+				<tr class="titulo">
+					<th><span>Elementos</span></th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#items}}
+					<tr class="selectCell" data-item="{{item}}" data-tipoItem="{{tipoElemento}}" data-idBomba="{{idBomba}}" data-generador="{{generador}}" data-idCable="{{idCable}}">
+						<td>{{item}}</td>
+					</tr>
+				{{/items}}
+			</tbody>
+		</table>
 	</script>
 </section>
