@@ -71,7 +71,7 @@ define(deps, function (viewsBase, html) {
 			var tr = that.tmp_resultado(resultados);
 	 		that.gvResultados.find('tbody').html(tr);
 	 		debugger
-	 		that.options.parentView.bombas(total);
+	 		that.options.parentView.txtAlturaDinamica.val(total);
 		},
 	});
 	return {view: ViCalculadorAltura, html:html};

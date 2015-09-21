@@ -1,6 +1,6 @@
 <section id="orled">
 	<div>
-		<div class="gvBombas isHidden"></div>
+		<div class="gvBombas"></div>
 		<dl class="tabs tabs-custom" data-tab>
 			<dd class="active"><a href="#entradas">
 				<i class="icon-datosPapel"></i>
@@ -23,7 +23,7 @@
 								<div class="small-12 columns">
 									<label>
 										<p>Lugar</p>
-										<input type="text" placeholder="Pais" data-field="idPais" class="tya" required/>
+										<input type="text" placeholder="Pais" data-field="idPais" class="tya"/>
 									</label>
 									<small class="error">El campo es requerido.</small>
 								</div>
@@ -36,7 +36,7 @@
 								<div class="small-6 columns text-center">
 									<div class="small-11 columns text-center">
 										<small>Angulo de inclinación</small>
-										<input type="number" min="0" data-field="anguloInclinacion"/>
+										<input type="text" min="0" data-field="anguloInclinacion" class="anguloIncli" />
 									</div>
 									<div class="small-1 columns">
 										<p class="simboloInput">°</p>
@@ -70,22 +70,25 @@
 									</div>
 								</div>
 								<div class="small-12 columns text-center">
-									<p>Lado de descarga</p>
-								</div>
-								<div class="small-12 small columns text-center">
-									<div class="small-8 columns">
-										<div class="small-11 columns">
-											<small>Altura dinámica</small>
-											<input type="number" min="0" data-field="alturaDinamica"/>
+									<p>Lado de descarga</p>							
+									<div class="small-12 small columns text-center">
+										<div class="small-8 columns">
+											<div class="small-11 columns">
+												<small>Altura dinámica</small>
+												<label>
+													<input type="number" min="0" data-field="alturaDinamica" required value="1" />
+												</label>
+												<small class="error">Este campo es requerido</small>
+											</div>
+											<div class="small-1 columns">
+												<p class="simboloInput">m</p>
+											</div>
+										</div>									
+										<div class="small-4 columns">
+											<label>
+												<button type="button" class="button btn-calcular-altura tiny espacio-top"><i class="icon-calc"></i>Calcular</button>
+											</label>
 										</div>
-										<div class="small-1 columns">
-											<p class="simboloInput">m</p>
-										</div>
-									</div>
-									<div class="small-4 columns">
-										<label>
-											<button class="button btn-calcular-altura tiny espacio-top"><i class="icon-calc"></i>Calcular</button>
-										</label>
 									</div>
 								</div>	
 								<div class="small-12 columns text-center">
@@ -111,12 +114,12 @@
 									<div class="small-3 small-centered columns">
 										<input type="number" min="0" data-field="rendimientoDiario"/>
 									</div>
-									<div class="small-9 columns">
+									<div class="small-5 columns">
 										<p class="simboloInput">m³</p>
 									</div>
 								</div>
 								<div class="small-12 columns">
-									<button class="button btn-calcular expand">Graficar</button>
+									<button type="button" class="button btn-calcular-grafica expand">Graficar</button>
 								</div>
 							</fieldset>
 						</form>
