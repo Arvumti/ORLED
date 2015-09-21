@@ -42,6 +42,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			that.bombas();
 			this.subContentEntradas = this.$el.find('.sub-content.pnl-entradas');
 			this.subContentCableado = this.$el.find('.sub-content.pnl-cableado');
+			this.txtAlturaDinamica = this.$el.find('[data-field="alturaDinamica"]');
 
 			this.$el.append(calculadorAltura.html);
 			this.popCalculadora = this.$el.find('.modal-calculador');
@@ -112,7 +113,6 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 
 						}
 						arrDatosBombas.push(bomba);
-
 					};
 					var tr = that.tmp_bombas({bombas:arrDatosBombas});
 					that.gvBombas.html(tr);

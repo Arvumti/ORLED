@@ -64,6 +64,8 @@ define(deps, function (viewsBase, html) {
 			this.gvResultados.removeClass('isHidden')
 			var tr = that.tmp_resultado(resultados);
 	 		that.gvResultados.find('tbody').html(tr);
+	 		debugger
+	 		that.options.parentView.txtAlturaDinamica.val(total);
 
 		},
 	});
