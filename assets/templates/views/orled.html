@@ -84,7 +84,7 @@
 									</div>
 									<div class="small-6 columns">
 										<label>
-											<button class="button btn-calcular-altura expand">Calcular</button>
+											<button class="button btn-calcular-altura tiny espacio-top"><i class="icon-calc"></i>Calcular</button>
 										</label>
 									</div>
 								</div>	
@@ -106,8 +106,6 @@
 								</div>
 								<div class="small-12 columns text-center">
 									<small>Rendimiento diario requerido</small>
-								</div>
-								<div class="small-5 small-centered	 columns text-center">
 									<div class="small-11 columns text-center">
 										<input type="number" min="0" data-field="longitudTuberia"/>
 									</div>
@@ -146,7 +144,7 @@
 		</div>
 
 		<div class="row pop-footer">
-			<div class="small-4 small-centered columns">
+			<div class="small-5 small-centered columns">
 				<button type="button" class="btn-aceptar tiny success button aceptar-btn">Aceptar</button>
 				<button type="button" class="btn-cancelar tiny alert button cancelar-btn">Cancelar</button>
 			</div>
@@ -168,8 +166,8 @@
 						<th><span>Eficiencia</span></th>
 					</tr>
 					<tr class="menuInput">
-						<th><input type="text" class="nombreBombaTabla"/><i class="icon-menu openItemModal" data-valor="1"></i></th>
-						<th><input type="text" class="nombreGenerador"/><i class="icon-menu openItemModal" data-valor="2"></i></th>
+						<th><input type="text" class="nombreBombaTabla" data-idbomba='0'/><i class="icon-menu openItemModal" data-valor="1"></i></th>
+						<th><input type="text" class="nombreGenerador" data-idgenerador='0'/><i class="icon-menu openItemModal" data-valor="2"></i></th>
 						<th></th>
 						<th></th>
 						<th><input type="text" class="nombreCable isHidden"/><i class="icon-menu isHidden" data-valor="3"></i></th>
@@ -181,7 +179,7 @@
 				</thead>
 				<tbody>
 					{{#bombas}}
-						<tr class="selectCell" data-nombreBomba="{{nombreBomba}}" data-generador="{{generador}}" data-cable="{{cable}}">
+						<tr class="selectCell" data-nombreBomba="{{nombreBomba}}" data-idbomba="{{idBomba}}" data-generador="{{generador}}" data-idgenerador="{{idGenerador}}" data-cable="{{cable}}">
 							<td>{{nombreBomba}}</td>
 							<td>{{generador}}</td>
 							<td>{{etatrack}}</td>
@@ -206,7 +204,7 @@
 			</thead>
 			<tbody>
 				{{#items}}
-					<tr class="selectCell" data-item="{{item}}" data-tipoItem="{{tipoElemento}}" data-idBomba="{{idBomba}}" data-generador="{{generador}}" data-idCable="{{idCable}}">
+					<tr class="selectCell" data-item="{{item}}" data-tipoItem="{{tipoElemento}}" data-idbomba="{{idBomba}}" data-idgenerador="{{idGenerador}}">
 						<td>{{item}}</td>
 					</tr>
 				{{/items}}

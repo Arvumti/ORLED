@@ -89,10 +89,12 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado) {
 						info[i]
 						var bomba = {
 							nombreBomba: info[i].nombre,
+							idBomba: info[i].idBomba,
+							generador: info[i].idGenerador.nombre,
+							idGenerador: info[i].idGenerador.idGenerador,
 							alturaMinima: info[i].alturaMinima,
 							alturaMaxima: info[i].alturaMaxima,							
 							eficiencia: info[i].eficiencia,							
-							generador: info[i].idGenerador.nombre,
 							etatrack: '',
 							accesorios:'',
 							cable: info[i].idCable.nombre,
@@ -114,15 +116,38 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado) {
 			var rows = that.$el.find('tr').removeClass('isActive');
 			var row =$(e.currentTarget).addClass('isActive');
 			var nombreBomba =$(e.currentTarget).data("nombrebomba");
+			var idNombreBomba =$(e.currentTarget).data("idbomba");
 			var generador =$(e.currentTarget).data("generador");
+			var idGenerador =$(e.currentTarget).data("idgenerador");
 			var cable =$(e.currentTarget).data("cable");
 
 			var inputBomba = that.$el.find('.nombreBombaTabla');
+			inputBomba.attr('data-idbomba',idNombreBomba)
 			var inputGenerador =that.$el.find('.nombreGenerador');
+			inputGenerador.attr('data-idgenerador',idGenerador)
 			var inputCable =that.$el.find('.nombreCable');		
 			inputBomba.val(nombreBomba);
 			inputGenerador.val(generador);
 			inputCable.val(cable);
+		},
+		rowSelectedCustom: function(tipoItem,idItem,nombreItem) {
+			debugger
+			var that  = this;
+			var tipoItem = tipoItem;
+			var idItem = idItem;
+			var nombreItem = nombreItem;
+			if (tipoItem==1) {
+				var inputBomba = that.$el.find('.nombreBombaTabla');
+				inputBomba.attr('data-idbomba',idItem);
+				inputBomba.val(nombreItem);
+				this.close();
+			}
+			if (tipoItem==2) {
+				var inputGenerador =that.$el.find('.nombreGenerador');
+				inputGenerador.attr('data-idgenerador',idItem);
+				inputGenerador.val(nombreItem);
+				this.close();
+			}
 		},
 		/*------------------------- Eventos -----------------------------*/
 		change_idLongitudTuberia: function(e) {
@@ -187,30 +212,22 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado) {
 							case 1:
 								var bomba = {
 									item: info[i].nombre,
-									idBomba:info[i].idBomba,
+									idBomba: info[i].idBomba,
 									descripcion: "Bombas",
 									tipoElemento:1,
 								}
+								debugger
 								arrDatosBombas.push(bomba);
 								break;
 							case 2:
-								var bomba = {
+								var generador = {
 									item: info[i].idGenerador.nombre,
-									idGenerador:info[i].idGenerador,
+									idGenerador: info[i].idGenerador.idGenerador,
 									descripcion: "Generadores",
 									tipoElemento:2,
 								}
-								arrDatosBombas.push(bomba);
-								break;
-							case 3:
-								var bomba = {
-									item: info[i].idCable.nombre,
-									idCable:info[i].idCable,
-									descripcion: "Cables",
-									tipoElemento:3,
-								}
-								arrDatosBombas.push(bomba);
-								break;							
+								arrDatosBombas.push(generador);
+								break;					
 						}
 
 					};
@@ -239,17 +256,23 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado) {
 			var that  = this;
 			var row = that.$el.find('tr.isActive');
 			debugger
-			var popNombre = row.data("item");
-			var tipoItem = row.data("tipoElemento");
+			if (row.length>0) {
+				var popNombre = row.data("item");
+				var tipoItem = row.data("tipoitem");
 
-			if (tipoItem==1) {
-				var inputBomba = that.$el.find('.nombreBombaTabla');				
-				inputBomba.val(popNombre);
+				if (tipoItem==1) {
+					var idbomba=row.data("idbomba");
+					this.parentView.rowSelectedCustom(tipoItem,idbomba,popNombre);
+				}
+				if (tipoItem==2) {
+					var idgenerador=row.data("idgenerador");				
+					this.parentView.rowSelectedCustom(tipoItem,idgenerador,popNombre);
+				}			
 			}
-			if (tipoItem==2) {				
-				var inputGenerador =that.$el.find('.nombreGenerador');
-				inputGenerador.val(popNombre);
-			}			
+			else {
+				app.ut.message({text:'No hay ningun elemento seleccionado', tipo:'primary'});
+			}
+
 		},
 	});
 	return {view:ViOrled};
