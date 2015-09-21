@@ -1,0 +1,107 @@
+<div class="modal-calculador reveal-modal reveal-custom medium popCalculadora" data-reveal='data-reveal'>
+	<div class="pop-head ">
+		<label>Caculador Perdidas Por Carga<label>
+	</div>
+	<form class="form-data pop-body" data-abide>
+		<div class="row">
+			<div class="small-12 columns">
+				Longitud de la linea de conducción: L (m)= 
+				<input type="text" data-field="longitud"/>
+			</div>
+			<div class="small-6 columns">
+				Coeficiente dado en la tabla: C=
+				<input type="text" data-field="coeficiente"/>
+			</div>
+			<div class="small-6 columns">
+				Dif de altura de descarga =
+				<input type="text" data-field="alturaDes"/> metros
+			</div>
+			<div class="small-6 columns">
+				Diámetro de la tubería D (mm) =
+				<input type="text" data-field="diametroMm"/>
+			</div>
+			<div class="small-6 columns">
+				Diámetro de la tubería D (metros) =
+				<input type="text" data-field="diametroMetros"/>
+			</div>
+			<div class="small-12 columns">
+				<div class="small-6 columns">
+					Diametro de la tuberia =
+						<input type="text" data-field="diametroPulgadas"/> pulgadas
+				</div>
+			</div>
+			<div class="small-12 columns">
+				<div class="small-6 columns">
+					<button type="button" class="btn-calcular tiny success button">Calcular</button>
+				</div>
+			</div>
+			<div class="small-12 columns" align="center">
+				<table class="gv-resultados">
+					<thead>
+						<tr >
+							<th><span>Q (l/s)</span></th>
+							<th><span>V (m/s)</span></th>
+							<th><span>h (m)</span></th>
+							<th><span>Htotal</span></th>
+						</tr>
+					</thead>
+					<tbody>
+						
+					</tbody>
+				</table>
+			</div>
+			<div class="small-12 columns" align="center">
+				<table>
+					<thead>
+						<tr>
+							<th></th>
+							<th class="text-center"><span>"C"</span></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th>Asbesto o cemento</th>
+							<th>140</th>
+						</tr>
+						<tr>
+							<th>Ladrillo de saneamiento</th>
+							<th>100</th>
+						</tr>
+						<tr>
+							<th>Hierro fundido</th>
+							<th>130</th>
+						</tr>
+						<tr>
+							<th>Cobre</th>
+							<th>130-140</th>
+						</tr>
+						<tr>
+							<th>Plástico (PVC, Poliducto)</th>
+							<th>140-150</th>
+						</tr>
+						<tr>
+							<th>Hierro galvanizado</th>
+							<th>120</th>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</form>
+	<div class="row pop-footer">
+		<div class="small-6 columns">
+			<button type="button" class="btn-aceptar tiny success button">Aceptar</button>
+		</div>
+		<div class="small-6 columns">
+			<button type="button" class="btn-cancelar tiny alert button">Cancelar</button>
+		</div>
+	</div>
+	<script type="text/template-handlebars-x" class="tmp_resultado">
+		<tr>
+			<td>{{Q}}</td>
+			<td>{{V}}</td>
+			<td>{{H}}</td>
+			<td>{{total}} metros</td>
+		</tr>
+	</script>
+</div>

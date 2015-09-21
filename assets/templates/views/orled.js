@@ -2,16 +2,18 @@ var deps = [
 	'/js/base/viewsBase.js',
 	'/templates/views/mapaElementos.js',
 	'/templates/views/principal/graficas.js',
-	'/templates/views/principal/cableado.js'
+	'/templates/views/principal/cableado.js',
+	'/templates/views/principal/calculadorAltura.js'
 ];
 
-define(deps, function (viewsBase, mapaElementos, graficas, cableado) {
+define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorAltura) {
 	var ViOrled = Backbone.View.extend({
 		el: '#orled',
 		events: {
 			'click .btn-calcular' :'click_calcular',
 			//'click .tab-cableado' : 'click_tabCableado',
 			'click .tabs a' : 'click_tabs',
+			'click .btn-calcular-altura': 'click_CalcularAltura',
 			'change [data-field="idLongitudTuberia"]': 'change_idLongitudTuberia',
 		},
 		initialize: function() {
@@ -21,19 +23,28 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado) {
 					url: 'paises',
 					filters: [{filter:'nombre'}],
 				},
-				idEstado: {
-					url: 'estados',
+				idLocalidad: {
+					url: 'localidades',
 					filters: [{filter:'nombre'}],
 				},
 			};
+			debugger
 			var tyas = this.$el.find('.tya');
 			viewsBase.popAbc.prototype.linkFks.call(this, tyas, this.fks);
 			this.gvBombas = this.$el.find('.gvBombas');
 			this.longTube = this.$el.find('.longTube');
 			this.tmp_bombas = Handlebars.compile(this.$el.find('.tmp_bombas').html());
-			that.bombas();
+			//that.bombas();
+			//this.tmp_resultado= Handlebars.compile(this.$el.find('.tmp_resultado').html());
+			this.formData = this.$el.find('.form-data');
+
 			this.subContentEntradas = this.$el.find('.sub-content.pnl-entradas');
 			this.subContentCableado = this.$el.find('.sub-content.pnl-cableado');
+
+			this.$el.append(calculadorAltura.html);
+			this.popCalculadora = this.$el.find('.modal-calculador');
+			this.popFormCalcular = new calculadorAltura.view({parentView:this, el:this.popCalculadora});
+
 			this.subViews = {
 				mapaElementos: {
 					elem: $(mapaElementos.html).appendTo(this.subContentEntradas),
@@ -56,7 +67,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado) {
 		close: function() {
 			viewsBase.abc.prototype.close.call(this);
 		},
-		bombas: function() {
+		/*bombas: function() {
 			var that = this;
 			app.ut.request({url:'/bombas/populate', done:done});
 			function done(data) {
@@ -87,7 +98,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado) {
 					that.gvBombas.html(tr);
 				}
 			}
-		},
+		},*/
 		/*------------------------- Eventos -----------------------------*/
 		change_idLongitudTuberia: function(e) {
 			var that=this;
@@ -121,6 +132,67 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado) {
 					break;
 			}
 		},
+		click_CalcularAltura: function(){
+			this.popFormCalcular.render();
+			this.dimencionar();
+		},
+		dimencionar: function(){
+			var that =  this;
+			var datos = viewsBase.base.prototype.getData.call(this, this.formData);
+
+			var volumen,
+			voltajeModulo =  30.3,
+			corrienteModulo = 8.26,
+			factorConversion = 367,
+			factorFricción = 0,
+			cargaFriccion = .3,
+			eficienciaBomba = .35,	
+			factorReduccionModulo = .90,
+			factorRendimiento = .95,
+			alturaEstatica,
+			alturaDescarga,
+			cargaEstatica,
+			longitudTuberia,
+			recorridoTotal,
+			voltajeOperacion,
+			modulosSerie,
+			modulosParalelo,
+			voltaje,
+			insolacion;
+
+			//app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:datos.idLocalidad}},done:done});
+			app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:1}},done:doneA});
+			function doneA (data) {
+				debugger
+				insolacion = data[0].promedio;
+				var regimenBombeo = parseFloat(datos.rendimientoDiario/insolacion);
+				var cargaEstatica = parseFloat(datos.alturaDinamica);
+				var cargaDinamicaTotal = parseFloat(cargaEstatica+datos.perdida);
+				app.ut.request({url:'/generadores', data:{where:{idGenerador:1}},done:doneB})
+				function doneB (data){
+					debugger
+					voltajeOperacion =  data[0].voltaje;
+					//modulosParalelo = data[0].paralelo;
+					//modulosSerie = data[0].serie;
+					var energiaHidraulica = (datos.rendimientoDiario * cargaDinamicaTotal)/factorConversion;
+					var energiaArregloFV = energiaHidraulica/eficienciaBomba;
+					var cargaElectrica = energiaArregloFV/voltajeOperacion
+					var cargaElectricaCorregida = cargaElectrica/factorRendimiento;
+					var corrienteProyecto = cargaElectricaCorregida/insolacion;
+					var corrienteAjustadaProyecto = corrienteProyecto/factorReduccionModulo;
+					var modulosParalelo = corrienteAjustadaProyecto/corrienteModulo;
+					var modulosSerie = voltajeOperacion / voltajeModulo;
+					var totalModulo = modulosSerie * modulosParalelo;
+					var arregloFotovoltaico = totalModulo * corrienteModulo * voltajeModulo;
+
+					var aguaBombeada = (modulosParalelo * corrienteModulo * voltajeOperacion * eficienciaBomba * factorConversion * insolacion * .90) / cargaDinamicaTotal;
+					var regimenBombeo2 = aguaBombeada/insolacion;
+					console.log(regimenBombeo2);	
+				}
+			}
+		},
+		
+
 	});
 	return {view:ViOrled};
 });
