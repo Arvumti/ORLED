@@ -49,6 +49,9 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			this.popCalculadora = this.$el.find('.modal-calculador');
 			this.popFormCalcular = new calculadorAltura.view({parentView:this, el:this.popCalculadora});
 
+			this.popArreglo = this.$el.find('.modal-arreglo');
+			this.popFormArreglo = new ViPopArreglo({parentView:this, el:this.popArreglo});
+
 			this.subViews = {
 				mapaElementos: {
 					elem: $(mapaElementos.html).appendTo(this.subContentEntradas),
@@ -144,6 +147,8 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			inputBomba.val(nombreBomba);
 			inputGenerador.val(generador);
 			inputCable.val(cable);
+			debugger
+			that.dimencionar(idGenerador, idNombreBomba);
 		},
 		rowSelectedCustom: function(tipoItem,idItem,nombreItem) {
 			debugger
@@ -197,7 +202,6 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 		},
 		click_CalcularAltura: function(){
 			this.popFormCalcular.render();
-			this.dimencionar();
 		},
 		dimencionar: function(idGenerador, idBomba){
 			var that =  this;
@@ -232,17 +236,25 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			function doneA(data){
 				debugger
 				eficienciaBomba = data.eficiencia;
-				//app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:datos.idLocalidad}},done:done});
-				app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:1}},done:doneB});
+				//app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:1}},done:doneB});
+				app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:datos.idLocalidad}},done:doneB});
 				function doneB (data) {
 					debugger
-					insolacion = data[0].promedio;
-					var regimenBombeo = parseFloat(datos.rendimientoDiario/insolacion);
-					var cargaEstatica = parseFloat(datos.alturaDinamica);
-					var cargaDinamicaTotal = parseFloat(cargaEstatica+datos.perdida);
-					debugger
-					app.ut.request({url:'/generadores', data:{where:{idGenerador:idGenerador}},done:doneC})
-					function doneC (data){
+					if (data && data.length > 0){
+						insolacion = data[0].promedio;
+						var regimenBombeo = parseFloat(datos.rendimientoDiario/insolacion);
+						var cargaEstatica = parseFloat(datos.alturaDinamica);
+						var cargaDinamicaTotal = parseFloat(cargaEstatica+datos.perdida);
+						debugger
+						app.ut.request({url:'/generadores', data:{where:{idGenerador:idGenerador}},done:doneC})
+					}else{
+						app.ut.message({text:'No exiten datos'});
+						app.ut.hide();
+					}
+				}
+
+				function doneC (data){
+					if (data && data.length > 0){
 						debugger
 						voltajeOperacion =  data[0].voltaje;
 						var energiaHidraulica = (datos.rendimientoDiario * cargaDinamicaTotal)/factorConversion;
@@ -265,6 +277,11 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 						}else{
 							console.log('Valida')
 						}
+						app.ut.hide();
+						debugger
+						that.popFormArreglo.render(modulosParalelo, modulosSerie, totalModulo, arregloFotovoltaico);		
+					}else{
+						app.ut.message({text:'No exiten datos'});
 					}
 				}
 			}
@@ -361,6 +378,39 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			}
 			
 		},
+	});
+	var ViPopArreglo = viewsBase.popAbc.extend({
+		events: {
+			'click .btn-cancelar': 'click_cancelar',
+		},
+		initialize: function(options) {
+			//viewsBase.popAbc.prototype.linkFks.call(this);
+			this.formData = this.$el.find('.form-data');
+			this.txtModulosSerie =  this.$el.find('.modulo-serie');
+			this.txtModulosParalelo = this.$el.find('.modulo-paralelo');
+			this.txtTotalModulos = this.$el.find('.total-modulos');
+			this.txtTamanoArreglo = this.$el.find('.tamano-areglo');
+		},
+		/*------------------------- Base -----------------------------*/
+		render: function(modulosParalelo, modulosSerie, totalModulo, arregloFotovoltaico) {
+			debugger
+			viewsBase.base.prototype.render.call(this);
+			this.txtModulosSerie.val(modulosSerie || 0);
+			this.txtModulosParalelo.val(modulosParalelo || 0);
+			this.txtTotalModulos.val(totalModulo || 0);
+			this.txtTamanoArreglo.val(arregloFotovoltaico || 0);
+			this.$el.foundation('reveal', 'open');
+		},
+		close: function() {
+			this.$el.foundation('reveal', 'close');
+			this.clear();
+		},
+		clear: function() {
+			debugger
+			this.formData[0].reset();
+		},
+		/*------------------------- Eventos -----------------------------*/
+
 	});
 	return {view:ViOrled};
 });
