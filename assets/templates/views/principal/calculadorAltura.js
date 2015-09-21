@@ -41,16 +41,18 @@ define(deps, function (viewsBase, html) {
 			var longitud = parseFloat(this.$el.find('[data-field="longitud"]').val());
 			var coeficiente = parseFloat(this.$el.find('[data-field="coeficiente"]').val());
 			var alturaDes = parseFloat((this.$el.find('[data-field="alturaDes"]').val()));
+			var Q = parseFloat((this.$el.find('[data-field="Q"]').val()));
 			//var diametroMm = this.$el.find('[data-field="diametroMm"]').val();
 			//var diametroMetros = this.$el.find('[data-field="diametroMetros"]').val();
 			var diametroPulgadas = parseFloat((this.$el.find('[data-field="diametroPulgadas"]').val()));
 			var diametroMm = parseFloat((diametroPulgadas*25.4));
 			var diametroMetros = parseFloat((diametroMm/1000));
-			var Q = 10;
-			var V = parseFloat(0.004*Q/Math.PI/Math.pow(diametroMetros,2)).toFixed(2);
-			var H = parseFloat(((6.83*Math.pow((V/coeficiente),1.852))*longitud)/(Math.pow(diametroMetros,1.17))).toFixed(2);
-			var total = parseFloat(H+alturaDes).toFixed(2);
-
+			var V = parseFloat(0.004*Q/Math.PI/Math.pow(diametroMetros,2));
+			var H = parseFloat(((6.83*Math.pow((V/coeficiente),1.852))*longitud)/(Math.pow(diametroMetros,1.17)));
+			var total = parseFloat(H+alturaDes);
+			V = V.toFixed(2);
+			H = H.toFixed(2);
+			total = total.toFixed(2);
 			var resultados = {
 				Q,
 				V,
@@ -59,6 +61,7 @@ define(deps, function (viewsBase, html) {
 			}
 			console.log(resultados);
 			//var tr = that.options.parentView.tmp_resultado(resultados);
+			this.gvResultados.removeClass('isHidden')
 			var tr = that.tmp_resultado(resultados);
 	 		that.gvResultados.find('tbody').html(tr);
 
