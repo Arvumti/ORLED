@@ -69,9 +69,9 @@ define(deps, function (viewsBase, html) {
 			//var tr = that.options.parentView.tmp_resultado(resultados);
 			this.gvResultados.removeClass('isHidden')
 			var tr = that.tmp_resultado(resultados);
-			that.gvResultados.find('tbody').html(tr);
-			debugger
-			that.options.parentView.txtAlturaDinamica.val(total);
+	 		that.gvResultados.find('tbody').html(tr);
+	 		debugger
+	 		that.options.parentView.bombas(total);
 		},
 	});
 	return {view: ViCalculadorAltura, html:html};

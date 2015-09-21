@@ -40,8 +40,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			this.longTube = this.$el.find('.longTube');
 			this.tmp_bombas = Handlebars.compile(this.$el.find('.tmp_bombas').html());
 			this.formData = this.$el.find('.form-data');
-			this.tmp_items = Handlebars.compile(this.$el.find('.tmp_items').html());
-			that.bombas();
+			this.tmp_items = Handlebars.compile(this.$el.find('.tmp_items').html());		
 			this.subContentEntradas = this.$el.find('.sub-content.pnl-entradas');
 			this.subContentCableado = this.$el.find('.sub-content.pnl-cableado');
 			this.txtAlturaDinamica = this.$el.find('[data-field="alturaDinamica"]');
@@ -89,9 +88,11 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			else
 				that.longTube.attr('disabled', true).val('');
 		},
-		bombas: function() {
+		bombas: function(totalAltura) {
 			var that = this;
-			app.ut.request({url:'/bombas/populate', done:done});
+			var alturaDinamica = parseFloat(totalAltura) + .001;
+			that.txtAlturaDinamica.val(alturaDinamica);
+			app.ut.request({url:'/bombas/populate', data:{where:{alturaMaxima:{'<=':alturaDinamica}}}, done:done});
 			function done(data) {
 				console.log(data);
 				var arrDatosBombas=Array();
