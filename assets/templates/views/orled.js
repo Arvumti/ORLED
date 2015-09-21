@@ -10,7 +10,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 	var ViOrled = Backbone.View.extend({
 		el: '#orled',
 		events: {
-			'click .btn-calcular' :'click_calcular',
+			'click .btn-calcular-grafica' :'click_calcular',
 			'click .openItemModal' :'click_openItems',
 			'click table tbody tr.selectCell' :'rowSelected',
 			'change [data-field="idLongitudTuberia"]': 'change_idLongitudTuberia',
@@ -29,6 +29,12 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 				idLocalidad: {
 					url: 'localidades',
 					filters: [{filter:'nombre'}],
+					onSelected: function (data) {						
+						var latitud = data.latitud;											
+						var txtAnguloInclinacion = that.$el.find('.anguloIncli');
+						txtAnguloInclinacion.val(latitud)
+
+					}
 				},
 			};
 			debugger
@@ -93,8 +99,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 		},
 		bombas: function(totalAltura) {
 			var that = this;
-			var alturaDinamica = parseFloat(totalAltura) + .001;
-			that.txtAlturaDinamica.val(alturaDinamica);
+			var alturaDinamica = parseFloat(totalAltura) + .001;			
 			app.ut.request({url:'/bombas/populate', data:{where:{alturaMaxima:{'<=':alturaDinamica}}}, done:done});
 			function done(data) {
 				console.log(data);
@@ -180,9 +185,12 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			this.form.submit();
 		},	
 		click_calcular: function(){
+			var that = this;
 			debugger
 			this.subViews.graficas.view.render();
+			var total = that.txtAlturaDinamica.val();
 			debugger
+			that.bombas(total);
 			this.subViews.mapaElementos.view.close();
 		},
 		click_tabs: function(e) {
