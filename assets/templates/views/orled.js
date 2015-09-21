@@ -13,7 +13,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			'click .btn-calcular' :'click_Calcular',
 			'click .openItemModal' :'click_openItems',
 			'click table tbody tr.selectCell' :'rowSelected',
-			'change [data-field="idLongitudTuberia"]': 'change_idLongitudTuberia',			
+			'change [data-field="idLongitudTuberia"]': 'change_idLongitudTuberia',
 			//'click .tab-cableado' : 'click_tabCableado',
 			'click .tabs a' : 'click_tabs',
 			'click .btn-calcular-altura': 'click_CalcularAltura',
@@ -33,9 +33,9 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			};
 			debugger
 			var tyas = this.$el.find('.tya');
-			viewsBase.popAbc.prototype.linkFks.call(this, tyas, this.fks);		
-			this.gvBombas = this.$el.find('.gvBombas');		
-			this.longTube = this.$el.find('.longTube');			
+			viewsBase.popAbc.prototype.linkFks.call(this, tyas, this.fks);
+			this.gvBombas = this.$el.find('.gvBombas');
+			this.longTube = this.$el.find('.longTube');
 			this.tmp_bombas = Handlebars.compile(this.$el.find('.tmp_bombas').html());
 			this.formData = this.$el.find('.form-data');
 			this.tmp_items = Handlebars.compile(this.$el.find('.tmp_items').html());		
@@ -72,10 +72,10 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 		close: function() {
 			viewsBase.abc.prototype.close.call(this);
 		},
-		click_openItems: function(e) {			
+		click_openItems: function(e) {
 			var valor = $(e.currentTarget).data("valor");
 			debugger
-			this.popItems.render(valor);			
+			this.popItems.render(valor);
 		},
 		change_idLongitudTuberia: function(e) {
 			var that=this;
@@ -104,8 +104,8 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 							generador: info[i].idGenerador.nombre,
 							idGenerador: info[i].idGenerador.idGenerador,
 							alturaMinima: info[i].alturaMinima,
-							alturaMaxima: info[i].alturaMaxima,							
-							eficiencia: info[i].eficiencia,							
+							alturaMaxima: info[i].alturaMaxima,
+							eficiencia: info[i].eficiencia,
 							etatrack: '',
 							accesorios:'',
 							cable: info[i].idCable.nombre,
@@ -135,7 +135,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			inputBomba.attr('data-idbomba',idNombreBomba)
 			var inputGenerador =that.$el.find('.nombreGenerador');
 			inputGenerador.attr('data-idgenerador',idGenerador)
-			var inputCable =that.$el.find('.nombreCable');		
+			var inputCable =that.$el.find('.nombreCable');
 			inputBomba.val(nombreBomba);
 			inputGenerador.val(generador);
 			inputCable.val(cable);
@@ -156,6 +156,8 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 				var inputGenerador =that.$el.find('.nombreGenerador');
 				inputGenerador.attr('data-idgenerador',idItem);
 				inputGenerador.val(nombreItem);
+				debugger
+				this.dimencionar(idItem);
 				this.popItems.close()
 			}
 		},		
@@ -188,8 +190,10 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			this.popFormCalcular.render();
 			this.dimencionar();
 		},
-		dimencionar: function(){
+		dimencionar: function(idGenerador){
 			var that =  this;
+			debugger
+			//var idGenerador = this.$el.find('.nombreGenerador').data('idgenerador');
 			var datos = viewsBase.base.prototype.getData.call(this, this.formData);
 
 			var volumen,
@@ -220,12 +224,11 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 				var regimenBombeo = parseFloat(datos.rendimientoDiario/insolacion);
 				var cargaEstatica = parseFloat(datos.alturaDinamica);
 				var cargaDinamicaTotal = parseFloat(cargaEstatica+datos.perdida);
-				app.ut.request({url:'/generadores', data:{where:{idGenerador:1}},done:doneB})
+				debugger
+				app.ut.request({url:'/generadores', data:{where:{idGenerador:idGenerador}},done:doneB})
 				function doneB (data){
 					debugger
 					voltajeOperacion =  data[0].voltaje;
-					//modulosParalelo = data[0].paralelo;
-					//modulosSerie = data[0].serie;
 					var energiaHidraulica = (datos.rendimientoDiario * cargaDinamicaTotal)/factorConversion;
 					var energiaArregloFV = energiaHidraulica/eficienciaBomba;
 					var cargaElectrica = energiaArregloFV/voltajeOperacion
@@ -239,12 +242,16 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 
 					var aguaBombeada = (modulosParalelo * corrienteModulo * voltajeOperacion * eficienciaBomba * factorConversion * insolacion * .90) / cargaDinamicaTotal;
 					var regimenBombeo2 = aguaBombeada/insolacion;
-					console.log(regimenBombeo2);	
+					console.log(regimenBombeo2);
+					debugger
+					if(regimenBombeo2<regimenBombeo){
+						console.log('No valida')
+					}else{
+						console.log('Valida')
+					}
 				}
 			}
 		},
-		
-
 	});
 	var ViPopItems = Backbone.View.extend({
 		events: {
@@ -290,7 +297,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 									tipoElemento:2,
 								}
 								arrDatosBombas.push(generador);
-								break;					
+								break;
 						}
 
 					};
@@ -314,7 +321,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			var rows = that.$el.find('tr').removeClass('isActive');
 			var row =$(e.currentTarget).addClass('isActive');
 		},
-		click_datoSeleccionado: function() {
+		click_datoSeleccionado: function(options) {
 			debugger
 			var that  = this;
 			var row = that.$el.find('tr.isActive');
@@ -328,14 +335,14 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 					this.parentView.rowSelectedCustom(tipoItem,idbomba,popNombre);
 				}
 				if (tipoItem==2) {
-					var idgenerador=row.data("idgenerador");				
+					var idgenerador=row.data("idgenerador");
 					this.parentView.rowSelectedCustom(tipoItem,idgenerador,popNombre);
-				}			
+				}
 			}
 			else {
 				app.ut.message({text:'No hay ningun elemento seleccionado', tipo:'primary'});
 			}
-
+			
 		},
 	});
 	return {view:ViOrled};

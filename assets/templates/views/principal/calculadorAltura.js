@@ -30,6 +30,12 @@ define(deps, function (viewsBase, html) {
 		},
 		close: function() {
 			this.$el.foundation('reveal', 'close');
+			this.clear();
+		},
+		clear: function() {
+			debugger
+			this.formData[0].reset();
+			this.gvResultados.addClass('isHidden');
 		},
 		/*------------------------- Eventos -----------------------------*/
 		click_cancelar: function(){
@@ -65,8 +71,7 @@ define(deps, function (viewsBase, html) {
 			var tr = that.tmp_resultado(resultados);
 	 		that.gvResultados.find('tbody').html(tr);
 	 		debugger
-	 		that.options.parentView.bombas(total)	 	
-
+	 		that.options.parentView.bombas(total);
 		},
 	});
 	return {view: ViCalculadorAltura, html:html};
