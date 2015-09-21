@@ -255,43 +255,42 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 						var cargaDinamicaTotal = parseFloat(cargaEstatica+datos.perdida);
 						debugger
 						app.ut.request({url:'/generadores', data:{where:{idGenerador:idGenerador}},done:doneC})
-					}else{
-						app.ut.message({text:'No exiten datos'});
-						app.ut.hide();
-					}
-				}
+						function doneC (data){
+							if (data && data.length > 0){
+								debugger
+								voltajeOperacion =  data[0].voltaje;
+								var energiaHidraulica = (datos.rendimientoDiario * cargaDinamicaTotal)/factorConversion;
+								var energiaArregloFV = energiaHidraulica/eficienciaBomba;
+								var cargaElectrica = energiaArregloFV/voltajeOperacion
+								var cargaElectricaCorregida = cargaElectrica/factorRendimiento;
+								var corrienteProyecto = cargaElectricaCorregida/insolacion;
+								var corrienteAjustadaProyecto = corrienteProyecto/factorReduccionModulo;
+								var modulosParalelo = corrienteAjustadaProyecto/corrienteModulo;
+								var modulosSerie = voltajeOperacion / voltajeModulo;
+								var totalModulo = modulosSerie * modulosParalelo;
+								var arregloFotovoltaico = totalModulo * corrienteModulo * voltajeModulo;
 
-				function doneC (data){
-					if (data && data.length > 0){
-						debugger
-						voltajeOperacion =  data[0].voltaje;
-						var energiaHidraulica = (datos.rendimientoDiario * cargaDinamicaTotal)/factorConversion;
-						var energiaArregloFV = energiaHidraulica/eficienciaBomba;
-						var cargaElectrica = energiaArregloFV/voltajeOperacion
-						var cargaElectricaCorregida = cargaElectrica/factorRendimiento;
-						var corrienteProyecto = cargaElectricaCorregida/insolacion;
-						var corrienteAjustadaProyecto = corrienteProyecto/factorReduccionModulo;
-						var modulosParalelo = corrienteAjustadaProyecto/corrienteModulo;
-						var modulosSerie = voltajeOperacion / voltajeModulo;
-						var totalModulo = modulosSerie * modulosParalelo;
-						var arregloFotovoltaico = totalModulo * corrienteModulo * voltajeModulo;
-
-						var aguaBombeada = (modulosParalelo * corrienteModulo * voltajeOperacion * eficienciaBomba * factorConversion * insolacion * .90) / cargaDinamicaTotal;
-						var regimenBombeo2 = aguaBombeada/insolacion;
-						console.log(regimenBombeo2);
-						debugger
-						if(regimenBombeo2<regimenBombeo){
-							console.log('No valida')
-						}else{
-							console.log('Valida')
+								var aguaBombeada = (modulosParalelo * corrienteModulo * voltajeOperacion * eficienciaBomba * factorConversion * insolacion * .90) / cargaDinamicaTotal;
+								var regimenBombeo2 = aguaBombeada/insolacion;
+								console.log(regimenBombeo2);
+								debugger
+								if(regimenBombeo2<regimenBombeo){
+									console.log('No valida')
+								}else{
+									console.log('Valida')
+								}
+								app.ut.hide();
+								debugger
+								that.popFormArreglo.render(modulosParalelo, modulosSerie, totalModulo, arregloFotovoltaico);		
+							}else{
+								app.ut.message({text:'No exiten datos'});
+							}
 						}
-						app.ut.hide();
-						debugger
-						that.popFormArreglo.render(modulosParalelo, modulosSerie, totalModulo, arregloFotovoltaico);		
 					}else{
 						app.ut.message({text:'No exiten datos'});
+						app.ut.hide();
 					}
-				}
+				}	
 			}
 		},
 	});
