@@ -41,6 +41,8 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			var tyas = this.$el.find('.tya');
 			viewsBase.popAbc.prototype.linkFks.call(this, tyas, this.fks);
 			this.gvBombas = this.$el.find('.gvBombas');
+			this.idBombaInicial=0;
+			this.idGeneradorInicial=0;
 			this.longTube = this.$el.find('.longTube');
 			this.tmp_bombas = Handlebars.compile(this.$el.find('.tmp_bombas').html());
 			this.formData = this.$el.find('.form-data');
@@ -78,6 +80,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 		close: function() {
 			viewsBase.abc.prototype.close.call(this);
 		},
+		/*------------------------- Eventos -----------------------------*/
 		click_openItems: function(e) {
 			var valor = $(e.currentTarget).data("valor");
 			debugger
@@ -135,11 +138,13 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			var generador =$(e.currentTarget).data("generador");
 			var idGenerador =$(e.currentTarget).data("idgenerador");
 			var cable =$(e.currentTarget).data("cable");
-
+			debugger
 			var inputBomba = that.$el.find('.nombreBombaTabla');
-			inputBomba.attr('data-idbomba',idNombreBomba)
+			inputBomba.attr('data-idbomba',idNombreBomba);
+			that.idBombaInicial = inputBomba.data('idbomba');
 			var inputGenerador =that.$el.find('.nombreGenerador');
-			inputGenerador.attr('data-idgenerador',idGenerador)
+			inputGenerador.attr('data-idgenerador',idGenerador);
+			that.idGeneradorInicial=inputGenerador.data('idgenerador');
 			var inputCable =that.$el.find('.nombreCable');
 			inputBomba.val(nombreBomba);
 			inputGenerador.val(generador);
@@ -151,22 +156,26 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			var tipoItem = tipoItem;
 			var idItem = idItem;
 			var nombreItem = nombreItem;
+			var inputGenerador = that.$el.find('.nombreGenerador');
+			var inputBomba = that.$el.find('.nombreBombaTabla');
+			
 			if (tipoItem==1) {
-				var inputBomba = that.$el.find('.nombreBombaTabla');
-				inputBomba.attr('data-idbomba',idItem);
+				inputBomba.data('idbomba', idItem);
 				inputBomba.val(nombreItem);
+				debugger
+				var idGenerador = inputGenerador.data('idgenerador');
+				this.dimencionar(idGenerador, idItem);
 				this.popItems.close()
 			}
-			if (tipoItem==2) {
-				var inputGenerador =that.$el.find('.nombreGenerador');
-				inputGenerador.attr('data-idgenerador',idItem);
+			else if (tipoItem==2) {
+				inputGenerador.data('idgenerador', idItem);
 				inputGenerador.val(nombreItem);
 				debugger
-				this.dimencionar(idItem);
+				var idBomba = inputBomba.data('idbomba');
+				this.dimencionar(idItem, idBomba);
 				this.popItems.close()
 			}
 		},		
-		/*------------------------- Eventos -----------------------------*/
 		click_buscar: function() {
 			this.form.submit();
 		},	
@@ -198,7 +207,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			this.popFormCalcular.render();
 			this.dimencionar();
 		},
-		dimencionar: function(idGenerador){
+		dimencionar: function(idGenerador, idBomba){
 			var that =  this;
 			debugger
 			//var idGenerador = this.$el.find('.nombreGenerador').data('idgenerador');
@@ -210,7 +219,8 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			factorConversion = 367,
 			factorFricción = 0,
 			cargaFriccion = .3,
-			eficienciaBomba = .35,	
+			//eficienciaBomba = .35,	
+			eficienciaBomba,
 			factorReduccionModulo = .90,
 			factorRendimiento = .95,
 			alturaEstatica,
@@ -223,39 +233,46 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			modulosParalelo,
 			voltaje,
 			insolacion;
+			debugger
 
-			//app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:datos.idLocalidad}},done:done});
-			app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:1}},done:doneA});
-			function doneA (data) {
+			//app.ut.request({url:'/rendimientos/eficiencia', data:{idBomba:1, altura:39},done:doneA});
+			app.ut.request({url:'/rendimientos/eficiencia', data:{idBomba:idBomba, altura:datos.alturaDinamica},done:doneA});
+			function doneA(data){
 				debugger
-				insolacion = data[0].promedio;
-				var regimenBombeo = parseFloat(datos.rendimientoDiario/insolacion);
-				var cargaEstatica = parseFloat(datos.alturaDinamica);
-				var cargaDinamicaTotal = parseFloat(cargaEstatica+datos.perdida);
-				debugger
-				app.ut.request({url:'/generadores', data:{where:{idGenerador:idGenerador}},done:doneB})
-				function doneB (data){
+				eficienciaBomba = data.eficiencia;
+				//app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:datos.idLocalidad}},done:done});
+				app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:1}},done:doneB});
+				function doneB (data) {
 					debugger
-					voltajeOperacion =  data[0].voltaje;
-					var energiaHidraulica = (datos.rendimientoDiario * cargaDinamicaTotal)/factorConversion;
-					var energiaArregloFV = energiaHidraulica/eficienciaBomba;
-					var cargaElectrica = energiaArregloFV/voltajeOperacion
-					var cargaElectricaCorregida = cargaElectrica/factorRendimiento;
-					var corrienteProyecto = cargaElectricaCorregida/insolacion;
-					var corrienteAjustadaProyecto = corrienteProyecto/factorReduccionModulo;
-					var modulosParalelo = corrienteAjustadaProyecto/corrienteModulo;
-					var modulosSerie = voltajeOperacion / voltajeModulo;
-					var totalModulo = modulosSerie * modulosParalelo;
-					var arregloFotovoltaico = totalModulo * corrienteModulo * voltajeModulo;
+					insolacion = data[0].promedio;
+					var regimenBombeo = parseFloat(datos.rendimientoDiario/insolacion);
+					var cargaEstatica = parseFloat(datos.alturaDinamica);
+					var cargaDinamicaTotal = parseFloat(cargaEstatica+datos.perdida);
+					debugger
+					app.ut.request({url:'/generadores', data:{where:{idGenerador:idGenerador}},done:doneC})
+					function doneC (data){
+						debugger
+						voltajeOperacion =  data[0].voltaje;
+						var energiaHidraulica = (datos.rendimientoDiario * cargaDinamicaTotal)/factorConversion;
+						var energiaArregloFV = energiaHidraulica/eficienciaBomba;
+						var cargaElectrica = energiaArregloFV/voltajeOperacion
+						var cargaElectricaCorregida = cargaElectrica/factorRendimiento;
+						var corrienteProyecto = cargaElectricaCorregida/insolacion;
+						var corrienteAjustadaProyecto = corrienteProyecto/factorReduccionModulo;
+						var modulosParalelo = corrienteAjustadaProyecto/corrienteModulo;
+						var modulosSerie = voltajeOperacion / voltajeModulo;
+						var totalModulo = modulosSerie * modulosParalelo;
+						var arregloFotovoltaico = totalModulo * corrienteModulo * voltajeModulo;
 
-					var aguaBombeada = (modulosParalelo * corrienteModulo * voltajeOperacion * eficienciaBomba * factorConversion * insolacion * .90) / cargaDinamicaTotal;
-					var regimenBombeo2 = aguaBombeada/insolacion;
-					console.log(regimenBombeo2);
-					debugger
-					if(regimenBombeo2<regimenBombeo){
-						console.log('No valida')
-					}else{
-						console.log('Valida')
+						var aguaBombeada = (modulosParalelo * corrienteModulo * voltajeOperacion * eficienciaBomba * factorConversion * insolacion * .90) / cargaDinamicaTotal;
+						var regimenBombeo2 = aguaBombeada/insolacion;
+						console.log(regimenBombeo2);
+						debugger
+						if(regimenBombeo2<regimenBombeo){
+							console.log('No valida')
+						}else{
+							console.log('Valida')
+						}
 					}
 				}
 			}
