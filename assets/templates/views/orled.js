@@ -72,8 +72,6 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 		close: function() {
 			viewsBase.abc.prototype.close.call(this);
 		},
-		/*bombas: function() {
-=======
 		click_openItems: function(e) {			
 			var valor = $(e.currentTarget).data("valor");
 			debugger
@@ -88,7 +86,6 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 				that.longTube.attr('disabled', true).val('');
 		},
 		bombas: function() {
->>>>>>> ea039a1cfbc19a2c758b0e3d53b8567308029886
 			var that = this;
 			app.ut.request({url:'/bombas/populate', done:done});
 			function done(data) {
@@ -121,8 +118,6 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 					that.gvBombas.html(tr);
 				}
 			}
-<<<<<<< HEAD
-		},*/
 		},
 		rowSelected: function(e) {
 			debugger
@@ -162,16 +157,8 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 				inputGenerador.val(nombreItem);
 				this.popItems.close()
 			}
-		},
+		},		
 		/*------------------------- Eventos -----------------------------*/
-		change_idLongitudTuberia: function(e) {
-			var that=this;
-			var valor = $(e.currentTarget).prop("checked");
-			if(valor)
-				that.longTube.attr('disabled', false);
-			else
-				that.longTube.attr('disabled', true).val('');
-		},
 		click_buscar: function() {
 			this.form.submit();
 		},	
