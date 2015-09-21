@@ -154,13 +154,13 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 				var inputBomba = that.$el.find('.nombreBombaTabla');
 				inputBomba.attr('data-idbomba',idItem);
 				inputBomba.val(nombreItem);
-				this.close();
+				this.popItems.close()
 			}
 			if (tipoItem==2) {
 				var inputGenerador =that.$el.find('.nombreGenerador');
 				inputGenerador.attr('data-idgenerador',idItem);
 				inputGenerador.val(nombreItem);
-				this.close();
+				this.popItems.close()
 			}
 		},
 		/*------------------------- Eventos -----------------------------*/
