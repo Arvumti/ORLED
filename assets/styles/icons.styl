@@ -93,6 +93,7 @@ icon-hoja = '\e630'
 icon-hoja2 = '\e62d'
 icon-datosPapel = '\e631'
 icon-cable = '\e632'
+icon-calc = '\e633'
 icomoon()
 	font-family 'icomoon'
 
@@ -102,6 +103,9 @@ clear()
 
 fsombra(x = 3px, y = 3px, d = 10px, c = #333)
 	text-shadow x y d c
+.icon-calc::before
+	content icon-calc
+	icomoon()
 .icon-send::before
 	content icon-send
 	icomoon()
