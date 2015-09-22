@@ -489,43 +489,43 @@ define([], function () {
 
 	});*/
 
-	var dateIni = new Date();
-	var dateFin = new Date();
+	// var dateIni = new Date();
+	// var dateFin = new Date();
 
-	var rango = 15 * 60 * 1000;
-	setTimeout(timerIncrement, rango);
+	// var rango = 15 * 60 * 1000;
+	// setTimeout(timerIncrement, rango);
 
-	$(document).mousemove(function (e) {
-		dateFin = new Date();
-	});
-	$(document).keypress(function (e) {
-		dateFin = new Date();
-	});
+	// $(document).mousemove(function (e) {
+	// 	dateFin = new Date();
+	// });
+	// $(document).keypress(function (e) {
+	// 	dateFin = new Date();
+	// });
 
-	function timerIncrement() {
-		var dateDiff = dateFin - dateIni;
-		console.log('dateDiff: ', dateDiff);
-		if(dateDiff == 0) {
-			window.location.href = '/sesiones/logout';
-			return;
-		}
+	// function timerIncrement() {
+	// 	var dateDiff = dateFin - dateIni;
+	// 	console.log('dateDiff: ', dateDiff);
+	// 	if(dateDiff == 0) {
+	// 		window.location.href = '/sesiones/logout';
+	// 		return;
+	// 	}
 
-	    dateIni = new Date();
-	    dateFin = new Date();
-	    setTimeout(timerIncrement, rango);
-	}
+	//     dateIni = new Date();
+	//     dateFin = new Date();
+	//     setTimeout(timerIncrement, rango);
+	// }
 
-	window.onbeforeunload = function(e) {
-		console.log('logout before');
-		//window.location.href = '/sesiones/logout';
-		//app.ut.request({url:'/sesiones/logOut'});
-	}
+	// window.onbeforeunload = function(e) {
+	// 	console.log('logout before');
+	// 	//window.location.href = '/sesiones/logout';
+	// 	//app.ut.request({url:'/sesiones/logOut'});
+	// }
 
-	window.onunload = function(e) {
-		console.log('logout unload');
-		// window.location.href = '/sesiones/logout';
-		// app.ut.request({url:'/sesiones/logOut'});
-	}
+	// window.onunload = function(e) {
+	// 	console.log('logout unload');
+	// 	// window.location.href = '/sesiones/logout';
+	// 	// app.ut.request({url:'/sesiones/logOut'});
+	// }
 	
 	return app;
 }); 

@@ -220,8 +220,23 @@ define(deps, function (viewsBase, highcharts, html) {
 				var energia = Object(),
 					output = Object();
 					debugger
+
+				/* produccion de energia */
+				var areaModulo = 1.65;
+				var eficiencia = 0.15;
+				var perdidas = 0.85;
+
+				/* produccion de output */
+				var totalEnergia;
+				var hPico;
+				var eficienciaBomba;
+				var factorConversion;
+				//1
+				var cargaDinamica;
+
+
 				for(var key in datos) {
-					var porcentaje = (((datos[key]*500)*3)/100)
+					var porcentaje = (((datos[key]*500)*3)/100);
 					energia[key] = parseFloat(parseFloat(((datos[key] * 500)-porcentaje)/1000).toFixed(2));
 					output[key] = parseFloat(parseFloat(datos[key] * 1000).toFixed(2));
 				}

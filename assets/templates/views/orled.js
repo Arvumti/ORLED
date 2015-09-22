@@ -99,8 +99,17 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 		},
 		bombas: function(totalAltura) {
 			var that = this;
-			var alturaDinamica = parseFloat(totalAltura) + .001;			
-			app.ut.request({url:'/bombas/populate', data:{where:{alturaMaxima:{'<=':alturaDinamica}}}, done:done});
+			var alturaDinamica = parseFloat(totalAltura) + .001;
+			var where = {
+				alturaMaxima: {
+					'>=': alturaDinamica
+				},
+				// alturaMinima: {
+				// 	'<=': alturaDinamica
+				// },
+			};
+
+			app.ut.request({url:'/bombas/populate', data:{where:where}, done:done});
 			function done(data) {
 				console.log(data);
 				var arrDatosBombas=Array();
@@ -409,10 +418,10 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 		render: function(modulosParalelo, modulosSerie, totalModulo, arregloFotovoltaico) {
 			debugger
 			viewsBase.base.prototype.render.call(this);
-			this.txtModulosSerie.val(modulosSerie || 0);
-			this.txtModulosParalelo.val(modulosParalelo || 0);
-			this.txtTotalModulos.val(totalModulo || 0);
-			this.txtTamanoArreglo.val(arregloFotovoltaico || 0);
+			this.txtModulosSerie.text(modulosSerie || 0);
+			this.txtModulosParalelo.text(modulosParalelo || 0);
+			this.txtTotalModulos.text(totalModulo || 0);
+			this.txtTamanoArreglo.text(arregloFotovoltaico || 0);
 			this.$el.foundation('reveal', 'open');
 		},
 		close: function() {

@@ -49,7 +49,7 @@ module.exports = {
 				x2 = rows[0].bombeo;
 
 				ye1 = rows[0].eficiencia;
-				xe2 = rows[0].altura;
+				xe2 = rows[0].bombeo;
 			}
 
 			if(rows[1]) {
@@ -57,7 +57,7 @@ module.exports = {
 				x1 = rows[1].bombeo;
 
 				ye2 = rows[1].eficiencia;
-				xe1 = rows[1].altura;
+				xe1 = rows[1].bombeo;
 			}
 
 			m = (y2 - y1) / (x2 - x1);
@@ -68,12 +68,12 @@ module.exports = {
 			console.log('xr= ((', yr, '-', y1, ') /', m, ') +', x1);
 			console.log('xr= ', xr);
 
-			me = (ye2 - ye1) / (xe2 - xe1);
-			ye = ye1 + (me * (xr - xe1));
+			me = (ye1 - ye2) / (xe2 - xe1);
+			ye = ye2 + (me * (xe2 - xr));
 
-			console.log('me= (', ye2, '-', ye1, ') / (', xe2, '-', xe1, ')');
+			console.log('me= (', ye1, '-', ye2, ') / (', xe2, '-', xe1, ')');
 			console.log('me= ', me);
-			console.log('ye= ', ye1, '+ (', me, '* (', xr, '-', xe1, '))');
+			console.log('ye= ', ye2, '+ (', me, '* (', xe2, '-', xr, '))');
 			console.log('ye= ', ye);
 
 			res.json({eficiencia:ye});
