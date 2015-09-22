@@ -21,10 +21,12 @@ define(deps, function (viewsBase, html) {
 			this.formData = this.$el.find('.form-data');
 			this.tmp_resultado= Handlebars.compile(this.$el.find('.tmp_resultado').html());
 			this.gvResultados = this.$el.find('.gv-resultados');
+			this.txtLongitud = this.$el.find('[data-field="longitud"]');
 		},
 		/*------------------------- Base -----------------------------*/
-		render: function() {
+		render: function(txtLongitud) {
 			debugger
+			this.txtLongitud = this.$el.find('[data-field="longitud"]').val(txtLongitud);
 			viewsBase.base.prototype.render.call(this);
 			this.$el.foundation('reveal', 'open');
 		},

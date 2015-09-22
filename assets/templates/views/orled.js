@@ -50,6 +50,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			this.subContentEntradas = this.$el.find('.sub-content.pnl-entradas');
 			this.subContentCableado = this.$el.find('.sub-content.pnl-cableado');
 			this.txtAlturaDinamica = this.$el.find('[data-field="alturaDinamica"]');
+			this.txtLongitud = this.$el.find('[data-field="longitudTuberia"]');
 
 			this.$el.append(calculadorAltura.html);
 			this.popCalculadora = this.$el.find('.modal-calculador');
@@ -217,8 +218,10 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 					break;
 			}
 		},
-		click_CalcularAltura: function(){
-			this.popFormCalcular.render();
+		click_CalcularAltura: function(txtLongitud){
+			debugger
+			longitud = this.txtLongitud.val();
+			this.popFormCalcular.render(longitud);
 		},
 		dimencionar: function(idGenerador, idBomba){
 			var that =  this;
@@ -245,21 +248,22 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			modulosSerie,
 			modulosParalelo,
 			voltaje,
-			insolacion;
+			insolacion,
+			rendimientoDiario =  (datos.rendimientoDiario*1000);
 			debugger
 
 			//app.ut.request({url:'/rendimientos/eficiencia', data:{idBomba:1, altura:39},done:doneA});
 			app.ut.request({url:'/rendimientos/eficiencia', data:{idBomba:idBomba, altura:datos.alturaDinamica},done:doneA});
 			function doneA(data){
 				debugger
-				eficienciaBomba = data.eficiencia;
+				eficienciaBomba = (data.eficiencia)/100;
 				//app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:1}},done:doneB});
 				app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:datos.idLocalidad}},done:doneB});
 				function doneB (data) {
 					debugger
 					if (data && data.length > 0){
 						insolacion = data[0].promedio;
-						var regimenBombeo = parseFloat(datos.rendimientoDiario/insolacion);
+						var regimenBombeo = parseFloat(rendimientoDiario/insolacion);
 						var cargaEstatica = parseFloat(datos.alturaDinamica);
 						var cargaDinamicaTotal = parseFloat(cargaEstatica+datos.perdida);
 						debugger
@@ -270,7 +274,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 								voltajeOperacion =  data[0].voltaje;
 								var inputGenerador =that.$el.find('.nombreGenerador');
 								var inputBomba = that.$el.find('.nombreBombaTabla');
-								var energiaHidraulica = (datos.rendimientoDiario * cargaDinamicaTotal)/factorConversion;
+								var energiaHidraulica = (rendimientoDiario * cargaDinamicaTotal)/factorConversion;
 								var energiaArregloFV = energiaHidraulica/eficienciaBomba;
 								var cargaElectrica = energiaArregloFV/voltajeOperacion
 								var cargaElectricaCorregida = cargaElectrica/factorRendimiento;
@@ -285,7 +289,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 								var regimenBombeo2 = aguaBombeada/insolacion;
 								console.log(regimenBombeo2);
 								debugger
-								if(regimenBombeo2 < regimenBombeo || !regimenBombeo2 || !regimenBombeo){
+								if(aguaBombeada < rendimientoDiario || !aguaBombeada || !rendimientoDiario){
 									console.log('No valida')
 									inputGenerador.addClass('noValida');
 									inputBomba.addClass('noValida');
