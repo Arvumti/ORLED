@@ -12,8 +12,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 		events: {
 			'click .btn-calcular-grafica' :'click_calcular',
 			'click .openItemModal' :'click_openItems',
-			'click table tbody tr.selectCell' :'rowSelected',
-			'change [data-field="idLongitudTuberia"]': 'change_idLongitudTuberia',
+			'click table tbody tr.selectCell' :'rowSelected',			
 			//'click .tab-cableado' : 'click_tabCableado',
 			'click .tabs a' : 'click_tabs',
 			'click .btn-calcular-altura': 'click_CalcularAltura',
@@ -37,7 +36,6 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 					}
 				},
 			};
-			debugger
 			var tyas = this.$el.find('.tya');
 			viewsBase.popAbc.prototype.linkFks.call(this, tyas, this.fks);
 			this.gvBombas = this.$el.find('.gvBombas');
@@ -86,7 +84,6 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 		/*------------------------- Eventos -----------------------------*/
 		click_openItems: function(e) {
 			var valor = $(e.currentTarget).data("valor");
-			debugger
 			this.popItems.render(valor);
 		},
 		change_idLongitudTuberia: function(e) {
@@ -115,13 +112,14 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 				var arrDatosBombas=Array();
 				if(data) {
 					var info = data;
-					debugger
+	
 					for (var i = 0; i < info.length; i++) {
 						info[i]
 						var bomba = {
 							nombreBomba: info[i].nombre,
 							idBomba: info[i].idBomba,
 							generador: info[i].idGenerador.nombre,
+							motor: info[i].idMotor.nombre,
 							idGenerador: info[i].idGenerador.idGenerador,
 							alturaMinima: info[i].alturaMinima,
 							alturaMaxima: info[i].alturaMaxima,
@@ -141,7 +139,6 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			}
 		},
 		rowSelected: function(e) {
-			debugger
 			var that  = this;
 			var rows = that.$el.find('tr').removeClass('isActive');
 			var row =$(e.currentTarget).addClass('isActive');
@@ -149,23 +146,20 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			var idNombreBomba =$(e.currentTarget).data("idbomba");
 			var generador =$(e.currentTarget).data("generador");
 			var idGenerador =$(e.currentTarget).data("idgenerador");
-			var cable =$(e.currentTarget).data("cable");
-			debugger
+			var nombreMotor =$(e.currentTarget).data("nombremotor");
 			var inputBomba = that.$el.find('.nombreBombaTabla');
 			inputBomba.attr('data-idbomba',idNombreBomba);
+			inputBomba.attr('data-nombremotor',nombreMotor);		
 			that.idBombaInicial = inputBomba.data('idbomba');
 			var inputGenerador =that.$el.find('.nombreGenerador');
 			inputGenerador.attr('data-idgenerador',idGenerador);
 			that.idGeneradorInicial=inputGenerador.data('idgenerador');
 			var inputCable =that.$el.find('.nombreCable');
 			inputBomba.val(nombreBomba);
-			inputGenerador.val(generador);
-			inputCable.val(cable);
-			debugger
+			inputGenerador.val(generador);			
 			that.dimencionar(idGenerador, idNombreBomba);
 		},
 		rowSelectedCustom: function(tipoItem,idItem,nombreItem) {
-			debugger
 			var that  = this;
 			var tipoItem = tipoItem;
 			var idItem = idItem;
@@ -176,7 +170,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			if (tipoItem==1) {
 				inputBomba.data('idbomba', idItem);
 				inputBomba.val(nombreItem);
-				debugger
+
 				var idGenerador = inputGenerador.data('idgenerador');
 				this.dimencionar(idGenerador, idItem);
 				this.popItems.close()
@@ -184,7 +178,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			else if (tipoItem==2) {
 				inputGenerador.data('idgenerador', idItem);
 				inputGenerador.val(nombreItem);
-				debugger
+
 				var idBomba = inputBomba.data('idbomba');
 				this.dimencionar(idItem, idBomba);
 				this.popItems.close()
@@ -195,15 +189,12 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 		},	
 		click_calcular: function(){
 			var that = this;
-			debugger
 			this.subViews.graficas.view.render();
 			var total = that.txtAlturaDinamica.val();
-			debugger
 			that.bombas(total);
 			this.subViews.mapaElementos.view.close();
 		},
 		click_tabs: function(e) {
-			debugger
 			var href = $(e.currentTarget).attr('href');
 			switch(href) {
 			/*	case '#entradas':
@@ -222,7 +213,6 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 		},
 		dimencionar: function(idGenerador, idBomba){
 			var that =  this;
-			debugger
 			//var idGenerador = this.$el.find('.nombreGenerador').data('idgenerador');
 			var datos = viewsBase.base.prototype.getData.call(this, this.formData);
 
@@ -246,30 +236,29 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			modulosParalelo,
 			voltaje,
 			insolacion;
-			debugger
 
 			//app.ut.request({url:'/rendimientos/eficiencia', data:{idBomba:1, altura:39},done:doneA});
 			app.ut.request({url:'/rendimientos/eficiencia', data:{idBomba:idBomba, altura:datos.alturaDinamica},done:doneA});
 			function doneA(data){
-				debugger
+
 				eficienciaBomba = data.eficiencia;
 				//app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:1}},done:doneB});
 				app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:datos.idLocalidad}},done:doneB});
-				function doneB (data) {
-					debugger
+				function doneB (data) {					
 					if (data && data.length > 0){
 						insolacion = data[0].promedio;
 						var regimenBombeo = parseFloat(datos.rendimientoDiario/insolacion);
 						var cargaEstatica = parseFloat(datos.alturaDinamica);
-						var cargaDinamicaTotal = parseFloat(cargaEstatica+datos.perdida);
-						debugger
+						var cargaDinamicaTotal = parseFloat(cargaEstatica+datos.perdida);						
 						app.ut.request({url:'/generadores', data:{where:{idGenerador:idGenerador}},done:doneC})
 						function doneC (data){
-							if (data && data.length > 0){
-								debugger
+							if (data && data.length > 0){								
 								voltajeOperacion =  data[0].voltaje;
 								var inputGenerador =that.$el.find('.nombreGenerador');
 								var inputBomba = that.$el.find('.nombreBombaTabla');
+								var currentBombaNombre = inputBomba.val();
+								var currentMotorNombre = inputBomba.data('nombremotor');
+								debugger
 								var energiaHidraulica = (datos.rendimientoDiario * cargaDinamicaTotal)/factorConversion;
 								var energiaArregloFV = energiaHidraulica/eficienciaBomba;
 								var cargaElectrica = energiaArregloFV/voltajeOperacion
@@ -281,10 +270,9 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 								var totalModulo = modulosSerie * modulosParalelo;
 								var arregloFotovoltaico = totalModulo * corrienteModulo * voltajeModulo;
 
-								var aguaBombeada = (modulosParalelo * corrienteModulo * voltajeOperacion * eficienciaBomba * factorConversion * insolacion * .90) / cargaDinamicaTotal;
+								var aguaBombeada = (modulosParalelo * corrienteModulo * voltajeOperacion * eficienciaBomba * factorConversion * insolacion * .90) / cargaDinamicaTotal;								
 								var regimenBombeo2 = aguaBombeada/insolacion;
-								console.log(regimenBombeo2);
-								debugger
+								console.log(regimenBombeo2);								
 								if(regimenBombeo2 < regimenBombeo || !regimenBombeo2 || !regimenBombeo){
 									console.log('No valida')
 									inputGenerador.addClass('noValida');
@@ -295,9 +283,8 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 									inputGenerador.removeClass('noValida');
 									inputBomba.removeClass('noValida');
 								}
-								app.ut.hide();
-								debugger
-								that.popFormArreglo.render(modulosParalelo, modulosSerie, totalModulo, arregloFotovoltaico);		
+								app.ut.hide();								
+								that.popFormArreglo.render(modulosParalelo, modulosSerie, totalModulo, arregloFotovoltaico,aguaBombeada,currentBombaNombre,currentMotorNombre);		
 							}else{
 								app.ut.message({text:'No exiten datos'});
 							}
@@ -333,7 +320,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 				var arrDatosBombas=Array();
 				if(data) {
 					var info = data;
-					debugger
+	
 					for (var i = 0; i < info.length; i++) {	
 						switch (valor) {
 							case 1:
@@ -343,7 +330,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 									descripcion: "Bombas",
 									tipoElemento:1,
 								}
-								debugger
+				
 								arrDatosBombas.push(bomba);
 								break;
 							case 2:
@@ -358,7 +345,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 						}
 
 					};
-					debugger
+	
 					var tr = that.tmp_items({items:arrDatosBombas});
 					that.gvItems.html(tr);
 					that.$el.foundation('reveal', 'open');
@@ -373,16 +360,13 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			this.close();
 		},
 		popRowSelected: function(e) {
-			debugger
 			var that  = this;
 			var rows = that.$el.find('tr').removeClass('isActive');
 			var row =$(e.currentTarget).addClass('isActive');
 		},
 		click_datoSeleccionado: function(options) {
-			debugger
 			var that  = this;
 			var row = that.$el.find('tr.isActive');
-			debugger
 			if (row.length>0) {
 				var popNombre = row.data("item");
 				var tipoItem = row.data("tipoitem");
@@ -413,15 +397,20 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			this.txtModulosParalelo = this.$el.find('.modulo-paralelo');
 			this.txtTotalModulos = this.$el.find('.total-modulos');
 			this.txtTamanoArreglo = this.$el.find('.tamano-areglo');
+			this.txtNombreMotor = this.$el.find('.nombre-motor');
+			this.txtNombreBomba = this.$el.find('.nombre-bomba');
+			this.txtAguaBombeada = this.$el.find('.agua-bombeada');
 		},
 		/*------------------------- Base -----------------------------*/
-		render: function(modulosParalelo, modulosSerie, totalModulo, arregloFotovoltaico) {
-			debugger
+		render: function(modulosParalelo, modulosSerie, totalModulo, arregloFotovoltaico,aguaBombeada,currentBombaNombre,currentMotorNombre) {
 			viewsBase.base.prototype.render.call(this);
 			this.txtModulosSerie.text(modulosSerie || 0);
 			this.txtModulosParalelo.text(modulosParalelo || 0);
 			this.txtTotalModulos.text(totalModulo || 0);
 			this.txtTamanoArreglo.text(arregloFotovoltaico || 0);
+			this.txtNombreMotor.text(currentMotorNombre || "");
+			this.txtNombreBomba.text(currentBombaNombre || "");
+			this.txtAguaBombeada.text(aguaBombeada || 0);
 			this.$el.foundation('reveal', 'open');
 		},
 		close: function() {
@@ -429,7 +418,6 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			this.clear();
 		},
 		clear: function() {
-			debugger
 			this.formData[0].reset();
 		},
 		/*------------------------- Eventos -----------------------------*/
