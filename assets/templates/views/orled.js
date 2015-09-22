@@ -409,13 +409,13 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 		/*------------------------- Base -----------------------------*/
 		render: function(modulosParalelo, modulosSerie, totalModulo, arregloFotovoltaico,aguaBombeada,currentBombaNombre,currentMotorNombre) {
 			viewsBase.base.prototype.render.call(this);
-			this.txtModulosSerie.text(modulosSerie || 0);
-			this.txtModulosParalelo.text(modulosParalelo || 0);
-			this.txtTotalModulos.text(totalModulo || 0);
-			this.txtTamanoArreglo.text(arregloFotovoltaico || 0);
+			this.txtModulosSerie.text(Math.round(modulosSerie) || 0);
+			this.txtModulosParalelo.text(Math.round(modulosParalelo) || 0);
+			this.txtTotalModulos.text(Math.ceil(totalModulo) || 0);
+			this.txtTamanoArreglo.text(Math.round(arregloFotovoltaico) || 0);
 			this.txtNombreMotor.text(currentMotorNombre || "");
 			this.txtNombreBomba.text(currentBombaNombre || "");
-			this.txtAguaBombeada.text(aguaBombeada || 0);
+			this.txtAguaBombeada.text(Math.round(aguaBombeada) || 0);
 			this.$el.foundation('reveal', 'open');
 		},
 		close: function() {

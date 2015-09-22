@@ -31,11 +31,11 @@ define(['/js/base/viewsBase.js'], function (viewsBase) {
 
 			var columns = [
 				{nombre:'Nombre', field:'nombre', width:250},
-				{nombre:'Modulos Paralelo', field:'paralelo', width:150},
-				{nombre:'Modulos Serie', field:'serie', width:150},
-				{nombre:'Potencia', field:'potencia', width:150},
-				{nombre:'Voltaje', field:'voltaje', width:150},
-				{nombre:'Corriente', field:'corriente', width:150},
+				{nombre:'Modulos Paralelo', field:'paralelo', width:80},
+				{nombre:'Modulos Serie', field:'serie', width:80},
+				{nombre:'Potencia', field:'potencia', width:80},
+				{nombre:'Voltaje', field:'voltaje', width:80},
+				{nombre:'Corriente', field:'corriente', width:80},
 			];
 			viewsBase.abc.prototype.initialize.call(this, columns);
 

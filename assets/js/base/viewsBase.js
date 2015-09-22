@@ -202,8 +202,12 @@ var ViABC = Backbone.View.extend({
     addRow: function(data){
         switch(data.crud) {
             case 1:
-                for(var key in data) 
-                    data[key] = (data[key] === undefined || data[key] == null ? '' : data[key]).toString();
+                for(var key in data) {
+                    var value = (data[key] === undefined || data[key] == null ? '' : data[key]);
+                    if(typeof value == 'object')
+                        continue;
+                    data[key] = value.toString();
+                }
                 var mrow = new this.model(data);
                 this.gvGrid.addTR(mrow);
                 break;
@@ -403,15 +407,30 @@ var ViPopSaveABC = Backbone.View.extend({
         
         function done(data) {
             debugger
+            var clean = false;
             that.on_save = false;
             if(data.errmsg && data.errmsg.length > 0) {
                 app.ut.message({text:data.errmsg});
                 return false;
             }
             else if(that.mode && that.mode.SaveAndContinue && that.crud == 1)
-                that.clean();
+                clean = true;
             else
                 that.click_cancelar(that);
+
+            for(var key in that.tyas) {
+                var tipo = that.tyas[key].data('type');
+                var value = null;
+                if(tipo == 'extend')
+                    value = json[key.substr(3)];
+                else
+                    value = that.tyas[key].data('fn').current();
+
+                data[key.substr(3)] = value;
+            }
+
+            if(clean)
+                that.clean();
 
             /*if(that.mode.upload) {
                 _.extend(data.data, data.files);
