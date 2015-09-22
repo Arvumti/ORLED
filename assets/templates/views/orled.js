@@ -259,6 +259,8 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 							if (data && data.length > 0){
 								debugger
 								voltajeOperacion =  data[0].voltaje;
+								var inputGenerador =that.$el.find('.nombreGenerador');
+								var inputBomba = that.$el.find('.nombreBombaTabla');
 								var energiaHidraulica = (datos.rendimientoDiario * cargaDinamicaTotal)/factorConversion;
 								var energiaArregloFV = energiaHidraulica/eficienciaBomba;
 								var cargaElectrica = energiaArregloFV/voltajeOperacion
@@ -274,10 +276,15 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 								var regimenBombeo2 = aguaBombeada/insolacion;
 								console.log(regimenBombeo2);
 								debugger
-								if(regimenBombeo2<regimenBombeo){
+								if(regimenBombeo2 < regimenBombeo || !regimenBombeo2 || !regimenBombeo){
 									console.log('No valida')
-								}else{
+									inputGenerador.addClass('noValida');
+									inputBomba.addClass('noValida');
+								}
+								else {
 									console.log('Valida')
+									inputGenerador.removeClass('noValida');
+									inputBomba.removeClass('noValida');
 								}
 								app.ut.hide();
 								debugger
