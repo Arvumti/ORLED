@@ -111,10 +111,10 @@
 									<div class="small-12 columns text-center">
 										<small>Rendimiento diario requerido</small>
 									</div>
-									<div class="small-3 small-centered columns">
+									<div class="small-5 small-centered columns">
 										<input type="number" min="0" data-field="rendimientoDiario"/>
 									</div>
-									<div class="small-5 columns">
+									<div class="small-4 columns">
 										<p class="simboloInput">m³</p>
 									</div>
 								</div>
@@ -160,22 +160,40 @@
 			<label>Arreglo Fotovoltaico</label>
 		</div>
 		<form class="form-data pop-body" data-abide>
-			<div class="small-6 columns">
-				Módulo en serie =
-				<label class="modulo-serie"></label>
-			</div>
-			<div class="small-6 columns">
-				Módulo en paralelo =
-				<label class="modulo-paralelo"></label>
-			</div>
-			<div class="small-6 columns">
-				Total Módulos =
-				<label class="total-modulos"></label>
-			</div>
-			<div class="small-6 columns">
-				Tamaño del arreglo fotovaltaico =
-				<label class="tamano-areglo"></label>
-			</div>
+			<table class="table table-custom">
+				<thead>
+					<tr class="titulo">
+						<th><span>Bomba</span></th>
+						<th><span>Motor</span></th>
+						<th><span>Agua Bombeada</span></th>						
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><label class="nombre-bomba"></label></td>
+						<td><label class="nombre-motor"></label></td>
+						<td><label class="agua-bombeada"></label></td>						
+					</tr>
+				</tbody>
+			</table>			
+			<table class="table table-custom">
+				<thead>
+					<tr class="titulo">
+						<th><span>Módulo en serie</span></th>
+						<th><span>Módulo en Paralelo</span></th>
+						<th><span>Tamaño del Arreglo fotovoltaico</span></th>
+						<th><span>Total de módulos</span></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><label class="modulo-serie"></label></td>
+						<td><label class="modulo-paralelo"></label></td>
+						<td><label class="tamano-areglo"></label></td>
+						<td><label class="total-modulos"></label></td>
+					</tr>
+				</tbody>
+			</table>
 		</form>
 		<div class="row pop-footer">
 			<div class="small-12 small columns">
@@ -189,9 +207,7 @@
 				<thead>
 					<tr class="titulo">
 						<th><span>Sistemas de bombeo</span></th>
-						<th><span>Generador PV</span></th>
-						<th><span>ETATRACK</span></th>
-						<th><span>Accesorios</span></th>
+						<th><span>Generador PV</span></th>						
 						<th><span>Cable</span></th>
 						<th><span>Tubo Ø D</span></th>						
 						<th><span>Altura</span></th>
@@ -199,24 +215,20 @@
 						<th><span>Eficiencia</span></th>
 					</tr>
 					<tr class="menuInput">
-						<th><input type="text" class="nombreBombaTabla" data-idbomba='0'/><i class="icon-menu openItemModal" data-valor="1"></i></th>
+						<th><input type="text" class="nombreBombaTabla" data-idbomba='0' data-nombremotor='Motor'/><i class="icon-menu openItemModal" data-valor="1"></i></th>
 						<th><input type="text" class="nombreGenerador" data-idgenerador='0'/><i class="icon-menu openItemModal" data-valor="2"></i></th>
 						<th></th>
 						<th></th>
 						<th><input type="text" class="nombreCable isHidden"/><i class="icon-menu isHidden" data-valor="3"></i></th>
 						<th></th>
-						<th></th>
-						<th></th>
-						<th></th>
+						<th></th>						
 					</tr>
 				</thead>
 				<tbody>
 					{{#bombas}}
-						<tr class="selectCell" data-nombreBomba="{{nombreBomba}}" data-idbomba="{{idBomba}}" data-generador="{{generador}}" data-idgenerador="{{idGenerador}}" data-cable="{{cable}}">
+						<tr class="selectCell" data-nombreBomba="{{nombreBomba}}" data-nombremotor="{{motor}}" data-idbomba="{{idBomba}}" data-generador="{{generador}}" data-idgenerador="{{idGenerador}}" data-cable="{{cable}}">
 							<td>{{nombreBomba}}</td>
-							<td>{{generador}}</td>
-							<td>{{etatrack}}</td>
-							<td>{{accesorios}}</td>
+							<td>{{generador}}</td>							
 							<td>{{cable}}</td>
 							<td>{{tubo}}</td>						
 							<td>{{alturaMinima}}...{{alturaMaxima}}</td>
