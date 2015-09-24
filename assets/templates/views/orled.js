@@ -129,9 +129,10 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 							var bomba = {
 								nombreBomba: info[i].nombre,
 								idBomba: info[i].idBomba,
-								generador: generador.idGenerador.nombre,
+								generador: generador.idGenerador.nombre + ' ' + generador.idArreglo.serie + 'x' + generador.idArreglo.paralelo,
 								motor: info[i].idMotor.nombre,
 								idGenerador: generador.idGenerador.idGenerador,
+								idArreglo: generador.idArreglo.idArreglo,
 								alturaMinima: info[i].alturaMinima,
 								alturaMaxima: info[i].alturaMaxima,
 								eficiencia: info[i].eficiencia,
@@ -169,10 +170,9 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			var inputCable =that.$el.find('.nombreCable');
 			inputBomba.val(nombreBomba);
 			inputGenerador.val(generador);
-			debugger
 			that.dimencionar(idGenerador, idNombreBomba, idArreglo);
 		},
-		rowSelectedCustom: function(tipoItem,idItem,nombreItem, idArreglo) {
+		rowSelectedCustom: function(tipoItem, idItem, nombreItem, idArreglo) {
 			var that  = this;
 			var tipoItem = tipoItem;
 			var idItem = idItem;
@@ -187,7 +187,6 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 				var idGenerador = inputGenerador.data('idgenerador');
 				var idArreglo = inputGenerador.data('idarreglo');
 				this.dimencionar(idGenerador, idItem, idArreglo);
-				this.popItems.close()
 			}
 			else if (tipoItem==2) {
 				inputGenerador.data('idgenerador', idItem);
@@ -196,7 +195,6 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 
 				var idBomba = inputBomba.data('idbomba');
 				this.dimencionar(idItem, idBomba, idArreglo);
-				this.popItems.close()
 			}
 		},		
 		click_buscar: function() {
@@ -228,7 +226,6 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			this.popFormCalcular.render(longitud);
 		},
 		dimencionar: function(idGenerador, idBomba, idArreglo){
-			debugger
 			var that =  this;
 			//var idGenerador = this.$el.find('.nombreGenerador').data('idgenerador');
 			var datos = viewsBase.base.prototype.getData.call(this, this.formData);
@@ -268,7 +265,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 						var cargaEstatica = parseFloat(datos.alturaDinamica);
 						var cargaDinamicaTotal = parseFloat(cargaEstatica+datos.perdida);						
 						//app.ut.request({url:'/generadores', data:{where:{idGenerador:idGenerador}},done:doneC});
-						app.ut.request({url:'/compuestos/populate', data:{where:{idGenerador:idGenerador, idBomba:idBomba}}, done:doneC});
+						app.ut.request({url:'/compuestos/populate', data:{where:{idGenerador:idGenerador, idBomba:idBomba, idArreglo:idArreglo}}, done:doneC});
 						function doneC (data){
 							if (data && data.length > 0) {
 								var arreglo = data[0].idArreglo;
@@ -332,7 +329,6 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 		},
 		/*------------------- Base -------------------*/
 		render: function(val, jBomba, jGenerador) {
-			debugger
 			var that=this;
 			var valor = parseInt(val);
 			//app.ut.request({url:'/bombas/populate', done:done});
@@ -350,7 +346,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 
 						for (var i = 0; i < compuesto.length; i++) {
 							var row = {
-								item: compuesto[i].idGenerador.nombre + ' ' + compuesto[i].idArreglo.paralelo + 'x' + compuesto[i].idArreglo.serie,
+								item: compuesto[i].idGenerador.nombre + ' ' + compuesto[i].idArreglo.serie + 'x' + compuesto[i].idArreglo.paralelo,
 								idGenerador: compuesto[i].idGenerador.idGenerador,
 								idArreglo: compuesto[i].idArreglo.idArreglo,
 								descripcion: "Generadores",
@@ -427,11 +423,12 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 
 				if (tipoItem==1) {
 					var idbomba=row.data("idbomba");
-					this.parentView.rowSelectedCustom(tipoItem,idbomba,popNombre);
+					this.parentView.rowSelectedCustom(tipoItem,idbomba,popNombre, 0);
 				}
 				if (tipoItem==2) {
 					var idgenerador=row.data("idgenerador");
-					this.parentView.rowSelectedCustom(tipoItem,idgenerador,popNombre);
+					var idArreglo=row.data("idarreglo");
+					this.parentView.rowSelectedCustom(tipoItem,idgenerador,popNombre, idArreglo);
 				}
 			}
 			else {
@@ -457,7 +454,6 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 		},
 		/*------------------------- Base -----------------------------*/
 		render: function(modulosParalelo, modulosSerie, totalModulo, arregloFotovoltaico,aguaBombeada,currentBombaNombre,currentMotorNombre) {
-			viewsBase.base.prototype.render.call(this);
 			this.txtModulosSerie.text(Math.round(modulosSerie) || 0);
 			this.txtModulosParalelo.text(Math.round(modulosParalelo) || 0);
 			this.txtTotalModulos.text(Math.ceil(totalModulo) || 0);
