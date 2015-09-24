@@ -157,6 +157,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			var idNombreBomba =$(e.currentTarget).data("idbomba");
 			var generador =$(e.currentTarget).data("generador");
 			var idGenerador =$(e.currentTarget).data("idgenerador");
+			var idArreglo =$(e.currentTarget).data("idarreglo");
 			var nombreMotor =$(e.currentTarget).data("nombremotor");
 			var inputBomba = that.$el.find('.nombreBombaTabla');
 			inputBomba.attr('data-idbomba',idNombreBomba);
@@ -167,10 +168,11 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			that.idGeneradorInicial=inputGenerador.data('idgenerador');
 			var inputCable =that.$el.find('.nombreCable');
 			inputBomba.val(nombreBomba);
-			inputGenerador.val(generador);			
-			that.dimencionar(idGenerador, idNombreBomba);
+			inputGenerador.val(generador);
+			debugger
+			that.dimencionar(idGenerador, idNombreBomba, idArreglo);
 		},
-		rowSelectedCustom: function(tipoItem,idItem,nombreItem) {
+		rowSelectedCustom: function(tipoItem,idItem,nombreItem, idArreglo) {
 			var that  = this;
 			var tipoItem = tipoItem;
 			var idItem = idItem;
@@ -183,15 +185,17 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 				inputBomba.val(nombreItem);
 
 				var idGenerador = inputGenerador.data('idgenerador');
-				this.dimencionar(idGenerador, idItem);
+				var idArreglo = inputGenerador.data('idarreglo');
+				this.dimencionar(idGenerador, idItem, idArreglo);
 				this.popItems.close()
 			}
 			else if (tipoItem==2) {
 				inputGenerador.data('idgenerador', idItem);
+				inputGenerador.data('idarreglo', idArreglo);
 				inputGenerador.val(nombreItem);
 
 				var idBomba = inputBomba.data('idbomba');
-				this.dimencionar(idItem, idBomba);
+				this.dimencionar(idItem, idBomba, idArreglo);
 				this.popItems.close()
 			}
 		},		
@@ -223,7 +227,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			longitud = this.txtLongitud.val();
 			this.popFormCalcular.render(longitud);
 		},
-		dimencionar: function(idGenerador, idBomba){
+		dimencionar: function(idGenerador, idBomba, idArreglo){
 			debugger
 			var that =  this;
 			//var idGenerador = this.$el.find('.nombreGenerador').data('idgenerador');
