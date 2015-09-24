@@ -85,7 +85,10 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 		/*------------------------- Eventos -----------------------------*/
 		click_openItems: function(e) {
 			var valor = $(e.currentTarget).data("valor");
-			this.popItems.render(valor);
+			var bomba = this.$el.find('.nombreBombaTabla').data();
+			var generador = this.$el.find('.nombreGenerador').data();
+
+			this.popItems.render(valor, bomba, generador);
 		},
 		change_idLongitudTuberia: function(e) {
 			var that=this;
@@ -106,36 +109,43 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 				// 	'<=': alturaDinamica
 				// },
 			};
+			
+			app.ut.request({url:'/compuestos/populate', done:doneCom});
+			function doneCom(compuestos) {
+				app.ut.request({url:'/bombas/populate', data:{where:where}, done:done});
+				function done(data) {
+					console.log(data);
+					var arrDatosBombas=Array();
+					if(data) {
+						var info = data;
+		
+						for (var i = 0; i < info.length; i++) {
+							info[i]
+							var idGenerador = info[i].Compuestos[0].idGenerador;
+							var generador = _.find(compuestos, function(item) {
+								return item.idGenerador.idGenerador == idGenerador;
+							});
 
-			app.ut.request({url:'/bombas/populate', data:{where:where}, done:done});
-			function done(data) {
-				console.log(data);
-				var arrDatosBombas=Array();
-				if(data) {
-					var info = data;
-	
-					for (var i = 0; i < info.length; i++) {
-						info[i]
-						var bomba = {
-							nombreBomba: info[i].nombre,
-							idBomba: info[i].idBomba,
-							generador: info[i].idGenerador.nombre,
-							motor: info[i].idMotor.nombre,
-							idGenerador: info[i].idGenerador.idGenerador,
-							alturaMinima: info[i].alturaMinima,
-							alturaMaxima: info[i].alturaMaxima,
-							eficiencia: info[i].eficiencia,
-							etatrack: '',
-							accesorios:'',
-							cable: info[i].idCable.nombre,
-							tubo: info[i].idTubo.nombre,
-							salida: info[i].idSalida.nombre,
-
-						}
-						arrDatosBombas.push(bomba);
-					};
-					var tr = that.tmp_bombas({bombas:arrDatosBombas});
-					that.gvBombas.html(tr);
+							var bomba = {
+								nombreBomba: info[i].nombre,
+								idBomba: info[i].idBomba,
+								generador: generador.idGenerador.nombre,
+								motor: info[i].idMotor.nombre,
+								idGenerador: generador.idGenerador.idGenerador,
+								alturaMinima: info[i].alturaMinima,
+								alturaMaxima: info[i].alturaMaxima,
+								eficiencia: info[i].eficiencia,
+								etatrack: '',
+								accesorios:'',
+								cable: info[i].idCable.nombre,
+								tubo: info[i].idTubo.nombre,
+								salida: info[i].idSalida.nombre,
+							}
+							arrDatosBombas.push(bomba);
+						};
+						var tr = that.tmp_bombas({bombas:arrDatosBombas});
+						that.gvBombas.html(tr);
+					}
 				}
 			}
 		},
@@ -210,11 +220,11 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			}
 		},
 		click_CalcularAltura: function(txtLongitud){
-			debugger
 			longitud = this.txtLongitud.val();
 			this.popFormCalcular.render(longitud);
 		},
 		dimencionar: function(idGenerador, idBomba){
+			debugger
 			var that =  this;
 			//var idGenerador = this.$el.find('.nombreGenerador').data('idgenerador');
 			var datos = viewsBase.base.prototype.getData.call(this, this.formData);
@@ -240,12 +250,10 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			voltaje,
 			insolacion,
 			rendimientoDiario =  (datos.rendimientoDiario*1000);
-			debugger
 
 			//app.ut.request({url:'/rendimientos/eficiencia', data:{idBomba:1, altura:39},done:doneA});
 			app.ut.request({url:'/rendimientos/eficiencia', data:{idBomba:idBomba, altura:datos.alturaDinamica},done:doneA});
 			function doneA(data){
-				debugger
 				eficienciaBomba = (data.eficiencia)/100;
 				//app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:1}},done:doneB});
 				app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:datos.idLocalidad}},done:doneB});
@@ -255,10 +263,13 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 						var regimenBombeo = parseFloat(rendimientoDiario/insolacion);
 						var cargaEstatica = parseFloat(datos.alturaDinamica);
 						var cargaDinamicaTotal = parseFloat(cargaEstatica+datos.perdida);						
-						app.ut.request({url:'/generadores', data:{where:{idGenerador:idGenerador}},done:doneC})
+						//app.ut.request({url:'/generadores', data:{where:{idGenerador:idGenerador}},done:doneC});
+						app.ut.request({url:'/compuestos/populate', data:{where:{idGenerador:idGenerador, idBomba:idBomba}}, done:doneC});
 						function doneC (data){
-							if (data && data.length > 0){								
-								voltajeOperacion =  data[0].voltaje;
+							if (data && data.length > 0) {
+								var arreglo = data[0].idArreglo;
+
+								voltajeOperacion =  arreglo.voltaje;
 								var inputGenerador =that.$el.find('.nombreGenerador');
 								var inputBomba = that.$el.find('.nombreBombaTabla');
 								var energiaHidraulica = (rendimientoDiario * cargaDinamicaTotal)/factorConversion;
@@ -277,7 +288,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 								var aguaBombeada = (modulosParalelo * corrienteModulo * voltajeOperacion * eficienciaBomba * factorConversion * insolacion * .90) / cargaDinamicaTotal;								
 								var regimenBombeo2 = aguaBombeada/insolacion;
 								console.log(regimenBombeo2);
-								debugger
+								
 								if(aguaBombeada < rendimientoDiario || !aguaBombeada || !rendimientoDiario){
 									console.log('No valida')
 									inputGenerador.addClass('noValida');
@@ -316,40 +327,74 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			this.form = this.$el.find('.form-data');
 		},
 		/*------------------- Base -------------------*/
-		render: function(val) {
+		render: function(val, jBomba, jGenerador) {
+			debugger
 			var that=this;
 			var valor = parseInt(val);
-			app.ut.request({url:'/bombas/populate', done:done});
+			//app.ut.request({url:'/bombas/populate', done:done});
+			app.ut.request({url:'/compuestos/populate', done:done});
 			function done(data) {
 				console.log(data);
 				var arrDatosBombas=Array();
 				if(data) {
 					var info = data;
-	
-					for (var i = 0; i < info.length; i++) {	
-						switch (valor) {
-							case 1:
-								var bomba = {
-									item: info[i].nombre,
-									idBomba: info[i].idBomba,
-									descripcion: "Bombas",
-									tipoElemento:1,
-								}
-				
-								arrDatosBombas.push(bomba);
-								break;
-							case 2:
-								var generador = {
-									item: info[i].idGenerador.nombre,
-									idGenerador: info[i].idGenerador.idGenerador,
-									descripcion: "Generadores",
-									tipoElemento:2,
-								}
-								arrDatosBombas.push(generador);
-								break;
-						}
 
-					};
+					if(valor == 2) {
+						var compuesto = _.where(info, function(item) {
+							return item.idGenerador.idGenerador == jGenerador.idgenerador;
+						});
+
+						for (var i = 0; i < compuesto.length; i++) {
+							var row = {
+								item: compuesto[i].idGenerador.nombre + ' ' + compuesto[i].idArreglo.paralelo + 'x' + compuesto[i].idArreglo.serie,
+								idGenerador: compuesto[i].idGenerador.idGenerador,
+								idArreglo: compuesto[i].idArreglo.idArreglo,
+								descripcion: "Generadores",
+								tipoElemento:2,
+							}
+
+							arrDatosBombas.push(row);
+						}
+					}
+					else {
+						for (var i = 0; i < info.length; i++) {
+							var row = {
+								item: info[i].idBomba.nombre,
+								idBomba: info[i].idBomba.idBomba,
+								descripcion: "Bombas",
+								tipoElemento:1,
+							}
+							var existe = _.findWhere(arrDatosBombas, {idBomba:row.idBomba});
+							if(existe)
+								continue;
+
+							arrDatosBombas.push(row);
+						}
+					}
+	
+					// for (var i = 0; i < info.length; i++) {	
+					// 	switch (valor) {
+					// 		case 1:
+					// 			var bomba = {
+					// 				item: info[i].nombre,
+					// 				idBomba: info[i].idBomba,
+					// 				descripcion: "Bombas",
+					// 				tipoElemento:1,
+					// 			}
+				
+					// 			arrDatosBombas.push(bomba);
+					// 			break;
+					// 		case 2:
+					// 			var generador = {
+					// 				item: info[i].idGenerador.nombre,
+					// 				idGenerador: info[i].idGenerador.idGenerador,
+					// 				descripcion: "Generadores",
+					// 				tipoElemento:2,
+					// 			}
+					// 			arrDatosBombas.push(generador);
+					// 			break;
+					// 	}
+					// };
 	
 					var tr = that.tmp_items({items:arrDatosBombas});
 					that.gvItems.html(tr);

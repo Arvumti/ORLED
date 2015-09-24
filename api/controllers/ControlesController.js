@@ -262,9 +262,10 @@ module.exports = {
 		console.log(model);
 		sails.models[model].find()/*.populateAll()*/.where(filtroOr).exec(function(err, docs) {
 			console.log('err: ', err);
-			for (var i = 0; i < docs.length; i++) {
-				docs[i].dKey = docs[i][displayKey];
-			}
+			if(displayKey != 'dKey')
+				for (var i = 0; i < docs.length; i++)
+					docs[i].dKey = docs[i][displayKey];
+				
 			console.log(docs);
 			res.json({data:docs});
 		});

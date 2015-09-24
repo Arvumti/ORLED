@@ -18,7 +18,6 @@ define(deps, function (viewsBase, highcharts, html) {
 			'click .tipo-grafica' :'click_tipoGrafica',
 		},
 		initialize: function() {
-			debugger
 			this.PnlGraficaMes = this.$el.find('.pnl-grafica-mes');
 			this.PnlGraficaDia = this.$el.find('.pnl-grafica-dia');
 			this.chkIrracion = this.$el.find('.irracion');
@@ -59,16 +58,14 @@ define(deps, function (viewsBase, highcharts, html) {
 		/*------------------------- Base -----------------------------*/
 		render: function() {
 			viewsBase.abc.prototype.render.call(this);
-			debugger
 			this.llenarGrafica();
 		},
 		close: function() {
-			debugger
 			viewsBase.abc.prototype.close.call(this);
 		},
 		/*------------------------- Eventos -----------------------------*/
 		crear_GraficaMes: function(jDatos){
-			debugger
+
 			var that = this;
 			var datos = _.values(jDatos.datos);
 			that.PnlGraficaMes.highcharts({
@@ -125,7 +122,6 @@ define(deps, function (viewsBase, highcharts, html) {
 			});
 		},
 		crear_GraficaHora: function(jDatos){
-			debugger
 			var that = this;
 			var datos = _.values(jDatos.datos);
 			that.PnlGraficaDia.highcharts({
@@ -182,7 +178,6 @@ define(deps, function (viewsBase, highcharts, html) {
 			});
 		},
 		click_tipoGrafica: function(e) {
-			debugger
 			var valor = $(e.currentTarget).val();
 			var datos = Object();
 
@@ -206,7 +201,6 @@ define(deps, function (viewsBase, highcharts, html) {
 		///click_llenarGrafica: function(e){
 		llenarGrafica: function(e){
 			var that = this;
-			debugger
 
 			/*-------------------------------Datos por mes----------------------------------*/
 
@@ -219,12 +213,12 @@ define(deps, function (viewsBase, highcharts, html) {
 				that.chkIrracion.prop("checked", true);
 				var energia = Object(),
 					output = Object();
-					debugger
 
 				/* produccion de energia */
 				var areaModulo = 1.65;
 				var eficiencia = 0.15;
 				var perdidas = 0.85;
+				var constante = 1012;
 
 				/* produccion de output */
 				var totalEnergia;
@@ -236,6 +230,8 @@ define(deps, function (viewsBase, highcharts, html) {
 
 
 				for(var key in datos) {
+					var subEnergia = areaModulo * eficiencia * perdidas * constante;
+
 					var porcentaje = (((datos[key]*500)*3)/100);
 					energia[key] = parseFloat(parseFloat(((datos[key] * 500)-porcentaje)/1000).toFixed(2));
 					output[key] = parseFloat(parseFloat(datos[key] * 1000).toFixed(2));
@@ -256,7 +252,6 @@ define(deps, function (viewsBase, highcharts, html) {
 			//app.ut.request({url:'/IrradianciasDias/PromedioDia', data:{where:{idLocalidad:1}},done:doneIH);
 			app.ut.request({url:'/IrradianciasDias/PromedioDia', data:{idLocalidad:1},done:doneIH});
 			function doneIH (data) {
-				debugger
 				var datos = Object();
 
 				for (var i = 0; i < data.length; i++) {
@@ -271,7 +266,6 @@ define(deps, function (viewsBase, highcharts, html) {
 				var energia = Object(),
 					output = Object();
 				for(var key in datos) {
-					debugger
 					var porcentaje = (((datos[key]*500)*3)/100)
 					energia[key] = parseFloat(parseFloat(((datos[key] * 500)-porcentaje)/1000).toFixed(2));
 					output[key] = parseFloat(parseFloat(datos[key] * 1000).toFixed(2));

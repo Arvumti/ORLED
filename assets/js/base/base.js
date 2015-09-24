@@ -996,7 +996,7 @@ function utilerias() {
 			_process = null,
 			_timeout = 1000,
 			_metodo = url.length > 0 ? searchQuery : prepareCollection();
-		
+
 		elem = elem.typeahead(null, {
 			name: 'familias',
 			displayKey: displayKey,

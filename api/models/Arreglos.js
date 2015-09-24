@@ -1,5 +1,5 @@
 /**
-* Generadores.js
+* Arreglos.js
 *
 * @description :: TODO: You might write a short summary of how this model works and what it represents here.
 * @docs        :: http://sailsjs.org/#!documentation/models
@@ -7,20 +7,29 @@
 
 module.exports = {
 	autoUpdatedAt: true,
-	tableName: 'Generadores',
+	tableName: 'Arreglos',
 	attributes: {
-		idGenerador: {
+		idArreglo: {
 			type: 'integer',
 			primaryKey: true,
 			autoIncrement:true,
 			unique: true,
 		},
-		nombre: {
-			type: 'string',
+
+		serie: {
+			type: 'integer',
 		},
-		
-		diagrama: {
-			type: 'string',
+		paralelo: {
+			type: 'integer',
+		},
+		potencia: {
+			type: 'float',
+		},
+		voltaje: {
+			type: 'float',
+		},
+		corriente: {
+			type: 'float',
 		},
 	}
 };

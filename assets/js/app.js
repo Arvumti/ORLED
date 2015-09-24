@@ -526,6 +526,6 @@ define([], function () {
 	// 	// window.location.href = '/sesiones/logout';
 	// 	// app.ut.request({url:'/sesiones/logOut'});
 	// }
-	app.router.navigate('orled', { trigger: true, replace: true });
+	//app.router.navigate('orled', { trigger: true, replace: true });
 	return app;
 }); 

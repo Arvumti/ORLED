@@ -248,6 +248,10 @@ var ViGrid = Backbone.View.extend({
             else if(item.ref && item.ref != 'none') {
                 item.value = Handlebars.helpers.GetRef(item.value, item.ref);
             }
+            else if(item.tmp && item.tmp != 'none') {
+                var template = Handlebars.compile(item.tmp);
+                item.value = template(item.value);
+            }
             else if(typeof item.value === "string") {
                 item.value = item.value.replace(/&amp;/g, "&");
                 item.value = item.value.replace(/&gt;/g, ">");
@@ -307,6 +311,7 @@ var ViGrid = Backbone.View.extend({
                 value: valor,
                 type: this.config.columns[j].type || 'none',
                 ref: this.config.columns[j].ref || 'none',
+                tmp: this.config.columns[j].tmp || 'none',
                 width: this.config.columns[j].width,
             });
         }
@@ -346,6 +351,7 @@ var ViGrid = Backbone.View.extend({
                     value: valor,
                     type: this.config.columns[j].type || 'none',
                     ref: this.config.columns[j].ref || 'none',
+                    tmp: this.config.columns[j].tmp || 'none',
                     width: this.config.columns[j].width,
                 });
             }

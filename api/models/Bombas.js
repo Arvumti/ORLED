@@ -44,9 +44,6 @@ module.exports = {
 		idCable: {
 			model: 'Cables',
 		},
-		idGenerador: {
-			model: 'Generadores',
-		},
 		idMotor: {
 			model: 'Motores',
 		},
@@ -56,5 +53,10 @@ module.exports = {
 		idTubo: {
 			model: 'Tubos',
 		},
+
+		Compuestos: {
+            collection: 'Compuestos',
+            via: 'idBomba'
+        },
 	}
 };

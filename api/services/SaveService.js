@@ -36,8 +36,9 @@ module.exports = {
 				options.skip = req.param('skip');
 			if(req.param('sort'))
 				options.sort = req.param('sort');
-			if(where)
-				options.where = where;
+			// if(where)
+			// 	options.where = where;
+			console.log(where);
 
 			console.log("This is the options", options);
 
@@ -46,7 +47,7 @@ module.exports = {
 				find.populateAll();
 			}
 					  
-			find.exec(function(err, row) {
+			find.where(where).exec(function(err, row) {
 				//if(row === undefined) return res.notFound();
 				//if (err) return next(err);
 				//console.log(err, row);

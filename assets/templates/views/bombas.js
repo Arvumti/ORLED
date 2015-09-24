@@ -10,7 +10,6 @@ var MoBombas = Backbone.Model.extend({
 		precioPublico		:0,
 		flujoMaximo			:0,
 		idCable				:0,
-		idGenerador			:0,
 		idMotor				:0,
 		idSalida			:0,
 		idTubo				:0,
@@ -35,10 +34,6 @@ define(['/js/base/viewsBase.js'], function (viewsBase) {
 			this.model = MoBombas;
 
 			this.fks = {
-				idGenerador: {
-					url: 'generadores',
-					filters: [{filter:'nombre'}],
-				},
 				idCable: {
 					url: 'cables',
 					filters: [{filter:'nombre'}],
