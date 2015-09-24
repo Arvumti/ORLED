@@ -30,7 +30,7 @@ define(['/js/base/viewsBase.js'], function (viewsBase) {
 			};
 
 			this.extras = {
-				clean: ['idBomba', 'bombeo', 'altura', 'eficiencia'],
+				clean: ['bombeo', 'altura', 'eficiencia'],
 			};
 
 			var columns = [
