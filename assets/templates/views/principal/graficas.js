@@ -56,9 +56,9 @@ define(deps, function (viewsBase, highcharts, html) {
 			};
 		},
 		/*------------------------- Base -----------------------------*/
-		render: function() {
+		render: function(totalModulo, cargaDinamica, idLocalidad) {
 			viewsBase.abc.prototype.render.call(this);
-			this.llenarGrafica();
+			this.llenarGrafica(totalModulo, cargaDinamica, idLocalidad);
 		},
 		close: function() {
 			viewsBase.abc.prototype.close.call(this);
@@ -199,12 +199,12 @@ define(deps, function (viewsBase, highcharts, html) {
 			//this.crear_GraficaMes(datos);
 		},
 		///click_llenarGrafica: function(e){
-		llenarGrafica: function(e){
+		llenarGrafica: function(totalModulo, cargaDinamica, idLocalidad){
 			var that = this;
 
 			/*-------------------------------Datos por mes----------------------------------*/
 
-			app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:1}},done:doneI});
+			app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:idLocalidad}},done:doneI});
 			function doneI (data) {
 				var datos = data[0] || Object();
 				datos = _.pick(datos, 'enero', 'febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre', 'promedio');
@@ -221,20 +221,18 @@ define(deps, function (viewsBase, highcharts, html) {
 				var constante = 1012;
 
 				/* produccion de output */
-				var totalEnergia;
-				var hPico;
-				var eficienciaBomba;
-				var factorConversion;
-				//1
-				var cargaDinamica;
-
+				var eficienciaBomba = 0.58;
+				var factorConversion = 367;
 
 				for(var key in datos) {
-					var subEnergia = areaModulo * eficiencia * perdidas * constante;
+					var subEnergia =  areaModulo * eficiencia * perdidas * constante * totalModulo * datos[key];
+					var subOutput = (subEnergia * eficienciaBomba * factorConversion * 1) / parseFloat(cargaDinamica);
 
-					var porcentaje = (((datos[key]*500)*3)/100);
-					energia[key] = parseFloat(parseFloat(((datos[key] * 500)-porcentaje)/1000).toFixed(2));
-					output[key] = parseFloat(parseFloat(datos[key] * 1000).toFixed(2));
+					//var porcentaje = (((datos[key]*500)*3)/100);
+					//energia[key] = parseFloat(parseFloat(((datos[key] * 500)-porcentaje)/1000).toFixed(2));
+					//output[key] = parseFloat(parseFloat(datos[key] * 1000).toFixed(2));
+					energia[key] = parseFloat((subEnergia / 1000).toFixed(2));
+					output[key] = parseFloat((subOutput / 1000).toFixed(2));
 				}
 				that.optionsGraficas.energiaMes.datos = energia;
 				that.optionsGraficas.salidaMes.datos = output;

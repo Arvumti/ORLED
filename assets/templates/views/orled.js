@@ -201,9 +201,11 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			this.form.submit();
 		},	
 		click_calcular: function(){
+			debugger
 			var that = this;
-			this.subViews.graficas.view.render();
+			var idLocalidad = this.tyas.tyaidLocalidad.data('fn').current('idLocalidad');
 			var total = that.txtAlturaDinamica.val();
+			that.subViews.graficas.view.render(0, 0, idLocalidad);
 			that.bombas(total);
 			this.subViews.mapaElementos.view.close();
 		},
@@ -253,16 +255,18 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			rendimientoDiario =  (datos.rendimientoDiario*1000);
 
 			//app.ut.request({url:'/rendimientos/eficiencia', data:{idBomba:1, altura:39},done:doneA});
-			app.ut.request({url:'/rendimientos/eficiencia', data:{idBomba:idBomba, altura:datos.alturaDinamica},done:doneA});
+			var alturaDinamica = datos.alturaDinamica;
+			app.ut.request({url:'/rendimientos/eficiencia', data:{idBomba:idBomba, altura:alturaDinamica},done:doneA});
 			function doneA(data){
 				eficienciaBomba = (data.eficiencia)/100;
 				//app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:1}},done:doneB});
-				app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:datos.idLocalidad}},done:doneB});
+				var idLocalidad = datos.idLocalidad;
+				app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:idLocalidad}},done:doneB});
 				function doneB (data) {					
 					if (data && data.length > 0){
 						insolacion = data[0].promedio;
 						var regimenBombeo = parseFloat(rendimientoDiario/insolacion);
-						var cargaEstatica = parseFloat(datos.alturaDinamica);
+						var cargaEstatica = parseFloat(alturaDinamica);
 						var cargaDinamicaTotal = parseFloat(cargaEstatica+datos.perdida);						
 						//app.ut.request({url:'/generadores', data:{where:{idGenerador:idGenerador}},done:doneC});
 						app.ut.request({url:'/compuestos/populate', data:{where:{idGenerador:idGenerador, idBomba:idBomba, idArreglo:idArreglo}}, done:doneC});
@@ -301,7 +305,9 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 									inputBomba.removeClass('noValida');
 								}
 								app.ut.hide();								
-								that.popFormArreglo.render(modulosParalelo, modulosSerie, totalModulo, arregloFotovoltaico,aguaBombeada,currentBombaNombre,currentMotorNombre);		
+								that.popFormArreglo.render(modulosParalelo, modulosSerie, totalModulo, arregloFotovoltaico,aguaBombeada,currentBombaNombre,currentMotorNombre);
+
+								that.subViews.graficas.view.render(totalModulo, alturaDinamica, idLocalidad);
 							}else{
 								app.ut.message({text:'No exiten datos'});
 							}
@@ -471,7 +477,6 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			this.formData[0].reset();
 		},
 		/*------------------------- Eventos -----------------------------*/
-
 	});
 	return {view:ViOrled};
 });
