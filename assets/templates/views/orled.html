@@ -34,59 +34,66 @@
 									<small class="error">El campo es requerido.</small>
 								</div>
 								<div class="small-6 columns text-center">
-									<div class="small-11 columns text-center">
+									<div class="row collapse">
 										<label>Angulo de inclinación</label>
-										<input type="text" min="0" data-field="anguloInclinacion" class="anguloIncli" />
-									</div>
-									<div class="small-1 columns">
-										<p class="simboloInput">°</p>
+										<div class="small-10 columns text-center">
+											<input type="text" min="0" data-field="anguloInclinacion" class="anguloIncli text-right" />
+										</div>
+										<div class="small-2 columns">
+											<span class="postfix">°</span>
+										</div>
 									</div>
 								</div>
 								<div class="small-6 columns text-center">
-									<div class="small-11 columns text-center">
+									<div class="row collapse">
 										<label>Pérdida por suciedad</label>
-										<input type="number" min="0" data-field="perdida" value=".3"/>
-									</div>
-									<div class="small-1 columns">
-										<p class="simboloInput">m</p>
+										<div class="small-10 columns text-center">
+											<input type="number" min="0" data-field="perdida" value=".3" class="text-right" />
+										</div>
+										<div class="small-2 columns">
+											<span class="postfix">m</span>
+										</div>
 									</div>	
 								</div>
 								<div class="small-6 columns text-center">
-									<div class="small-11 columns text-center">
+									<div class="row collapse">
 										<label>Temp. del agua</label>
-										<input type="number" min="0" data-field="temperatura" value="25" />
-									</div>
-									<div class="small-1 columns">
-										<p class="simboloInput">°C</p>
+										<div class="small-10 columns text-center">
+											<input type="number" min="0" data-field="temperatura" value="25" class="text-right" />
+										</div>
+										<div class="small-2 columns">
+											<span class="postfix">°C</span>
+										</div>
 									</div>
 								</div>
-								<div class="small-6 columns text-center">
-									<div class="small-11 columns text-center">
+								<div class="small-6 columns">
+									<div class="row collapse">
 										<label>Cable del motor</label>
-										<input type="number" min="0" data-field="cable"/>
-									</div>
-									<div class="small-1 columns">
-										<p class="simboloInput">m</p>
+										<div class="small-10 columns">
+											<input type="number" min="0" data-field="cable" class="text-right" />
+										</div>
+										<div class="small-2 columns">
+											<span class="postfix">m</span>
+										</div>
 									</div>
 								</div>
 								<div class="small-12 columns text-center">
 									<p>Lado de descarga</p>							
 									<div class="small-12 small columns text-center">
 										<div class="small-8 columns">
-											<div class="small-11 columns">
+											<div class="row collapse">
 												<label>Altura dinámica</label>
-												<label>
-													<input type="number" min="0" data-field="alturaDinamica" required value="0" />
-												</label>
-												<small class="error">Este campo es requerido</small>
-											</div>
-											<div class="small-1 columns">
-												<p class="simboloInput">m</p>
+												<div class="small-9 columns">
+													<input type="number" min="0" data-field="alturaDinamica" required value="0" class="text-right" />
+												</div>
+												<div class="small-3 columns">
+													<span class="postfix">m</span>
+												</div>
 											</div>
 										</div>									
 										<div class="small-4 columns">
 											<label>
-												<button type="button" class="button btn-calcular-altura tiny espacio-top"><i class="icon-calc"></i>Calcular</button>
+												<button type="button" class="button btn-calcular-altura tiny align-top"><i class="icon-calc"></i>Calcular</button>
 											</label>
 										</div>
 									</div>
@@ -96,26 +103,28 @@
 										<input type="checkbox" data-field="idLongitudTuberia"/> Longitud de la tubería
 									</label>
 								</div>
-								<div class="small-5 small-centered columns text-center">
-									<div class="small-11 columns text-center">
-										<input type="number" min="0" data-field="longitudTuberia" disabled="disabled" class="longTube" />
-									</div>
-									<div class="small-1 columns">
-										<p class="simboloInput">m</p>
+								<div class="small-12 columns">
+									<div class="row collapse">
+										<div class="small-10 columns">
+											<input type="number" min="0" data-field="longitudTuberia" disabled="disabled" class="longTube text-right" />
+										</div>
+										<div class="small-2 columns">
+											<span class="postfix">m</span>
+										</div>
 									</div>
 								</div>
 								<div class="small-12 columns">
-									<p class="text-center">Requerimientos del suministro</p>
+									<h5 class="text-center"><strong>Requerimientos del suministro</strong></h5>
 								</div>
 								<div class="small-12 columns text-center">
-									<div class="small-12 columns text-center">
-										<label>Rendimiento diario requerido</label>
-									</div>
-									<div class="small-5 small-centered columns">
-										<input type="number" min="0" data-field="rendimientoDiario"/>
-									</div>
-									<div class="small-4 columns">
-										<p class="simboloInput">m³</p>
+									<div class="row collapse">
+										<label>Rendimiento diario</label>
+										<div class="small-9 columns">
+											<input type="number" min="0" data-field="rendimientoDiario" value="0" class="text-right" />
+										</div>
+										<div class="small-3 columns">
+											<span class="postfix">m³</span>
+										</div>
 									</div>
 								</div>
 								<div class="small-12 columns">
