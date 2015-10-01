@@ -58,5 +58,9 @@ module.exports = {
             collection: 'Compuestos',
             via: 'idBomba'
         },
+        Eficiencias: {
+            collection: 'Eficiencias',
+            via: 'idBomba'
+        },
 	}
 };

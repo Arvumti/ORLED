@@ -221,28 +221,27 @@
 						<th><span>Tubo Ø D</span></th>						
 						<th><span>Altura</span></th>
 						<th><span>Output</span></th>
-						<th><span>Eficiencia</span></th>
 					</tr>
 					<tr class="menuInput">
-						<th><input type="text" class="nombreBombaTabla" data-idbomba='0' data-nombremotor='Motor'/><i class="icon-menu openItemModal" data-valor="1"></i></th>
-						<th><input type="text" class="nombreGenerador" data-idgenerador='0'/><i class="icon-menu openItemModal" data-valor="2"></i></th>
+						<th><select data-filed="bomba"></select></th>
+						<th><select data-filed="generador"></select></th>
 						<th></th>
 						<th></th>
-						<th><input type="text" class="nombreCable isHidden"/><i class="icon-menu isHidden" data-valor="3"></i></th>
-						<th></th>
+						<th>
+							<input type="text" class="nombreCable isHidden"/><i class="icon-menu isHidden" data-valor="3"></i>
+						</th>
 						<th></th>						
 					</tr>
 				</thead>
 				<tbody>
 					{{#bombas}}
-						<tr class="selectCell" data-nombreBomba="{{nombreBomba}}" data-nombremotor="{{motor}}" data-idbomba="{{idBomba}}" data-generador="{{generador}}" data-idgenerador="{{idGenerador}}" data-idarreglo="{{idArreglo}}" data-cable="{{cable}}">
-							<td>{{nombreBomba}}</td>
-							<td>{{generador}}</td>							
-							<td>{{cable}}</td>
-							<td>{{tubo}}</td>						
+						<tr class="selectCell" data-idbomba="{{idBomba}}">
+							<td>{{nombre}}</td>
+							<td class="compuesto">{{CompuestoActivo.idGenerador.nombre}} {{CompuestoActivo.idArreglo.potencia}} Wp ({{CompuestoActivo.idArreglo.serie}}x{{CompuestoActivo.idArreglo.paralelo}})</td>							
+							<td>{{idCable.nombre}}</td>
+							<td>{{idTubo.nombre}}</td>						
 							<td>{{alturaMinima}}...{{alturaMaxima}}</td>
-							<td>{{salida}}</td>
-							<td>{{eficiencia}}</td>
+							<td>{{idSalida.nombre}}</td>
 						</tr>
 					{{/bombas}}
 				</tbody>
@@ -264,5 +263,16 @@
 				{{/items}}
 			</tbody>
 		</table>
+	</script>
+	<script type="text/template-handlebars-x" class="tmp_bombas_options">
+		<option value="-1">Seleccione un registro</option>
+		{{#data}}
+			<option value="{{idBomba}}">{{nombre}}</option>
+		{{/data}}
+	</script>
+	<script type="text/template-handlebars-x" class="tmp_componente_options">
+		{{#data}}
+			<option value="{{idCompuesto}}">{{idGenerador.nombre}} {{idArreglo.potencia}} Wp ({{idArreglo.serie}}x{{idArreglo.paralelo}})</option>
+		{{/data}}
 	</script>
 </section>

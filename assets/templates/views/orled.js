@@ -17,6 +17,9 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			'click .tabs a' : 'click_tabs',
 			'click .btn-calcular-altura': 'click_CalcularAltura',
 			'change [data-field="idLongitudTuberia"]': 'change_idLongitudTuberia',
+
+			'change [data-filed="bomba"]':'change_cbobomba',
+			'change [data-filed="generador"]':'change_cbogenerador',
 		},
 		initialize: function() {
 			var that = this;
@@ -44,7 +47,11 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			this.longTube = this.$el.find('.longTube');
 			this.tmp_bombas = Handlebars.compile(this.$el.find('.tmp_bombas').html());
 			this.formData = this.$el.find('.form-data');
-			this.tmp_items = Handlebars.compile(this.$el.find('.tmp_items').html());		
+			
+			this.tmp_items = Handlebars.compile(this.$el.find('.tmp_items').html());
+			this.tmp_bombas_options = Handlebars.compile(this.$el.find('.tmp_bombas_options').html());
+			this.tmp_componente_options = Handlebars.compile(this.$el.find('.tmp_componente_options').html());
+
 			this.subContentEntradas = this.$el.find('.sub-content.pnl-entradas');
 			this.subContentCableado = this.$el.find('.sub-content.pnl-cableado');
 			this.txtAlturaDinamica = this.$el.find('[data-field="alturaDinamica"]');
@@ -74,6 +81,11 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			this.modalItems = this.$el.find('.modal-items');
 			this.popItems = new ViPopItems({el:this.modalItems, parentView:this, tmp_items:this.tmp_items});
 			//this.subViews.graficas.close();
+
+			this.cboBomba;
+			this.cboGenerador;
+
+			this.jBombas = Array();
 		},
 		/*------------------------- Base -----------------------------*/
 		render: function() {
@@ -83,6 +95,31 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			viewsBase.abc.prototype.close.call(this);
 		},
 		/*------------------------- Eventos -----------------------------*/
+		change_cbobomba: function(e) {
+			var idBomba = $(e.currentTarget).find('option:selected').val();
+			var bomba = _.find(this.jBombas, {idBomba:parseInt(idBomba)});
+			var compuestos = _.sortBy(bomba.Compuestos, function(item) { return item.idArreglo.voltaje; })
+
+			bomba.CompuestoActivo = compuestos[0];
+
+			var htmlComponente = this.tmp_componente_options({data:compuestos});
+			this.cboGenerador.html(htmlComponente);
+
+			this.dimencionar(bomba);
+		},
+		change_cbogenerador: function(e) {
+			var idCompuesto = $(e.currentTarget).find('option:selected').val();
+			var idBomba = this.cboBomba.find('option:selected').val();		
+
+			var bomba = _.find(this.jBombas, {idBomba:parseInt(idBomba)});
+			var compuesto = _.find(bomba.Compuestos, {idCompuesto:parseInt(idCompuesto)});
+
+			var td = this.gvBombas.find('[data-idbomba="' + idBomba + '"] .compuesto');
+			td.text(compuesto.idGenerador.nombre + ' ' + compuesto.idArreglo.potencia + ' Wp (' + compuesto.idArreglo.serie + 'x' + compuesto.idArreglo.paralelo + ')');
+			
+			bomba.CompuestoActivo = compuesto;
+			this.dimencionar(bomba);
+		},
 		click_openItems: function(e) {
 			var valor = $(e.currentTarget).data("valor");
 			var bomba = this.$el.find('.nombreBombaTabla').data();
@@ -109,68 +146,54 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 				// 	'<=': alturaDinamica
 				// },
 			};
-			
-			app.ut.request({url:'/compuestos/populate', done:doneCom});
-			function doneCom(compuestos) {
-				app.ut.request({url:'/bombas/populate', data:{where:where}, done:done});
-				function done(data) {
-					console.log(data);
-					var arrDatosBombas=Array();
-					if(data) {
-						var info = data;
-		
-						for (var i = 0; i < info.length; i++) {
-							info[i]
-							var idGenerador = info[i].Compuestos[0].idGenerador;
-							var generador = _.find(compuestos, function(item) {
-								return item.idGenerador.idGenerador == idGenerador;
-							});
 
-							var bomba = {
-								nombreBomba: info[i].nombre,
-								idBomba: info[i].idBomba,
-								generador: generador.idGenerador.nombre + ' ' + generador.idArreglo.serie + 'x' + generador.idArreglo.paralelo,
-								motor: info[i].idMotor.nombre,
-								idGenerador: generador.idGenerador.idGenerador,
-								idArreglo: generador.idArreglo.idArreglo,
-								alturaMinima: info[i].alturaMinima,
-								alturaMaxima: info[i].alturaMaxima,
-								eficiencia: info[i].eficiencia,
-								etatrack: '',
-								accesorios:'',
-								cable: info[i].idCable.nombre,
-								tubo: info[i].idTubo.nombre,
-								salida: info[i].idSalida.nombre,
-							}
-							arrDatosBombas.push(bomba);
-						};
-						var tr = that.tmp_bombas({bombas:arrDatosBombas});
-						that.gvBombas.html(tr);
+			app.ut.request({url:'/bombas/populate', data:{where:where}, done:done});
+			function done(bombas) {
+				var arrBombas = Array();
+				for (var i = 0; i < bombas.length; i++)
+					arrBombas.push(bombas.idBomba);
+
+				app.ut.request({url:'/compuestos/populate', data:{where:{idBomba:arrBombas}}, done:doneCom});
+				function doneCom(compuestos) {
+					for (var i = 0; i < bombas.length; i++) {
+						var comps = _.filter(compuestos, function(item) {
+							return item.idBomba.idBomba == bombas[i].idBomba;
+						});
+						comps = _.sortBy(comps, function(item) { return item.idArreglo.voltaje; });
+
+						bombas[i].Compuestos = comps;
+						bombas[i].CompuestoActivo = comps[0];
 					}
+
+					that.jBombas = bombas;
+					var tr = that.tmp_bombas({bombas:bombas});
+					that.gvBombas.html(tr);
+
+					that.cboBomba = that.gvBombas.find('[data-filed="bomba"]');
+					that.cboGenerador = that.gvBombas.find('[data-filed="generador"]');
+
+					var htmlBomba = that.tmp_bombas_options({data:bombas});
+					var htmlComponente = that.tmp_componente_options({});
+
+					that.cboBomba.html(htmlBomba);
+					that.cboGenerador.html(htmlComponente);
 				}
 			}
 		},
 		rowSelected: function(e) {
-			var that  = this;
-			var rows = that.$el.find('tr').removeClass('isActive');
-			var row =$(e.currentTarget).addClass('isActive');
-			var nombreBomba =$(e.currentTarget).data("nombrebomba");
-			var idNombreBomba =$(e.currentTarget).data("idbomba");
-			var generador =$(e.currentTarget).data("generador");
-			var idGenerador =$(e.currentTarget).data("idgenerador");
-			var idArreglo =$(e.currentTarget).data("idarreglo");
-			var nombreMotor =$(e.currentTarget).data("nombremotor");
-			var inputBomba = that.$el.find('.nombreBombaTabla');
-			inputBomba.attr('data-idbomba',idNombreBomba);
-			inputBomba.attr('data-nombremotor',nombreMotor);		
-			that.idBombaInicial = inputBomba.data('idbomba');
-			var inputGenerador =that.$el.find('.nombreGenerador');
-			inputGenerador.attr('data-idgenerador',idGenerador);
-			that.idGeneradorInicial=inputGenerador.data('idgenerador');
-			var inputCable =that.$el.find('.nombreCable');
-			inputBomba.val(nombreBomba);
-			inputGenerador.val(generador);
-			that.dimencionar(idGenerador, idNombreBomba, idArreglo);
+			this.$el.find('tr').removeClass('isActive');
+			var row = $(e.currentTarget).addClass('isActive');
+			var idBomba = row.data("idbomba");
+
+			var bomba = _.findWhere(this.jBombas, {idBomba:idBomba});
+			var compuestos = _.sortBy(bomba.Compuestos, function(item) { return item.idArreglo.voltaje; })
+
+			bomba.CompuestoActivo = compuestos[0];
+
+			var htmlComponente = this.tmp_componente_options({data:compuestos});
+			this.cboGenerador.html(htmlComponente);
+			
+			this.dimencionar(bomba);
 		},
 		rowSelectedCustom: function(tipoItem, idItem, nombreItem, idArreglo) {
 			var that  = this;
@@ -227,34 +250,36 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			longitud = this.txtLongitud.val();
 			this.popFormCalcular.render(longitud);
 		},
-		dimencionar: function(idGenerador, idBomba, idArreglo){
+		dimencionar: function(bomba){
+			var idBomba = bomba.idBomba, 
+				idGenerador = bomba.CompuestoActivo.idGenerador.idGenerador, 				
+				idArreglo = bomba.CompuestoActivo.idArreglo.idArreglo;
+
 			var that =  this;
-			//var idGenerador = this.$el.find('.nombreGenerador').data('idgenerador');
 			var datos = viewsBase.base.prototype.getData.call(this, this.formData);
 
 			var volumen,
-			voltajeModulo =  30.3,
-			corrienteModulo = 8.26,
-			factorConversion = 367,
-			factorFricción = 0,
-			cargaFriccion = .3,
-			//eficienciaBomba = .35,	
-			eficienciaBomba,
-			factorReduccionModulo = .90,
-			factorRendimiento = .95,
-			alturaEstatica,
-			alturaDescarga,
-			cargaEstatica,
-			longitudTuberia,
-			recorridoTotal,
-			voltajeOperacion,
-			modulosSerie,
-			modulosParalelo,
-			voltaje,
-			insolacion,
-			rendimientoDiario =  (datos.rendimientoDiario*1000);
+				voltajeModulo =  30.3,
+				corrienteModulo = 8.26,
+				factorConversion = 367,
+				factorFricción = 0,
+				cargaFriccion = .3,
+				//eficienciaBomba = .35,	
+				eficienciaBomba = 0,
+				factorReduccionModulo = .90,
+				factorRendimiento = .95,
+				alturaEstatica,
+				alturaDescarga,
+				cargaEstatica,
+				longitudTuberia,
+				recorridoTotal,
+				voltajeOperacion,
+				modulosSerie,
+				modulosParalelo,
+				voltaje,
+				insolacion,
+				rendimientoDiario = datos.rendimientoDiario * 1000;
 
-			//app.ut.request({url:'/rendimientos/eficiencia', data:{idBomba:1, altura:39},done:doneA});
 			var alturaDinamica = datos.alturaDinamica;
 			app.ut.request({url:'/rendimientos/eficiencia', data:{idBomba:idBomba, altura:alturaDinamica},done:doneA});
 			function doneA(data){
@@ -275,11 +300,11 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 								var arreglo = data[0].idArreglo;
 
 								voltajeOperacion =  arreglo.voltaje;
-								var inputGenerador =that.$el.find('.nombreGenerador');
-								var inputBomba = that.$el.find('.nombreBombaTabla');
+
 								var energiaHidraulica = (rendimientoDiario * cargaDinamicaTotal)/factorConversion;
-								var currentBombaNombre = inputBomba.val();
-								var currentMotorNombre = inputBomba.data('nombremotor');
+								var currentBombaNombre = bomba.nombre;
+								var currentMotorNombre = bomba.CompuestoActivo.idGenerador.nombre;
+
 								var energiaArregloFV = energiaHidraulica/eficienciaBomba;
 								var cargaElectrica = energiaArregloFV/voltajeOperacion
 								var cargaElectricaCorregida = cargaElectrica/factorRendimiento;
@@ -293,20 +318,23 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 								var aguaBombeada = (modulosParalelo * corrienteModulo * voltajeOperacion * eficienciaBomba * factorConversion * insolacion * .90) / cargaDinamicaTotal;								
 								var regimenBombeo2 = aguaBombeada/insolacion;
 								console.log(regimenBombeo2);
+
+								that.cboGenerador.find('option[value="' + bomba.CompuestoActivo.idCompuesto + '"]').prop('selected', true);
+								that.cboBomba.find('option[value="' + idBomba + '"]').prop('selected', true);
 								
 								if(aguaBombeada < rendimientoDiario || !aguaBombeada || !rendimientoDiario){
 									console.log('No valida')
-									inputGenerador.addClass('noValida');
-									inputBomba.addClass('noValida');
+									that.cboGenerador.addClass('noValida');
+									that.cboBomba.addClass('noValida');
 								}
 								else {
 									console.log('Valida')
-									inputGenerador.removeClass('noValida');
-									inputBomba.removeClass('noValida');
+									that.cboGenerador.removeClass('noValida');
+									that.cboBomba.removeClass('noValida');
 								}
 								app.ut.hide();								
-								that.popFormArreglo.render(modulosParalelo, modulosSerie, totalModulo, arregloFotovoltaico,aguaBombeada,currentBombaNombre,currentMotorNombre);
-
+								that.popFormArreglo.render(modulosParalelo, modulosSerie, totalModulo, arregloFotovoltaico,aguaBombeada, currentBombaNombre, currentMotorNombre);
+								debugger
 								that.subViews.graficas.view.render(totalModulo, alturaDinamica, idLocalidad);
 							}else{
 								app.ut.message({text:'No exiten datos'});
