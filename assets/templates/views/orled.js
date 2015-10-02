@@ -284,7 +284,6 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			app.ut.request({url:'/rendimientos/eficiencia', data:{idBomba:idBomba, altura:alturaDinamica},done:doneA});
 			function doneA(data){
 				eficienciaBomba = (data.eficiencia)/100;
-				//app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:1}},done:doneB});
 				var idLocalidad = datos.idLocalidad;
 				app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:idLocalidad}},done:doneB});
 				function doneB (data) {					
@@ -293,53 +292,46 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 						var regimenBombeo = parseFloat(rendimientoDiario/insolacion);
 						var cargaEstatica = parseFloat(alturaDinamica);
 						var cargaDinamicaTotal = parseFloat(cargaEstatica+datos.perdida);						
-						//app.ut.request({url:'/generadores', data:{where:{idGenerador:idGenerador}},done:doneC});
-						app.ut.request({url:'/compuestos/populate', data:{where:{idGenerador:idGenerador, idBomba:idBomba, idArreglo:idArreglo}}, done:doneC});
-						function doneC (data){
-							if (data && data.length > 0) {
-								var arreglo = data[0].idArreglo;
 
-								voltajeOperacion =  arreglo.voltaje;
+						var arreglo = bomba.CompuestoActivo.idArreglo;
+						voltajeOperacion =  arreglo.voltaje;
 
-								var energiaHidraulica = (rendimientoDiario * cargaDinamicaTotal)/factorConversion;
-								var currentBombaNombre = bomba.nombre;
-								var currentMotorNombre = bomba.CompuestoActivo.idGenerador.nombre;
+						var energiaHidraulica = (rendimientoDiario * cargaDinamicaTotal)/factorConversion;
+						var currentBombaNombre = bomba.nombre;
+						var currentMotorNombre = bomba.CompuestoActivo.idGenerador.nombre;
 
-								var energiaArregloFV = energiaHidraulica/eficienciaBomba;
-								var cargaElectrica = energiaArregloFV/voltajeOperacion
-								var cargaElectricaCorregida = cargaElectrica/factorRendimiento;
-								var corrienteProyecto = cargaElectricaCorregida/insolacion;
-								var corrienteAjustadaProyecto = corrienteProyecto/factorReduccionModulo;
-								var modulosParalelo = corrienteAjustadaProyecto/corrienteModulo;
-								var modulosSerie = voltajeOperacion / voltajeModulo;
-								var totalModulo = modulosSerie * modulosParalelo;
-								var arregloFotovoltaico = totalModulo * corrienteModulo * voltajeModulo;
+						var energiaArregloFV = energiaHidraulica/eficienciaBomba;
+						var cargaElectrica = energiaArregloFV/voltajeOperacion
+						var cargaElectricaCorregida = cargaElectrica/factorRendimiento;
+						var corrienteProyecto = cargaElectricaCorregida/insolacion;
+						var corrienteAjustadaProyecto = corrienteProyecto/factorReduccionModulo;
+						var modulosParalelo = corrienteAjustadaProyecto/corrienteModulo;
+						var modulosSerie = voltajeOperacion / voltajeModulo;
+						var totalModulo = modulosSerie * modulosParalelo;
+						var arregloFotovoltaico = totalModulo * corrienteModulo * voltajeModulo;
 
-								var aguaBombeada = (modulosParalelo * corrienteModulo * voltajeOperacion * eficienciaBomba * factorConversion * insolacion * .90) / cargaDinamicaTotal;								
-								var regimenBombeo2 = aguaBombeada/insolacion;
-								console.log(regimenBombeo2);
+						var aguaBombeada = (modulosParalelo * corrienteModulo * voltajeOperacion * eficienciaBomba * factorConversion * insolacion * .90) / cargaDinamicaTotal;								
+						var regimenBombeo2 = aguaBombeada/insolacion;
+						console.log(regimenBombeo2);
 
-								that.cboGenerador.find('option[value="' + bomba.CompuestoActivo.idCompuesto + '"]').prop('selected', true);
-								that.cboBomba.find('option[value="' + idBomba + '"]').prop('selected', true);
-								
-								if(aguaBombeada < rendimientoDiario || !aguaBombeada || !rendimientoDiario){
-									console.log('No valida')
-									that.cboGenerador.addClass('noValida');
-									that.cboBomba.addClass('noValida');
-								}
-								else {
-									console.log('Valida')
-									that.cboGenerador.removeClass('noValida');
-									that.cboBomba.removeClass('noValida');
-								}
-								app.ut.hide();								
-								that.popFormArreglo.render(modulosParalelo, modulosSerie, totalModulo, arregloFotovoltaico,aguaBombeada, currentBombaNombre, currentMotorNombre);
-								debugger
-								that.subViews.graficas.view.render(totalModulo, alturaDinamica, idLocalidad);
-							}else{
-								app.ut.message({text:'No exiten datos'});
-							}
+						that.cboGenerador.find('option[value="' + bomba.CompuestoActivo.idCompuesto + '"]').prop('selected', true);
+						that.cboBomba.find('option[value="' + idBomba + '"]').prop('selected', true);
+						
+						if(aguaBombeada < rendimientoDiario || !aguaBombeada || !rendimientoDiario){
+							console.log('No valida')
+							that.cboGenerador.addClass('noValida');
+							that.cboBomba.addClass('noValida');
 						}
+						else {
+							console.log('Valida')
+							that.cboGenerador.removeClass('noValida');
+							that.cboBomba.removeClass('noValida');
+						}
+						app.ut.hide();
+						that.popFormArreglo.render(modulosParalelo, modulosSerie, totalModulo, arregloFotovoltaico,aguaBombeada, currentBombaNombre, currentMotorNombre);
+						debugger
+						that.subViews.graficas.view.render(totalModulo, alturaDinamica, idLocalidad);
+
 					}else{
 						app.ut.message({text:'No exiten datos'});
 						app.ut.hide();
