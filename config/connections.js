@@ -51,7 +51,7 @@ module.exports.connections = {
   mysqlOrledLocal: {
     adapter: 'sails-mysql',
     host: 'localhost',
-    user: 'allin',
+    user: 'root',
     password: '',
     database: 'admin_orled'
   },
