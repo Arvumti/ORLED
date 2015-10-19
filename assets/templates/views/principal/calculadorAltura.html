@@ -5,29 +5,61 @@
 	<form class="form-data pop-body" data-abide>
 		<div class="row">
 			<div class="small-6 columns">
-				Longitud de la linea de conducción: L (m)= 
-				<input type="text" data-field="longitud"/>
+				<label>
+					Longitud de la linea de conducción: L (m)= 
+					<input type="text" data-field="longitud"/>
+				</label>
 			</div>
 			<div class="small-6 columns">
-				Coeficiente dado en la tabla: C =
-				<input type="text" data-field="coeficiente"/>
+				<label>
+					Dif de altura de descarga (metros) =
+					<input type="text" data-field="alturaDes"/> 
+				</label>
 			</div>
 			<div class="small-5 columns">
-				Dif de altura de descarga (metros) =
-				<input type="text" data-field="alturaDes"/> 
+				<label>
+					Coeficiente dado en la tabla: C =
+					<select data-field="coeficiente">
+						<option value="0.01">Plastico (PVC, Poliducto) [0.01]</option>
+						<option value="0.011">Acero [0.011]</option>
+						<option value="0.017">Acero galvanizado [0.017]</option>
+					</select>
+				</label>
 			</div>
 			<div class="small-5 columns">
-				Diametro de la tuberia (pulgadas) =
-				<input type="text" data-field="diametroPulgadas"/>
+				<label>
+					Diametro de la tuberia (pulgadas) =
+					<select data-field="diametroPulgadas">
+						<option value="2">2</option>
+						<option value="0.5">1/2</option>
+						<option value="0.75">3/4</option>
+						<option value="1">1</option>
+						<option value="1.15">1 1/4</option>
+						<option value="1.5">1 1/2</option>
+						<option value="1.75">1 3/4</option>
+						<option value="2.5">2 1/2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
+						<option value="12">12</option>
+						<option value="13">13</option>
+						<option value="14">14</option>
+						<option value="15">15</option>
+						<option value="16">16</option>
+					</select>
+				</label>
 			</div>
 			<div class="small-2 columns">
-				Q(l/s) =
-				<input type="text" data-field="Q"/>
-			</div>
-			<div class="small-12 columns">
-				<div class="small-6 columns">
-					<button type="button" class="btn-calcular tiny success button calcular-btn">Calcular</button>
-				</div>
+				<label>
+					<br/>
+					<button type="button" class="btn-calcular tiny success button expand calcular-btn">Calcular</button>
+				</label>
 			</div>
 			<div class="small-12 columns" align="center">
 				<table class="gv-resultados isHidden table table-custom">
@@ -44,7 +76,7 @@
 					</tbody>
 				</table>
 			</div>
-			<div class="small-12 columns" align="center">
+			<div class="small-12 columns isHidden" align="center">
 				<table class="table table-custom">
 					<thead>
 						<tr class="titulo">

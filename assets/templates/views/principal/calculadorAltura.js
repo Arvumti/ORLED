@@ -10,7 +10,7 @@ define(deps, function (viewsBase, html) {
 		pk: primary key
 		url: ruta del api
 	*/
-	var ViCalculadorAltura = viewsBase.popAbc.extend({
+	var ViCalculadorAltura = Backbone.View.extend({
 		el: '#calculadorAltura',
 		events: {
 			'click .btn-cancelar': 'click_cancelar',
@@ -22,37 +22,25 @@ define(deps, function (viewsBase, html) {
 			this.tmp_resultado= Handlebars.compile(this.$el.find('.tmp_resultado').html());
 			this.gvResultados = this.$el.find('.gv-resultados');
 			this.txtLongitud = this.$el.find('[data-field="longitud"]');
+
+			this.datos = {
+				rendimiento: 0,
+				horas_pico: 0,
+			};
 		},
 		/*------------------------- Base -----------------------------*/
-		render: function(txtLongitud) {
-			debugger
+		render: function(txtLongitud, rendimiento, horas_pico) {
+			this.datos.rendimiento = parseFloat(rendimiento) * 1000;
+			this.datos.horas_pico = horas_pico;
+
 			this.txtLongitud = this.$el.find('[data-field="longitud"]').val(txtLongitud);
-			viewsBase.base.prototype.render.call(this);
 			this.$el.foundation('reveal', 'open');
 		},
 		close: function() {
 			this.$el.foundation('reveal', 'close');
-			this.clear();
 		},
-		clear: function() {
-			debugger
-			this.formData[0].reset();
-			this.gvResultados.addClass('isHidden');
-		},
-		/*------------------------- Eventos -----------------------------*/
-		click_cancelar: function(){
-			this.close();
-		},
-		click_calcular: function(){
-			debugger
-			var that = this;
-			var longitud = parseFloat(this.$el.find('[data-field="longitud"]').val());
-			var coeficiente = parseFloat(this.$el.find('[data-field="coeficiente"]').val());
-			var alturaDes = parseFloat((this.$el.find('[data-field="alturaDes"]').val()));
-			var Q = parseFloat((this.$el.find('[data-field="Q"]').val()));
-			//var diametroMm = this.$el.find('[data-field="diametroMm"]').val();
-			//var diametroMetros = this.$el.find('[data-field="diametroMetros"]').val();
-			var diametroPulgadas = parseFloat((this.$el.find('[data-field="diametroPulgadas"]').val()));
+		william: function(longitud, coeficiente, alturaDes, diametroPulgadas) {
+			var Q = this.datos.rendimiento/this.datos.horas_pico/3600;// parseFloat((this.$el.find('[data-field="Q"]').val()));
 			var diametroMm = parseFloat((diametroPulgadas*25.4));
 			var diametroMetros = parseFloat((diametroMm/1000));
 			var V = parseFloat(0.004*Q/Math.PI/Math.pow(diametroMetros,2));
@@ -61,19 +49,44 @@ define(deps, function (viewsBase, html) {
 			V = V.toFixed(2);
 			H = H.toFixed(2);
 			total = total.toFixed(2);
-			var resultados = {
-				Q,
-				V,
-				H,
-				total,
-			}
+			var resultados = { Q, V, H, total };
+
+			return resultados;		
+		},
+		manning: function(longitud, coeficiente, alturaDes, diametroPulgadas) {
+			var Q = this.datos.rendimiento/1000/this.datos.horas_pico/3600;// parseFloat((this.$el.find('[data-field="Q"]').val()));
+			var diametroMm = parseFloat((diametroPulgadas*25.4));
+			var diametroMetros = parseFloat((diametroMm/1000));
+			
+			//10.3*(H12^2)*((G16^2)/(H14^5.33))*H11
+			var V = 0;
+			var H = parseFloat(10.3*Math.pow(coeficiente, 2)*(Math.pow(Q, 2)/Math.pow(diametroMetros, 5.33))*longitud);
+			var total = parseFloat(H+alturaDes);
+			H = H.toFixed(2);
+			total = total.toFixed(2);
+			var resultados = { Q, V, H, total };
+
+			return resultados;
+		},
+		/*------------------------- Eventos -----------------------------*/
+		click_cancelar: function(){
+			this.close();
+		},
+		click_calcular: function() {
+			var longitud = parseFloat(this.$el.find('[data-field="longitud"]').val());
+			var coeficiente = parseFloat(this.$el.find('[data-field="coeficiente"] option:selected').val());
+			var alturaDes = parseFloat((this.$el.find('[data-field="alturaDes"]').val()));
+			var diametroPulgadas = parseFloat((this.$el.find('[data-field="diametroPulgadas"] option:selected').val()));
+			
+			//var diametroMm = this.$el.find('[data-field="diametroMm"]').val();
+			//var diametroMetros = this.$el.find('[data-field="diametroMetros"]').val();
+			var resultados = this.manning(longitud, coeficiente, alturaDes, diametroPulgadas);
 			console.log(resultados);
 			//var tr = that.options.parentView.tmp_resultado(resultados);
 			this.gvResultados.removeClass('isHidden')
-			var tr = that.tmp_resultado(resultados);
-	 		that.gvResultados.find('tbody').html(tr);
-	 		debugger
-	 		that.options.parentView.txtAlturaDinamica.val(total);
+			var tr = this.tmp_resultado(resultados);
+	 		this.gvResultados.find('tbody').html(tr);
+	 		this.options.parentView.txtAlturaDinamica.val(resultados.total);
 		},
 	});
 	return {view: ViCalculadorAltura, html:html};
