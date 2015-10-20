@@ -13,7 +13,6 @@ var MoBombas = Backbone.Model.extend({
 		idMotor				:0,
 		idSalida			:0,
 		idTubo				:0,
-
 	}
 });
 define(['/js/base/viewsBase.js'], function (viewsBase) {
@@ -53,14 +52,13 @@ define(['/js/base/viewsBase.js'], function (viewsBase) {
 			};
 
 			this.extras = {
-				clean: ['idCable','idTubo','idSalida','idMotor','alturaMin','alturaMax','eficiencia'],
+				clean: ['alturaMin','alturaMax'],
 			};
 
 			var columns = [
 				{nombre:'Bombas', field:'nombre', width:400},
 				{nombre:'Altura Mínima', field:'alturaMinima', width:200},
 				{nombre:'Altura Máxima', field:'alturaMaxima', width:200},
-				{nombre:'Eficiencia', field:'eficiencia', width:200},
 			];
 			viewsBase.abc.prototype.initialize.call(this, columns, null);
 		},

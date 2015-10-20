@@ -375,7 +375,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 				that.cboGenerador.find('option[value="' + bomba.CompuestoActivo.idCompuesto + '"]').prop('selected', true);
 				that.cboBomba.find('option[value="' + idBomba + '"]').prop('selected', true);
 				
-				if(aguaBombeada < rendimientoDiario || !aguaBombeada || !rendimientoDiario){
+				if(aguaBombeada < rendimientoDiario || !aguaBombeada || !rendimientoDiario || arregloFotovoltaico < 0){
 					console.log('No valida')
 					that.cboGenerador.addClass('noValida');
 					that.cboBomba.addClass('noValida');
