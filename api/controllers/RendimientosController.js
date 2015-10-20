@@ -16,6 +16,8 @@ module.exports = {
 		var idBomba = req.param('idBomba') || 0,
 			altura = req.param('altura') || 0;
 
+		console.log('idBomba: ', idBomba, ' altura: ', altura);
+
 		var query = ' \
 			SELECT a.bombeo, a.altura, b.eficiencia	\
 			FROM	(	\
@@ -23,8 +25,8 @@ module.exports = {
 							FROM	(		\
 											SELECT idBomba, bombeo, altura		\
 											FROM Rendimientos		\
-											WHERE idBomba = 1		\
-											AND altura <= 19	\
+											WHERE idBomba = ' + idBomba + '		\
+											AND altura <= ' + altura + '	\
 											ORDER BY altura DESC		\
 											LIMIT 1		\
 										) a		\
@@ -33,8 +35,8 @@ module.exports = {
 							FROM	(		\
 											SELECT idBomba, bombeo, altura		\
 											FROM Rendimientos		\
-											WHERE idBomba = 1	\
-											AND altura >= 19	\
+											WHERE idBomba = ' + idBomba + '	\
+											AND altura >= ' + altura + '	\
 											ORDER BY altura		\
 											LIMIT 1		\
 										) b	\
@@ -42,10 +44,11 @@ module.exports = {
 			INNER JOIN eficiencias b	\
 			ON a.idBomba = b.idBomba	\
 			AND a.bombeo = b.bombeo	\
-			LIMIT 1	\
 		';
 
 		Rendimientos.query(query, function(err, rows) { 
+			console.log('row: ', rows);
+
 			var yr = altura;
 			var xr = 0;
 
