@@ -22,9 +22,6 @@ module.exports = {
 		altura: {
 			type: 'float',
 		},
-		eficiencia: {
-			type: 'float',
-		},
 
 		idBomba: {
 			model: 'Bombas',

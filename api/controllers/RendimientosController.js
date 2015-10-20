@@ -17,25 +17,33 @@ module.exports = {
 			altura = req.param('altura') || 0;
 
 		var query = ' \
-			SELECT bombeo, altura, eficiencia	\
+			SELECT a.bombeo, a.altura, b.eficiencia	\
 			FROM	(	\
-							SELECT bombeo, altura, eficiencia	\
-							FROM Rendimientos	\
-							WHERE idBomba = ' + idBomba + '	\
-							AND altura <= ' + altura + '	\
-							ORDER BY altura DESC	\
-							LIMIT 1	\
+							SELECT idBomba, bombeo, altura		\
+							FROM	(		\
+											SELECT idBomba, bombeo, altura		\
+											FROM Rendimientos		\
+											WHERE idBomba = 1		\
+											AND altura <= 19	\
+											ORDER BY altura DESC		\
+											LIMIT 1		\
+										) a		\
+							UNION ALL		\
+							SELECT idBomba, bombeo, altura		\
+							FROM	(		\
+											SELECT idBomba, bombeo, altura		\
+											FROM Rendimientos		\
+											WHERE idBomba = 1	\
+											AND altura >= 19	\
+											ORDER BY altura		\
+											LIMIT 1		\
+										) b	\
 						) a	\
-			UNION ALL	\
-			SELECT bombeo, altura, eficiencia	\
-			FROM	(	\
-							SELECT bombeo, altura, eficiencia	\
-							FROM Rendimientos	\
-							WHERE idBomba = ' + idBomba + '	\
-							AND altura >= ' + altura + '	\
-							ORDER BY altura	\
-							LIMIT 1	\
-						) b';
+			INNER JOIN eficiencias b	\
+			ON a.idBomba = b.idBomba	\
+			AND a.bombeo = b.bombeo	\
+			LIMIT 1	\
+		';
 
 		Rendimientos.query(query, function(err, rows) { 
 			var yr = altura;
