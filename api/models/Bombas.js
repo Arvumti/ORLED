@@ -53,14 +53,17 @@ module.exports = {
 		idTubo: {
 			model: 'Tubos',
 		},
+		idGenerador: {
+			model: 'generadores',
+		},
 
 		Compuestos: {
             collection: 'Compuestos',
             via: 'idBomba'
         },
-        Eficiencias: {
-            collection: 'Eficiencias',
-            via: 'idBomba'
-        },
+        // Eficiencias: {
+        //     collection: 'Eficiencias',
+        //     via: 'idGenerador'
+        // },
 	}
 };

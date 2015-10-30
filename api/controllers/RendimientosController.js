@@ -19,7 +19,7 @@ module.exports = {
 		console.log('idBomba: ', idBomba, ' altura: ', altura);
 
 		var query = ' \
-			SELECT a.bombeo, a.altura, b.eficiencia	\
+			SELECT a.bombeo, a.altura, c.eficiencia	\
 			FROM	(	\
 							SELECT idBomba, bombeo, altura		\
 							FROM	(		\
@@ -41,9 +41,11 @@ module.exports = {
 											LIMIT 1		\
 										) b	\
 						) a	\
-			INNER JOIN eficiencias b	\
+			INNER JOIN bombas b	\
 			ON a.idBomba = b.idBomba	\
-			AND a.bombeo = b.bombeo	\
+			INNER JOIN eficiencias c	\
+			ON b.idGenerador = c.idGenerador	\
+			AND a.bombeo = c.bombeo	\
 		';
 
 		Rendimientos.query(query, function(err, rows) { 

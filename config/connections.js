@@ -40,6 +40,22 @@ module.exports.connections = {
   * Run: npm install sails-mysql                                             *
   *                                                                          *
   ***************************************************************************/
+  mysqlVirtual: {
+    adapter: 'sails-mysql',
+    host: 'virtual.arvumti.com',
+    user: 'admin_orled',
+    password: 'GAfMT3RgJO',
+    database: 'admin_orled'
+  },
+  mysqlLocal: {
+    adapter: 'sails-mysql',
+    host: 'localhost',
+    user: 'admin_orled',
+    password: 'GAfMT3RgJO',
+    database: 'admin_orled'
+  },
+
+
   mysqlOrledRemote: {
     adapter: 'sails-mysql',
     host: '177.244.221.52',

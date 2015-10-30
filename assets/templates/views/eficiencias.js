@@ -1,7 +1,7 @@
 var MoRendimiento = Backbone.Model.extend({
 	defaults: {
 		idRendimiento 	: 0,
-		idBomba			: 0,
+		idGenerador		: 0,
 		bombeo 			: 0,
 		eficiencia      : 0,
 	}
@@ -22,8 +22,8 @@ define(['/js/base/viewsBase.js'], function (viewsBase) {
 			this.model = MoRendimiento;
 
 			this.fks = {
-				idBomba: {
-					url: 'bombas',
+				idGenerador: {
+					url: 'generadores',
 					filters: [{filter:'nombre'}],
 				},
 			};
@@ -33,7 +33,7 @@ define(['/js/base/viewsBase.js'], function (viewsBase) {
 			};
 
 			var columns = [
-				{nombre:'Bomba', field:'idBomba.nombre', width:500},
+				{nombre:'Generador', field:'idGenerador.nombre', width:500},
 				{nombre:'Bombeo', field:'bombeo', width:250},
 				{nombre:'Eficiencia', field:'eficiencia', width:250},
 			];

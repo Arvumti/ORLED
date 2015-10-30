@@ -23,8 +23,8 @@ module.exports = {
 			type: 'float',
 		},
 
-		idBomba: {
-			model: 'Bombas',
+		idGenerador: {
+			model: 'generadores',
 		},
 	}
 };

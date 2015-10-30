@@ -49,6 +49,10 @@ define(['/js/base/viewsBase.js'], function (viewsBase) {
 					url: 'motores',
 					filters: [{filter:'nombre'}],
 				},
+				idGenerador: {
+					url: 'generadores',
+					filters: [{filter:'nombre'}],
+				},
 			};
 
 			this.extras = {
@@ -56,7 +60,8 @@ define(['/js/base/viewsBase.js'], function (viewsBase) {
 			};
 
 			var columns = [
-				{nombre:'Bombas', field:'nombre', width:400},
+				{nombre:'Bombas', field:'nombre', width:300},
+				{nombre:'Generador', field:'idGenerador.nombre', width:100},
 				{nombre:'Altura Mínima', field:'alturaMinima', width:200},
 				{nombre:'Altura Máxima', field:'alturaMaxima', width:200},
 			];
