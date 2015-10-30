@@ -52,7 +52,34 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			};
 			this.spinners = this.$el.find('.linker-spinner:not(.spinner-decimal)');
 			this.spinners.spinner();
-			
+
+			this.$el.find('.linker-spinner:not(.spinner-decimal)~.ui-button').on('click', function(e) {
+				//$(this).siblings('input').change();
+				var input = $(e.currentTarget).siblings('input');
+				var value = parseInt(input.val());
+
+				if(value < 5)
+					value = value;
+				else {
+					if(value >= 5 && value < 50)
+						value += 5;
+					else if(value >= 50 && value < 100)
+						value += 10;
+					else if(value >= 100 && value < 500)
+						value += 100;
+					else if(value >= 500 && value < 1000)
+						value += 200;
+					else if(value >= 1000 && value < 10000)
+						value += 1000;
+					else if(value >= 10000)
+						value += 10000;
+
+					value--;
+				}
+
+				input.val(value);
+			});
+
 			this.spinnersDec = this.$el.find('.linker-spinner.spinner-decimal');
 			this.spinnersDec.spinner({step:0.1, numberFormat:'n'});
 
