@@ -41,9 +41,9 @@ module.exports = {
 											LIMIT 1		\
 										) b	\
 						) a	\
-			INNER JOIN bombas b	\
+			INNER JOIN Bombas b	\
 			ON a.idBomba = b.idBomba	\
-			INNER JOIN eficiencias c	\
+			INNER JOIN Eficiencias c	\
 			ON b.idGenerador = c.idGenerador	\
 			AND a.bombeo = c.bombeo	\
 		';
