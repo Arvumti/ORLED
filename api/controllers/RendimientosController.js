@@ -24,7 +24,7 @@ module.exports = {
 							SELECT idBomba, bombeo, altura		\
 							FROM	(		\
 											SELECT idBomba, bombeo, altura		\
-											FROM Rendimientos		\
+											FROM rendimientos		\
 											WHERE idBomba = ' + idBomba + '		\
 											AND altura <= ' + altura + '	\
 											ORDER BY altura DESC		\
@@ -34,16 +34,16 @@ module.exports = {
 							SELECT idBomba, bombeo, altura		\
 							FROM	(		\
 											SELECT idBomba, bombeo, altura		\
-											FROM Rendimientos		\
+											FROM rendimientos		\
 											WHERE idBomba = ' + idBomba + '	\
 											AND altura >= ' + altura + '	\
 											ORDER BY altura		\
 											LIMIT 1		\
 										) b	\
 						) a	\
-			INNER JOIN Bombas b	\
+			INNER JOIN bombas b	\
 			ON a.idBomba = b.idBomba	\
-			INNER JOIN Eficiencias c	\
+			INNER JOIN eficiencias c	\
 			ON b.idGenerador = c.idGenerador	\
 			AND a.bombeo = c.bombeo	\
 		';

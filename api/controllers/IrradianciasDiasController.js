@@ -17,7 +17,7 @@ module.exports = {
 		var query = ' \
 			SELECT 	ROUND((enero+febrero+marzo+abril+mayo+junio+julio+agosto+septiembre+octubre+noviembre+diciembre)/12, 3) promedio,  \
 					hora \
-			FROM IrradianciasDias \
+			FROM irradianciasdias \
 			WHERE hora < 19 \
 			AND idLocalidad = ' + idLocalidad;
 

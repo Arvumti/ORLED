@@ -7,7 +7,7 @@
 
 module.exports = {
 	autoUpdatedAt: true,
-	tableName: 'Arreglos',
+	tableName: 'arreglos',
 	attributes: {
 		idArreglo: {
 			type: 'integer',
