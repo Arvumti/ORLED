@@ -54,11 +54,13 @@ define(deps, function (viewsBase, highcharts, html) {
 					datos: Object(),
 				},
 			};
+
+			this.tipo_grafica = "1";
 		},
 		/*------------------------- Base -----------------------------*/
-		render: function(totalModulo, cargaDinamica, idLocalidad) {
+		render: function(totalModulo, cargaDinamica, idLocalidad, gasto) {
 			viewsBase.abc.prototype.render.call(this);
-			this.llenarGrafica(totalModulo, cargaDinamica, idLocalidad);
+			this.llenarGrafica(totalModulo, cargaDinamica, idLocalidad, gasto);
 		},
 		close: function() {
 			viewsBase.abc.prototype.close.call(this);
@@ -70,6 +72,10 @@ define(deps, function (viewsBase, highcharts, html) {
 			var total = _.reduce(datos, function(memo, num) { return memo + num; }, 0) / datos.length;
 			total = parseFloat(total.toFixed(2));
 
+			var totalAnual = _.reduce(datos, function(memo, num) { return memo + (num * 30); }, 0);
+			totalAnual = parseFloat(totalAnual.toFixed(2));
+
+			datos.push(total);
 			that.PnlGraficaMes.highcharts({
 				chart: {
 					type: 'column'
@@ -116,7 +122,7 @@ define(deps, function (viewsBase, highcharts, html) {
 					}
 				},
 				series: [{
-					name: 'Total anual: ' + total,
+					name: 'Total anual: ' + totalAnual,
 					color: jDatos.color,
 					//data: [4.8, 5.3, 6.1, 5.9, 5.6, 5.1, 5.3, 5.4, 4.9, 5.2, 5, 4.7, 5.275]	
 					data: datos
@@ -126,7 +132,7 @@ define(deps, function (viewsBase, highcharts, html) {
 		crear_GraficaHora: function(jDatos){
 			var that = this;
 			var datos = _.values(jDatos.datos);
-			var total = _.reduce(datos, function(memo, num) { return memo + num; }, 0) / datos.length;
+			var total = _.reduce(datos, function(memo, num) { return memo + num; }, 0);// / datos.length;
 			total = parseFloat(total.toFixed(2));
 
 			that.PnlGraficaDia.highcharts({
@@ -138,7 +144,7 @@ define(deps, function (viewsBase, highcharts, html) {
 				},
 				xAxis:{
 					categories:[
-						'5:00',
+						'6:00',
 						'',
 						'',
 						'9:00',
@@ -150,7 +156,8 @@ define(deps, function (viewsBase, highcharts, html) {
 						'15:00',
 						'',
 						'',
-						'18:00'
+						'18:00',
+						'',
 					],
 				},
 				yAxis: {
@@ -183,10 +190,13 @@ define(deps, function (viewsBase, highcharts, html) {
 			});
 		},
 		click_tipoGrafica: function(e) {
+			debugger
 			var valor = $(e.currentTarget).val();
 			var datos = Object();
 
-			switch(valor) {
+			this.tipo_grafica = valor;
+
+			switch(this.tipo_grafica) {
 				case "1":
 					this.crear_GraficaMes(this.optionsGraficas.irradianciaMes);
 					this.crear_GraficaHora(this.optionsGraficas.irradianciaDia);
@@ -203,7 +213,7 @@ define(deps, function (viewsBase, highcharts, html) {
 
 			//this.crear_GraficaMes(datos);
 		},
-		llenarGrafica: function(totalModulo, cargaDinamica, idLocalidad){
+		llenarGrafica: function(totalModulo, cargaDinamica, idLocalidad, gasto){
 			var that = this;
 
 			/*-------------------------------Datos por mes----------------------------------*/
@@ -266,7 +276,7 @@ define(deps, function (viewsBase, highcharts, html) {
 					var promedio = 0;
 
 					if(rows.length > 0)
-						promedio = _.reduce(rows, function(memo, num) { return memo + num; }, 0) / rows.length;
+						promedio = _.reduce(rows, function(memo, num) { return memo + num; }, 0);// / rows.length;
 
 					promMes[key] = parseFloat(promedio.toFixed(2));
 				}
@@ -284,8 +294,8 @@ define(deps, function (viewsBase, highcharts, html) {
 				that.optionsGraficas.irradianciaMes.datos = promMes;
 				that.optionsGraficas.irradianciaDia.datos = promHora;
 
-				that.crear_GraficaMes(that.optionsGraficas.irradianciaMes);
-				that.crear_GraficaHora(that.optionsGraficas.irradianciaDia);
+				// that.crear_GraficaMes(that.optionsGraficas.irradianciaMes);
+				// that.crear_GraficaHora(that.optionsGraficas.irradianciaDia);
 
 				that.chkIrracion.prop("checked", true);
 				var energiaMes = Object(),
@@ -304,20 +314,72 @@ define(deps, function (viewsBase, highcharts, html) {
 				var eficienciaBomba = 0.58;
 				var factorConversion = 367;
 
+				var frecuencia = 50,
+					potencia = 8625,
+					alturaMaxima = 260;
+
 				for(var key in promMes) {
-					var subEnergiaMes =  areaModulo * eficiencia * perdidas * constante * Math.ceil(totalModulo) * promMes[key];
-					var subOutputMes = 0;
+					var subEnergiaMes =  areaModulo * eficiencia * perdidas * /*constante **/ Math.ceil(totalModulo) * promMes[key];
+					
+					var f1 = frecuencia / Math.pow((potencia / (subEnergiaMes * 1000)), (1/3));
+					var h1 = alturaMaxima / (Math.pow(frecuencia, 2)/Math.pow(f1, 2));
+					var q1 = 0;
+
+					if(h1 > cargaDinamica)
+						q1 = gasto / (frecuencia / f1);
+
+					var subOutputMes = q1;
 
 					energiaMes[key] = parseFloat(subEnergiaMes.toFixed(2));
-					outputMes[key] = parseFloat(subOutputMes.toFixed(2));
+					outputMes[key] = 0;//parseFloat(subOutputMes.toFixed(2));
 				}
 
 				for(var key in promHora) {
 					var subEnergiaDia = areaModulo * eficiencia * perdidas * Math.ceil(totalModulo) * promHora[key];
-					var subOutputDia = 0;
+
+					var f1 = frecuencia / Math.pow((potencia / (subEnergiaDia * 1000)), (1/3));
+					var h1 = alturaMaxima / (Math.pow(frecuencia, 2)/Math.pow(f1, 2));
+					var q1 = 0;
+
+					if(h1 > cargaDinamica)
+						q1 = gasto / (frecuencia / f1);
+
+					if(q1 > gasto)
+						q1 = gasto;
+
+					var subOutputDia = q1;
 
 					energiaDia[key] = parseFloat(subEnergiaDia.toFixed(2));
 					outputDia[key] = parseFloat(subOutputDia.toFixed(2));
+				}
+				
+				var allData = _.clone(data);
+				for (var i = 0; i < allData.length; i++) {
+					var row = allData[i];
+
+					for(var key in row) {
+						var subEnergiaDia = areaModulo * eficiencia * perdidas * Math.ceil(totalModulo) * row[key];
+
+						var f1 = frecuencia / Math.pow((potencia / (subEnergiaDia * 1000)), (1/3));
+						var h1 = alturaMaxima / (Math.pow(frecuencia, 2)/Math.pow(f1, 2));
+						var q1 = 0;
+
+						if(h1 > cargaDinamica)
+							q1 = gasto / (frecuencia / f1);
+
+						if(q1 > gasto)
+							q1 = gasto;
+
+						var subOutputDia = q1;
+
+						var datos = {
+							energia: parseFloat(subEnergiaDia.toFixed(2)),
+							output: parseFloat(subOutputDia.toFixed(2)),
+						};
+						row[key] = datos;
+
+						outputMes[key] += datos.output;
+					}
 				}
 
 				that.optionsGraficas.energiaMes.datos = energiaMes;
@@ -325,6 +387,8 @@ define(deps, function (viewsBase, highcharts, html) {
 
 				that.optionsGraficas.energiaDia.datos = energiaDia;
 				that.optionsGraficas.salidaDia.datos = outputDia;
+
+				that.$el.find('.tipo-grafica[value="' + that.tipo_grafica + '"]').click();
 			}
 		},
 	});

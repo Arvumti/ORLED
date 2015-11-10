@@ -15,12 +15,12 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			'click table tbody tr.selectCell' :'rowSelected',			
 			//'click .tab-cableado' : 'click_tabCableado',
 			'click .tabs a' : 'click_tabs',
-			//'click .btn-calcular-altura': 'click_CalcularAltura',
-			'click .btn-calcular-carga': 'click_CalcularAltura',
 			'change [data-field="idLongitudTuberia"]': 'change_idLongitudTuberia',
 
 			'change [data-filed="bomba"]':'change_cbobomba',
 			'change [data-filed="generador"]':'change_cbogenerador',
+			
+			'change [data-field="diametroTuberiaTh"]':'change_cboDiametroTuberiaTh',
 		},
 		initialize: function() {
 			var that = this;
@@ -41,10 +41,10 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 
 						that.localidad = data;
 
-						app.ut.request({url:'/irradianciasMeses', data:{where:{idLocalidad:that.localidad.idLocalidad}},done:doneB});
+						app.ut.request({url:'/irradianciasDias/meses', data:{idLocalidad:that.localidad.idLocalidad},done:doneB});
 						function doneB (data) {
 							if (data && data.length > 0){
-								that.localidad.promedio = 7.5;//data[0].promedio;
+								that.localidad.promedio = data[0].promedio;
 							}
 						}
 					}
@@ -59,7 +59,6 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 				var value = parseInt(input.val());
 				var isDown = $(e.currentTarget).hasClass('ui-spinner-down') ? -1 : 1;
 
-				debugger
 				if(value < 5)
 					value = value;
 				else {
@@ -209,9 +208,9 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			this.longTube.attr('disabled', !value);
 
 			if(value) 
-				this.spnAltcarDinamica.text('Carga dinamica');
+				this.spnAltcarDinamica.text('Nivel estatico');
 			else
-				this.spnAltcarDinamica.text('Altura dinamica');
+				this.spnAltcarDinamica.text('Carga dinamica');
 		},
 		bombas: function(totalAltura) {
 			var that = this;
@@ -244,8 +243,12 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 					}
 
 					that.jBombas = bombas;
-					var tr = that.tmp_bombas({bombas:bombas});
+					var value = that.$el.find('[data-field="idLongitudTuberia"]').prop('checked');
+
+					var tr = that.tmp_bombas({bombas:bombas, diametro:value});
 					that.gvBombas.html(tr);
+					var diametro = that.$el.find('[data-field="diametroTuberia"]').val();
+					that.gvBombas.find('[data-field="diametroTuberiaTh"]').val(diametro);
 
 					that.cboBomba = that.gvBombas.find('[data-filed="bomba"]');
 					that.cboGenerador = that.gvBombas.find('[data-filed="generador"]');
@@ -307,8 +310,26 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 		},	
 		click_calcular: function(){
 			var that = this;
+			var value = this.$el.find('[data-field="idLongitudTuberia"]').prop('checked');
+
+			var total = 0;
+			if(value) {
+				var longitud = this.txtLongitud.val() || 0;
+				var rendimiento = this.txtRendimientoDiario.val() || 0;
+				var horas_pico = this.localidad.promedio || 0;
+				//this.popFormCalcular.render(longitud, rendimiento, horas_pico);
+
+				var alturaDes = parseFloat(that.txtAlturaDinamica.val());
+				var coeficiente = parseFloat(this.$el.find('[data-field="coeficienteTuberia"] option:selected').val());
+				var diametroPulgadas = parseFloat((this.$el.find('[data-field="diametroTuberia"] option:selected').val()));
+				
+				var resultados = this.manning(longitud, coeficiente, alturaDes, diametroPulgadas, rendimiento, horas_pico);
+		 		total = resultados.total;
+			}
+			else
+				total = that.txtAlturaDinamica.val();
+
 			var idLocalidad = this.tyas.tyaidLocalidad.data('fn').current('idLocalidad');
-			var total = that.txtAlturaDinamica.val();
 			//that.subViews.graficas.view.render(0, 0, idLocalidad);
 			that.bombas(total);
 			this.subViews.mapaElementos.view.close();
@@ -326,19 +347,6 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 					this.subViews.cableado.view.render();
 					break;
 			}
-		},
-		click_CalcularAltura: function(txtLongitud){
-			var longitud = this.txtLongitud.val() || 0;
-			var rendimiento = this.txtRendimientoDiario.val() || 0;
-			var horas_pico = this.localidad.promedio || 0;
-			//this.popFormCalcular.render(longitud, rendimiento, horas_pico);
-
-			var alturaDes = parseFloat((this.$el.find('[data-field="alturaTuberia"]').val()));
-			var coeficiente = parseFloat(this.$el.find('[data-field="coeficienteTuberia"] option:selected').val());
-			var diametroPulgadas = parseFloat((this.$el.find('[data-field="diametroTuberia"] option:selected').val()));
-			
-			var resultados = this.manning(longitud, coeficiente, alturaDes, diametroPulgadas, rendimiento, horas_pico);
-	 		this.txtAlturaDinamica.val(resultados.total);
 		},
 		dimencionar: function(bomba) {
 			var idBomba = bomba.idBomba, 
@@ -378,7 +386,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 
 				var regimenBombeo = parseFloat(rendimientoDiario/insolacion);
 				var cargaEstatica = parseFloat(alturaDinamica);
-				var cargaDinamicaTotal = parseFloat(cargaEstatica+datos.perdida);						
+				var cargaDinamicaTotal = parseFloat(cargaEstatica) + parseFloat(datos.perdida);						
 
 				var arreglo = bomba.CompuestoActivo.idArreglo;
 				voltajeOperacion =  arreglo.voltaje;
@@ -395,6 +403,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 				var modulosParalelo = corrienteAjustadaProyecto/corrienteModulo;
 				var modulosSerie = voltajeOperacion / voltajeModulo;
 				var totalModulo = modulosSerie * modulosParalelo;
+				var panelesInstalados = arreglo.serie * arreglo.paralelo;
 				var arregloFotovoltaico = totalModulo * corrienteModulo * voltajeModulo;
 
 				var aguaBombeada = (modulosParalelo * corrienteModulo * voltajeOperacion * eficienciaBomba * factorConversion * insolacion * .90) / cargaDinamicaTotal;								
@@ -415,9 +424,15 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 					that.cboBomba.removeClass('noValida');
 				}
 				app.ut.hide();
-				that.popFormArreglo.render(modulosParalelo, modulosSerie, totalModulo, arregloFotovoltaico,aguaBombeada, currentBombaNombre, currentMotorNombre);
-				that.subViews.graficas.view.render(totalModulo, alturaDinamica, idLocalidad);
+				//that.popFormArreglo.render(modulosParalelo, modulosSerie, totalModulo, arregloFotovoltaico,aguaBombeada, currentBombaNombre, currentMotorNombre);
+				that.subViews.graficas.view.render(panelesInstalados, alturaDinamica, idLocalidad, data.gasto);
 			}
+		},
+		change_cboDiametroTuberiaTh: function(e) {
+			var diametro = $(e.currentTarget).find('option:selected').val();
+			this.$el.find('[data-field="diametroTuberia"]').val(diametro);
+
+			this.click_calcular();
 		},
 	});
 	var ViPopItems = Backbone.View.extend({

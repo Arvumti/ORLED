@@ -89,7 +89,7 @@ module.exports = {
 			console.log('ye= ', ye2, '+ (', me, '* (', xe2, '-', xr, '))');
 			console.log('ye= ', ye);
 
-			res.json({eficiencia:ye});
+			res.json({eficiencia:ye, gasto:xr});
 		});
 	},
 };

@@ -18,7 +18,8 @@ module.exports = {
    ***************************************************************************/
 
   models: {
-    connection: process.env.connDB || 'mysqlVirtual',
+    //connection: 'mysqlOrledLocal',
+    connection: process.env.connDB || 'mysqlVirtual',//'mysqlOrledLocal', //
 	migrate: 'safe',
   }
 

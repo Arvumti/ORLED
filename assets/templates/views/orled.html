@@ -1,7 +1,7 @@
 <section id="orled">
 	<div>
 		<div class="gvBombas"></div>
-		<dl class="tabs tabs-custom" data-tab>
+		<dl class="tabs tabs-custom isHidden" data-tab>
 			<dd class="active"><a href="#entradas">
 				<i class="icon-datosPapel"></i>
 				<span>Entradas</span>
@@ -89,7 +89,7 @@
 									</div>	
 									<div class="small-12 columns text-center">
 										<label>
-											<span class="spn-altcar-dinamica">Altura dinámica</span>
+											<span class="spn-altcar-dinamica">Carga dinamica</span>
 											<div class="row collapse">
 												<div class="small-9 columns">
 													<input type="text" data-field="alturaDinamica" required value="0" class="text-right linker-spinner" />
@@ -114,7 +114,7 @@
 								<div class="row">
 									<div class="small-6 columns">
 										<label>
-											Longitud de la linea de conducción:
+											Long. la linea de cond.:
 											<div class="row collapse">
 												<div class="small-10 columns">
 													<input type="text" data-field="longitudTuberia" disabled="disabled" class="longTube text-right linker-spinner" />
@@ -125,22 +125,6 @@
 											</div>
 										</label>
 									</div>
-									<div class="small-6 columns">
-										<label>
-											Dif. de altura de descarga:
-											<div class="row collapse">
-												<div class="small-10 columns">
-													<input type="text" data-field="alturaTuberia" disabled="disabled" class="longTube text-right linker-spinner" />
-												</div>
-												<div class="small-2 columns">
-													<span class="postfix">m</span>
-												</div>
-											</div>
-										</label>
-									</div>
-								</div>
-
-								<div class="row">
 									<div class="small-6 columns">
 										<label>
 											Diametro:
@@ -170,7 +154,10 @@
 											</select>
 										</label>
 									</div>
-									<div class="small-6 columns">
+								</div>
+
+								<div class="row">
+									<div class="small-12 columns">
 										<label>
 											Coeficiente
 											<select data-field="coeficienteTuberia" disabled="disabled" class="longTube">
@@ -179,12 +166,6 @@
 												<option value="0.017">Acero galvanizado [0.017]</option>
 											</select>
 										</label>
-									</div>
-								</div>
-
-								<div class="row">
-									<div class="small-12 columns">
-										<button type="button" class="button btn-calcular-carga success tiny expand longTube" disabled="disabled"><i class="icon-calc"></i> Calcular carga dinamica</button>
 									</div>
 								</div>
 
@@ -304,7 +285,7 @@
 						<th><select data-filed="bomba"></select></th>
 						<th><select data-filed="generador"></select></th>
 						<th>
-							<select data-field="diametroTuberiaTh">
+							<select data-field="diametroTuberiaTh" {{#ifCond diametro false}}class="isHidden"{{/ifCond}}>
 								<option value="0.5">1/2</option>
 								<option value="0.75">3/4</option>
 								<option value="1">1</option>
