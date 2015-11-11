@@ -212,14 +212,14 @@ define(deps, function (viewsBase, highcharts, html) {
 
 			//this.crear_GraficaMes(datos);
 		},
-		llenarGrafica: function(totalModulo, cargaDinamica, idLocalidad, gasto, bomba){
-			debugger
+		llenarGrafica: function(totalModulo, cargaDinamica, idLocalidad, gasto, bomba) {
 			var that = this;
 
 			/*-------------------------------Datos por mes----------------------------------*/
 
 			app.ut.request({url:'/irradianciasDias', data:{where:{idLocalidad:idLocalidad}},done:doneI});
 			function doneI (data) {
+				var allData = _.clone(data);
 				var concentradoMes = {
 					'enero': Array(),
 					'febrero': Array(),
@@ -257,13 +257,16 @@ define(deps, function (viewsBase, highcharts, html) {
 				for (var i = 0; i < data.length; i++) {
 					var hora = data[i].hora;
 
-					delete data[i].idIrradianciaDia;
-					delete data[i].createdAt;
-					delete data[i].idLocalidad;
-					delete data[i].updatedAt;
-					delete data[i].hora;
+					// delete data[i].idIrradianciaDia;
+					// delete data[i].createdAt;
+					// delete data[i].idLocalidad;
+					// delete data[i].updatedAt;
+					// delete data[i].hora;
 
 					for(var key in data[i]) {
+						if(key == 'idIrradianciaDia' || key == 'createdAt' || key == 'idLocalidad' || key == 'updatedAt' || key == 'hora')
+							continue;
+
 						if(data[i][key] > 0) {
 							concentradoHora[hora].push(data[i][key]);
 							concentradoMes[key].push(data[i][key]);
@@ -353,9 +356,35 @@ define(deps, function (viewsBase, highcharts, html) {
 					outputDia[key] = parseFloat(subOutputDia.toFixed(2));
 				}
 				
-				var allData = _.clone(data);
+				var horaAll = {
+					'6': 0,
+					'7': 0,
+					'8': 0,
+					'9': 0,
+					'10': 0,
+					'11': 0,
+					'12': 0,
+					'13': 0,
+					'14': 0,
+					'15': 0,
+					'16': 0,
+					'17': 0,
+					'18': 0,
+					'19': 0,
+				};
+				
 				for (var i = 0; i < allData.length; i++) {
 					var row = allData[i];
+
+					var hora = row.hora;
+
+					delete row.idIrradianciaDia;
+					delete row.createdAt;
+					delete row.idLocalidad;
+					delete row.updatedAt;
+					delete row.hora;
+
+					var sum = 0;
 
 					for(var key in row) {
 						var subEnergiaDia = areaModulo * eficiencia * perdidas * Math.ceil(totalModulo) * row[key];
@@ -379,8 +408,22 @@ define(deps, function (viewsBase, highcharts, html) {
 						row[key] = datos;
 
 						outputMes[key] += datos.output;
+						sum += datos.output;
 					}
+
+					sum = sum / 12;
+					horaAll[hora] = sum;
+					outputDia[hora] = parseFloat(sum.toFixed(2));
 				}
+
+				var sum = 0;
+				for (var i = 0; i < allData.length; i++) {
+					var row = allData[i];
+					sum += (row.enero.output + row.febrero.output + row.marzo.output + row.abril.output + 
+					row.mayo.output + row.junio.output + row.julio.output + row.agosto.output + 
+					row.septiembre.output + row.octubre.output + row.noviembre.output + row.diciembre.output ) / 12;
+				}
+				debugger
 
 				that.optionsGraficas.energiaMes.datos = energiaMes;
 				that.optionsGraficas.salidaMes.datos = outputMes;
