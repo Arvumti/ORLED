@@ -65,6 +65,10 @@ define(deps, function (viewsBase, highcharts, html) {
 		close: function() {
 			viewsBase.abc.prototype.close.call(this);
 		},
+		clear: function() {
+			this.crear_GraficaMes([]);
+			this.crear_GraficaHora([]);
+		},
 		/*------------------------- Eventos -----------------------------*/
 		crear_GraficaMes: function(jDatos) {
 			var that = this;
@@ -133,7 +137,7 @@ define(deps, function (viewsBase, highcharts, html) {
 			var that = this;
 			var datos = _.values(jDatos.datos);
 			var total = _.reduce(datos, function(memo, num) { return memo + num; }, 0);// / datos.length;
-			total = parseFloat(total.toFixed(2));
+			total = parseFloat(total.toFixed(1));
 
 			that.PnlGraficaDia.highcharts({
 				chart: {

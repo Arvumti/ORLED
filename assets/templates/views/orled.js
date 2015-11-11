@@ -285,6 +285,8 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 					var tr = that.gvBombas.find('tbody tr:first-child');
 					if(tr.length > 0)
 						tr.click();
+					else
+						that.subViews.graficas.view.clear();
 				}
 			}
 		},
