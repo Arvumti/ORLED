@@ -151,7 +151,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			V = V.toFixed(2);
 			H = H.toFixed(2);
 			total = total.toFixed(2);
-			var resultados = { Q, V, H, total };
+			var resultados = { Q:Q, V:V, H:H, total:total };
 
 			return resultados;		
 		},
@@ -166,7 +166,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			var total = parseFloat(H+alturaDes);
 			H = H.toFixed(2);
 			total = total.toFixed(2);
-			var resultados = { Q, V, H, total };
+			var resultados = { Q:Q, V:V, H:H, total:total };
 
 			return resultados;
 		},
