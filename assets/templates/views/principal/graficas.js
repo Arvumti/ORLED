@@ -190,7 +190,6 @@ define(deps, function (viewsBase, highcharts, html) {
 			});
 		},
 		click_tipoGrafica: function(e) {
-			debugger
 			var valor = $(e.currentTarget).val();
 			var datos = Object();
 
@@ -198,16 +197,16 @@ define(deps, function (viewsBase, highcharts, html) {
 
 			switch(this.tipo_grafica) {
 				case "1":
-					this.crear_GraficaMes(this.optionsGraficas.irradianciaMes);
-					this.crear_GraficaHora(this.optionsGraficas.irradianciaDia);
+					this.crear_GraficaMes(this.optionsGraficas.salidaMes);
+					this.crear_GraficaHora(this.optionsGraficas.salidaDia);
 					break;
 				case "2":
 					this.crear_GraficaMes(this.optionsGraficas.energiaMes);
 					this.crear_GraficaHora(this.optionsGraficas.energiaDia);
 					break;
 				case "3": 
-					this.crear_GraficaMes(this.optionsGraficas.salidaMes);
-					this.crear_GraficaHora(this.optionsGraficas.salidaDia);
+					this.crear_GraficaMes(this.optionsGraficas.irradianciaMes);
+					this.crear_GraficaHora(this.optionsGraficas.irradianciaDia);
 					break;
 			}
 
@@ -334,6 +333,7 @@ define(deps, function (viewsBase, highcharts, html) {
 					outputMes[key] = 0;//parseFloat(subOutputMes.toFixed(2));
 				}
 
+				debugger
 				for(var key in promHora) {
 					var subEnergiaDia = areaModulo * eficiencia * perdidas * Math.ceil(totalModulo) * promHora[key];
 

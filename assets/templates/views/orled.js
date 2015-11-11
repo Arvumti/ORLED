@@ -156,7 +156,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			return resultados;		
 		},
 		manning: function(longitud, coeficiente, alturaDes, diametroPulgadas, rendimiento, horas_pico) {
-			var Q = rendimiento/1000/horas_pico/3600;
+			var Q = (rendimiento*1000)/horas_pico/3600/1000;
 			var diametroMm = parseFloat((diametroPulgadas*25.4));
 			var diametroMetros = parseFloat((diametroMm/1000));
 			
@@ -169,6 +169,29 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			var resultados = { Q:Q, V:V, H:H, total:total };
 
 			return resultados;
+		},
+		cargaTotal: function() {
+			var that = this;
+			var value = this.$el.find('[data-field="idLongitudTuberia"]').prop('checked');
+
+			var total = 0;
+			if(value) {
+				var longitud = this.txtLongitud.val() || 0;
+				var rendimiento = this.txtRendimientoDiario.val() || 0;
+				var horas_pico = this.localidad.promedio || 0;
+				//this.popFormCalcular.render(longitud, rendimiento, horas_pico);
+
+				var alturaDes = parseFloat(that.txtAlturaDinamica.val());
+				var coeficiente = parseFloat(this.$el.find('[data-field="coeficienteTuberia"] option:selected').val());
+				var diametroPulgadas = parseFloat((this.$el.find('[data-field="diametroTuberia"] option:selected').val()));
+				
+				var resultados = this.manning(longitud, coeficiente, alturaDes, diametroPulgadas, rendimiento, horas_pico);
+		 		total = resultados.total;
+			}
+			else
+				total = that.txtAlturaDinamica.val();
+
+			return total;
 		},
 		/*------------------------- Eventos -----------------------------*/
 		change_cbobomba: function(e) {
@@ -312,22 +335,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			var that = this;
 			var value = this.$el.find('[data-field="idLongitudTuberia"]').prop('checked');
 
-			var total = 0;
-			if(value) {
-				var longitud = this.txtLongitud.val() || 0;
-				var rendimiento = this.txtRendimientoDiario.val() || 0;
-				var horas_pico = this.localidad.promedio || 0;
-				//this.popFormCalcular.render(longitud, rendimiento, horas_pico);
-
-				var alturaDes = parseFloat(that.txtAlturaDinamica.val());
-				var coeficiente = parseFloat(this.$el.find('[data-field="coeficienteTuberia"] option:selected').val());
-				var diametroPulgadas = parseFloat((this.$el.find('[data-field="diametroTuberia"] option:selected').val()));
-				
-				var resultados = this.manning(longitud, coeficiente, alturaDes, diametroPulgadas, rendimiento, horas_pico);
-		 		total = resultados.total;
-			}
-			else
-				total = that.txtAlturaDinamica.val();
+			var total = this.cargaTotal();
 
 			var idLocalidad = this.tyas.tyaidLocalidad.data('fn').current('idLocalidad');
 			//that.subViews.graficas.view.render(0, 0, idLocalidad);
@@ -378,7 +386,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 				insolacion = this.localidad.promedio,
 				rendimientoDiario = datos.rendimientoDiario * 1000;
 
-			var alturaDinamica = datos.alturaDinamica;
+			var alturaDinamica = this.cargaTotal();
 			app.ut.request({url:'/rendimientos/eficiencia', data:{idBomba:idBomba, altura:alturaDinamica},done:doneA});
 			function doneA(data){
 				eficienciaBomba = (data.eficiencia)/100;
