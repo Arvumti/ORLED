@@ -58,9 +58,9 @@ define(deps, function (viewsBase, highcharts, html) {
 			this.tipo_grafica = "1";
 		},
 		/*------------------------- Base -----------------------------*/
-		render: function(totalModulo, cargaDinamica, idLocalidad, gasto) {
+		render: function(totalModulo, cargaDinamica, idLocalidad, gasto, bomba) {
 			viewsBase.abc.prototype.render.call(this);
-			this.llenarGrafica(totalModulo, cargaDinamica, idLocalidad, gasto);
+			this.llenarGrafica(totalModulo, cargaDinamica, idLocalidad, gasto, bomba);
 		},
 		close: function() {
 			viewsBase.abc.prototype.close.call(this);
@@ -212,7 +212,8 @@ define(deps, function (viewsBase, highcharts, html) {
 
 			//this.crear_GraficaMes(datos);
 		},
-		llenarGrafica: function(totalModulo, cargaDinamica, idLocalidad, gasto){
+		llenarGrafica: function(totalModulo, cargaDinamica, idLocalidad, gasto, bomba){
+			debugger
 			var that = this;
 
 			/*-------------------------------Datos por mes----------------------------------*/
@@ -313,9 +314,9 @@ define(deps, function (viewsBase, highcharts, html) {
 				var eficienciaBomba = 0.58;
 				var factorConversion = 367;
 
-				var frecuencia = 50,
-					potencia = 8625,
-					alturaMaxima = 260;
+				var frecuencia = bomba.idGenerador.frecuencia,
+					potencia = bomba.idGenerador.potencia,
+					alturaMaxima = bomba.alturaMaxima;
 
 				for(var key in promMes) {
 					var subEnergiaMes =  areaModulo * eficiencia * perdidas * /*constante **/ Math.ceil(totalModulo) * promMes[key];
@@ -333,7 +334,6 @@ define(deps, function (viewsBase, highcharts, html) {
 					outputMes[key] = 0;//parseFloat(subOutputMes.toFixed(2));
 				}
 
-				debugger
 				for(var key in promHora) {
 					var subEnergiaDia = areaModulo * eficiencia * perdidas * Math.ceil(totalModulo) * promHora[key];
 

@@ -433,7 +433,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 				}
 				app.ut.hide();
 				//that.popFormArreglo.render(modulosParalelo, modulosSerie, totalModulo, arregloFotovoltaico,aguaBombeada, currentBombaNombre, currentMotorNombre);
-				that.subViews.graficas.view.render(panelesInstalados, alturaDinamica, idLocalidad, data.gasto);
+				that.subViews.graficas.view.render(panelesInstalados, alturaDinamica, idLocalidad, data.gasto, bomba);
 			}
 		},
 		change_cboDiametroTuberiaTh: function(e) {

@@ -18,7 +18,13 @@ module.exports = {
 		nombre: {
 			type: 'string',
 		},
-		
+		frecuencia: {
+			type: 'float',
+		},
+		potencia: {
+			type: 'float',
+		},
+
 		diagrama: {
 			type: 'string',
 		},
