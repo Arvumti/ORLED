@@ -326,7 +326,7 @@ define(deps, function (viewsBase, highcharts, html) {
 					alturaMaxima = bomba.alturaMaxima;
 
 				for(var key in promMes) {
-					var subEnergiaMes =  areaModulo * eficiencia * perdidas * /*constante **/ Math.ceil(totalModulo) * promMes[key];
+					var subEnergiaMes =  areaModulo * eficiencia * perdidas * Math.ceil(totalModulo) * promMes[key];/*constante **/ 
 					
 					var f1 = frecuencia / Math.pow((potencia / (subEnergiaMes * 1000)), (1/3));
 					var h1 = alturaMaxima / (Math.pow(frecuencia, 2)/Math.pow(f1, 2));
@@ -388,7 +388,7 @@ define(deps, function (viewsBase, highcharts, html) {
 					delete row.updatedAt;
 					delete row.hora;
 
-					var sum = 0;
+					var sumOut = 0, sumEne = 0;
 
 					for(var key in row) {
 						var subEnergiaDia = areaModulo * eficiencia * perdidas * Math.ceil(totalModulo) * row[key];
@@ -411,13 +411,19 @@ define(deps, function (viewsBase, highcharts, html) {
 						};
 						row[key] = datos;
 
+						//energiaMes[key] += datos.energia;
 						outputMes[key] += datos.output;
-						sum += datos.output;
+
+						sumEne += datos.energia
+						sumOut += datos.output;
 					}
 
-					sum = sum / 12;
-					horaAll[hora] = sum;
-					outputDia[hora] = parseFloat(sum.toFixed(2));
+					sumOut = sumOut / 12;
+					sumEne = sumEne / 12;
+					horaAll[hora] = sumOut;
+
+					energiaDia[hora] = parseFloat(sumEne.toFixed(2));
+					outputDia[hora] = parseFloat(sumOut.toFixed(2));
 				}
 
 				var sum = 0;
