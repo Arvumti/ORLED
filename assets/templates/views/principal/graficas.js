@@ -323,7 +323,7 @@ define(deps, function (viewsBase, highcharts, html) {
 
 				var frecuencia = bomba.idGenerador.frecuencia,
 					potencia = bomba.idGenerador.potencia,
-					alturaMaxima = bomba.alturaMaxima;
+					alturaMaxima = bomba.alturaTope;
 
 				for(var key in promMes) {
 					var subEnergiaMes =  areaModulo * eficiencia * perdidas * Math.ceil(totalModulo) * promMes[key];/*constante **/ 

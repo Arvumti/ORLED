@@ -2,6 +2,7 @@ var MoBombas = Backbone.Model.extend({
 	defaults: {
 		idBomba				:0,
 		nombre				:'',
+		alturaTope			:0,
 		alturaMaxima		:0,
 		alturaMinima		:0,
 		eficiencia 			:0,

@@ -381,7 +381,6 @@ var ViPopSaveABC = Backbone.View.extend({
         return data;
     },
     setData: function(data) {
-        debugger
         ViBase.prototype.setData.call(this, data, this.form);
     },
     save: function() {

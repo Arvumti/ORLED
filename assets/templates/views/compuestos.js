@@ -47,16 +47,29 @@ define(['/js/base/viewsBase.js'], function (viewsBase) {
 				clean: ['idArreglo'],
 			};
 
+			this.popSave = this.$el.find('.modal-save');
+			this.popAction = new ViPopAction({url:this.url, pk:this.pk, parentView:this, el:this.popSave});
+
 			var columns = [
 				{nombre:'Bomba', field:'idBomba.nombre', width:300},
-				{nombre:'Generador', field:'idGenerador.nombre', width:300},
+				//{nombre:'Generador', field:'idBomba', width:300},
 				{nombre:'Arreglo', field:'idArreglo', width:300, tmp:'{{serie}}x{{paralelo}} {{potencia}}W {{voltaje}}V {{corriente}}amp'},
 			];
-			viewsBase.abc.prototype.initialize.call(this, columns);
+			viewsBase.abc.prototype.initialize.call(this, columns, this.popAction);
 
 			this.popAction.mode = {
 				SaveAndContinue: true
 			};
+		},
+	});
+
+	var ViPopAction = viewsBase.popAbc.extend({
+		getData: function() {
+			debugger
+			var json = viewsBase.popAbc.prototype.getData.call(this);
+			json.idGenerador = this.tyas.tyaidBomba.data('fn').current('idGenerador');
+
+			return json;
 		},
 	});
 	return {view:ViGeneradores};

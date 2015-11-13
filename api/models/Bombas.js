@@ -19,6 +19,10 @@ module.exports = {
 			type: 'string',
 		},
 
+		alturaTope: {
+			type: 'float',
+		},
+
 		alturaMaxima: {
 			type: 'float',
 		},
