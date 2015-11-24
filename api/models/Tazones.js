@@ -1,5 +1,5 @@
 /**
-* Eficiencias.js
+* Tazones.js
 *
 * @description :: TODO: You might write a short summary of how this model works and what it represents here.
 * @docs        :: http://sailsjs.org/#!documentation/models
@@ -7,24 +7,17 @@
 
 module.exports = {
 	autoUpdatedAt: true,
-	tableName: 'eficiencias',
+	tableName: 'tazones',
 	attributes: {
-		idEficiencia: {
+		idTazon: {
 			type: 'integer',
 			primaryKey: true,
 			autoIncrement:true,
 			unique: true,
 		},
 		
-		bombeo: {
-			type: 'float',
-		},
-		eficiencia: {
-			type: 'float',
-		},
-
-		idTazon: {
-			model: 'tazones',
+		nombre: {
+			type: 'string',
 		},
 	}
 };

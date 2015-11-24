@@ -240,11 +240,11 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			var alturaDinamica = parseFloat(totalAltura) + .001;
 			var where = {
 				alturaMaxima: {
-					'>=': alturaDinamica
+					'>=': parseFloat(totalAltura) - .001
 				},
-				// alturaMinima: {
-				// 	'<=': alturaDinamica
-				// },
+				alturaMinima: {
+					'<=': parseFloat(totalAltura) + .001
+				},
 			};
 
 			app.ut.request({url:'/bombas/populate', data:{where:where}, done:done});
@@ -502,30 +502,6 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 							arrDatosBombas.push(row);
 						}
 					}
-	
-					// for (var i = 0; i < info.length; i++) {	
-					// 	switch (valor) {
-					// 		case 1:
-					// 			var bomba = {
-					// 				item: info[i].nombre,
-					// 				idBomba: info[i].idBomba,
-					// 				descripcion: "Bombas",
-					// 				tipoElemento:1,
-					// 			}
-				
-					// 			arrDatosBombas.push(bomba);
-					// 			break;
-					// 		case 2:
-					// 			var generador = {
-					// 				item: info[i].idGenerador.nombre,
-					// 				idGenerador: info[i].idGenerador.idGenerador,
-					// 				descripcion: "Generadores",
-					// 				tipoElemento:2,
-					// 			}
-					// 			arrDatosBombas.push(generador);
-					// 			break;
-					// 	}
-					// };
 	
 					var tr = that.tmp_items({items:arrDatosBombas});
 					that.gvItems.html(tr);

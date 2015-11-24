@@ -45,12 +45,12 @@ define(deps, function (viewsBase, highcharts, html) {
 				},
 				salidaMes: {
 					color: '#007EC7',
-					titulo: '[m2 por día]',
+					titulo: '[m3 por día]',
 					datos: Object(),
 				},
 				salidaDia: {
 					color: '#007EC7',
-					titulo: '[m2/h]',
+					titulo: '[m3/h]',
 					datos: Object(),
 				},
 			};

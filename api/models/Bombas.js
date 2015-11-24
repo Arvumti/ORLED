@@ -60,6 +60,9 @@ module.exports = {
 		idGenerador: {
 			model: 'generadores',
 		},
+		idTazon: {
+			model: 'tazones',
+		},
 
 		Compuestos: {
             collection: 'Compuestos',

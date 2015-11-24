@@ -14,6 +14,8 @@ var MoBombas = Backbone.Model.extend({
 		idMotor				:0,
 		idSalida			:0,
 		idTubo				:0,
+		idGenerador			:0,
+		idTazon				:0,
 	}
 });
 define(['/js/base/viewsBase.js'], function (viewsBase) {
@@ -54,6 +56,10 @@ define(['/js/base/viewsBase.js'], function (viewsBase) {
 					url: 'generadores',
 					filters: [{filter:'nombre'}],
 				},
+				idTazon: {
+					url: 'tazones',
+					filters: [{filter:'nombre'}],
+				},
 			};
 
 			this.extras = {
@@ -61,10 +67,12 @@ define(['/js/base/viewsBase.js'], function (viewsBase) {
 			};
 
 			var columns = [
-				{nombre:'Bombas', field:'nombre', width:300},
+				{nombre:'Bombas', field:'nombre', width:200},
 				{nombre:'Generador', field:'idGenerador.nombre', width:100},
-				{nombre:'Altura Mínima', field:'alturaMinima', width:200},
-				{nombre:'Altura Máxima', field:'alturaMaxima', width:200},
+				{nombre:'Tazon', field:'idTazon.nombre', width:100},
+				{nombre:'Altura Mínima', field:'alturaMinima', width:100},
+				{nombre:'Altura Máxima', field:'alturaMaxima', width:100},
+				{nombre:'Altura Tope', field:'alturaTope', width:100},
 			];
 			viewsBase.abc.prototype.initialize.call(this, columns, null);
 		},

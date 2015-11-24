@@ -14,7 +14,7 @@ module.exports = {
 	},
 	eficiencia: function(req, res, next) {
 		var idBomba = req.param('idBomba') || 0,
-			altura = req.param('altura') || 0;
+			altura = parseFloat(req.param('altura') || 0) + 0.001;
 
 		console.log('idBomba: ', idBomba, ' altura: ', altura);
 
@@ -44,7 +44,7 @@ module.exports = {
 			INNER JOIN bombas b	\
 			ON a.idBomba = b.idBomba	\
 			INNER JOIN eficiencias c	\
-			ON b.idGenerador = c.idGenerador	\
+			ON b.idTazon = c.idTazon	\
 			AND a.bombeo = c.bombeo	\
 		';
 
