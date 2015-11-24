@@ -58,9 +58,9 @@ define(deps, function (viewsBase, highcharts, html) {
 			this.tipo_grafica = "1";
 		},
 		/*------------------------- Base -----------------------------*/
-		render: function(totalModulo, cargaDinamica, idLocalidad, gasto, bomba) {
+		render: function(totalModulo, cargaDinamica, idLocalidad, gasto, bomba, dfd) {
 			viewsBase.abc.prototype.render.call(this);
-			this.llenarGrafica(totalModulo, cargaDinamica, idLocalidad, gasto, bomba);
+			this.llenarGrafica(totalModulo, cargaDinamica, idLocalidad, gasto, bomba, dfd);
 		},
 		close: function() {
 			viewsBase.abc.prototype.close.call(this);
@@ -216,7 +216,7 @@ define(deps, function (viewsBase, highcharts, html) {
 
 			//this.crear_GraficaMes(datos);
 		},
-		llenarGrafica: function(totalModulo, cargaDinamica, idLocalidad, gasto, bomba) {
+		llenarGrafica: function(totalModulo, cargaDinamica, idLocalidad, gasto, bomba, dfd) {
 			var that = this;
 
 			/*-------------------------------Datos por mes----------------------------------*/
@@ -433,7 +433,13 @@ define(deps, function (viewsBase, highcharts, html) {
 					row.mayo.output + row.junio.output + row.julio.output + row.agosto.output + 
 					row.septiembre.output + row.octubre.output + row.noviembre.output + row.diciembre.output ) / 12;
 				}
-				debugger
+
+				if(dfd && typeof dfd === 'object' && typeof dfd.resolve === 'function'){
+					dfd.resolve(sum);
+
+					if(sum < cargaDinamica)
+						return;
+				}
 
 				that.optionsGraficas.energiaMes.datos = energiaMes;
 				that.optionsGraficas.salidaMes.datos = outputMes;

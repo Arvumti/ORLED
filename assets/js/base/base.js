@@ -115,12 +115,16 @@ function bases(){
 function utilerias() {
 	var __loading = $('.loading'),
 		__isLoading = false,
-		__petXHR = 0;
+		__petXHR = 0,
+		__foreverLoad = false;
 
 	function _WatchLoad() {
 		__petXHR--;
-		if(__petXHR == 0)
+		console.log('Watch :: __petXHR: ', __petXHR, ' __isLoading: ', __isLoading);
+		if(__petXHR == 0) {
+			console.log('Hide');
 			Hide();
+		}
 	}
 	
 	return {
@@ -425,11 +429,19 @@ function utilerias() {
 			err = options.err || fnErr,
 			dataType = options.dataType || 'json',
 			loading = options.loading || false,
+			async = options.async === undefined ? true : options.async,
 			form = options.form || null;
 
-		__petXHR++;
-		if(!__isLoading)
-            Show();
+		debugger
+		if (loading) {
+			__foreverLoad = true;
+			Show();
+		}
+		else if(!__foreverLoad) {
+			__petXHR++;
+			if(!__isLoading)
+				Show();
+		}
 
         var jInfoData = data;
 
@@ -448,6 +460,7 @@ function utilerias() {
 			xhr = $.get(url, data);
 		else
 			xhr = $.ajax({
+				async: async,
 				url: url,  //Server script to process data
 				type: type,
 				data: jData,
@@ -459,8 +472,6 @@ function utilerias() {
 			});
 
 		xhr.done(fnNext).fail(err).always(always);
-		if (loading)
-			Show();
 
 		function fnNext(data) {
 			try {
@@ -491,7 +502,8 @@ function utilerias() {
 
 		function always(){
 			console.log('finish');
-			_WatchLoad();
+			if(!__foreverLoad)
+				_WatchLoad();
 		}
 	}
 
@@ -548,6 +560,7 @@ function utilerias() {
 	}
 
 	function hide() {
+		__foreverLoad = false;
 		$('#loading').fadeOut(function(){
 			$(this).addClass('isHidden')
 		});
@@ -715,6 +728,7 @@ function utilerias() {
 	}
 	
 	function Hide(fn, p_arrs) {
+		__foreverLoad = false;
 		__isLoading = false;
 		__loading.fadeOut();
 	}
