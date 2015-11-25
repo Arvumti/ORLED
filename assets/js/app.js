@@ -16,11 +16,15 @@ var ViBody = Backbone.View.extend({
 		'click div .inactive': 'click_OpenNewChat',
 		'click div .tituloChat-custom label': 'click_ChangeChat',
 		'click .chatButonShowHide': 'showHideChatComplete',
+		'click .btn-login': 'click_btnlogin',
+
 		'keyup .chatOpen textarea': 'keyup_message',		
 		'keyup .buscarChat': 'keyup_search',
 	},
 	initialize: function() {
 		// this.user = null;		
+		this.pnlLoginInn = this.$el.find('.pnl-login-inn');		
+
 		this.txtBusqueda = this.$el.find('.txtBusqueda');		
 		this.hojita = this.$el.find('.hojita');		
 		// this.infoUser = this.$el.find('section.info-user');
@@ -401,6 +405,23 @@ var ViBody = Backbone.View.extend({
 		else {
 			$('ul.menu-n1').removeClass('isHidden');
 			$('ul.search-n1').addClass('isHidden');
+		}
+	},
+	click_btnlogin: function() {
+		var user = this.pnlLoginInn.find('[data-field="user"]').val();
+		var pass = this.pnlLoginInn.find('[data-field="pass"]').val();
+
+		if(user.length == 0 || pass.length == 0) {
+			app.ut.message({text:'Tiene que poner el usuario y contraseña'});
+			return;
+		}
+
+		app.ut.request({url:'/sesiones/logIn', data:{user:user, pass:pass}, type:'POST', done:done});
+		function done(data) {
+			if(data.errmsg.length)
+				app.ut.message({text:data.errmsg});
+			else if(data.usuario)
+				location.reload();
 		}
 	},
 });

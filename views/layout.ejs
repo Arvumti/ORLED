@@ -60,49 +60,78 @@
  		<p><i class="fa fa-warning"></i> El sistema esta en mantenimiento y puede que algunas funcionalidades no funcionen correctamente</p>
  	</footer>
 	<nav class="">
-		<div class="busqueda">
-			<span>
-				<input type="text" class="txtBusqueda" placeholder="Busqueda de menu..."/>
-			</span>
-		</div>
-		<ul class="menu-n1">
-			<li><a href="#orled">Inicio</a></li>
+		<%if (loged) { %>
+			<div class="busqueda">
+				<span>
+					<input type="text" class="txtBusqueda" placeholder="Busqueda de menu..."/>
+				</span>
+			</div>
+			<ul class="menu-n1">
+				<li><a href="#orled">Inicio</a></li>
 
-			<li><a href="#generadores">Generadores</a></li>
-			<li><a href="#tazones">Tazones</a></li>
-			<li><a href="#arreglos">Arreglos</a></li>
+				<li><a href="#generadores">Generadores</a></li>
+				<li><a href="#tazones">Tazones</a></li>
+				<li><a href="#arreglos">Arreglos</a></li>
 
-			<li><a href="#bombas">Bombas</a></li>
-			<li><a href="#compuestos">Compuestos</a></li>
-			<li><a href="#rendimientos">Rendimientos</a></li>
-			<li><a href="#eficiencias">Eficiencias</a></li>
+				<li><a href="#bombas">Bombas</a></li>
+				<li><a href="#compuestos">Compuestos</a></li>
+				<li><a href="#rendimientos">Rendimientos</a></li>
+				<li><a href="#eficiencias">Eficiencias</a></li>
+				
+				<li><a href="/sesiones/logOut">Cerrar sesion</a></li>
 
-			<!--li><a href="#cables">Cables</a></li>
-			<li><a href="#estados">Estados</a></li>
-			<li><a href="#motores">Motores</a></li>
-			<li><a href="#partes">Partes</a></li>
-			<li><a href="#salidas">Salidas</a></li>
-			<li><a href="#tubos">Tubos</a></li-->
-		</ul>
-		<ul class="search-n1">
-			<li><a href="#orled">Inicio</a></li>
-			
-			<li><a href="#generadores">Generadores</a></li>
-			<li><a href="#tazones">Tazones</a></li>
-			<li><a href="#arreglos">Arreglos</a></li>
-			
-			<li><a href="#bombas">Bombas</a></li>
-			<li><a href="#compuestos">Compuestos</a></li>
-			<li><a href="#rendimientos">Rendimientos</a></li>
-			<li><a href="#eficiencias">Eficiencias</a></li>
+				<!--li><a href="#cables">Cables</a></li>
+				<li><a href="#estados">Estados</a></li>
+				<li><a href="#motores">Motores</a></li>
+				<li><a href="#partes">Partes</a></li>
+				<li><a href="#salidas">Salidas</a></li>
+				<li><a href="#tubos">Tubos</a></li-->
+			</ul>
+			<ul class="search-n1">
+				<li><a href="#orled">Inicio</a></li>
+				
+				<li><a href="#generadores">Generadores</a></li>
+				<li><a href="#tazones">Tazones</a></li>
+				<li><a href="#arreglos">Arreglos</a></li>
+				
+				<li><a href="#bombas">Bombas</a></li>
+				<li><a href="#compuestos">Compuestos</a></li>
+				<li><a href="#rendimientos">Rendimientos</a></li>
+				<li><a href="#eficiencias">Eficiencias</a></li>
 
-			<!--li><a href="#cables">Cables</a></li>
-			<li><a href="#estados">Estados</a></li>
-			<li><a href="#motores">Motores</a></li>
-			<li><a href="#partes">Partes</a></li>
-			<li><a href="#salidas">Salidas</a></li>
-			<li><a href="#tubos">Tubos</a></li-->
-		</ul>
+				<li><a href="/sesiones/logOut">Cerrar sesion</a></li>
+
+				<!--li><a href="#cables">Cables</a></li>
+				<li><a href="#estados">Estados</a></li>
+				<li><a href="#motores">Motores</a></li>
+				<li><a href="#partes">Partes</a></li>
+				<li><a href="#salidas">Salidas</a></li>
+				<li><a href="#tubos">Tubos</a></li-->
+			</ul>
+		<% } else{ %>
+			<br/><br/><br/><br/><br/> 
+			<div class="">
+				<span>
+				</span>
+			</div>
+			<form class="row pnl-login-inn">
+				<div class="small-12 columns">
+					<label style="color:#FFF">
+						Usuario:
+						<input type="text" data-field="user" placeholder="Usuario"/>
+					</label>
+				</div>
+				<div class="small-12 columns">
+					<label style="color:#FFF">
+						Contraseña:
+						<input type="password" data-field="pass" placeholder="Contraseña"/>
+					</label>
+				</div>
+				<div class="small-12 columns">
+					<button type="button" class="button expand success btn-login tiny">Iniciar sesion</button>
+				</div>
+			</form>
+		<% } %>
 	</nav>
 
 	<main>

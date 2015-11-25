@@ -33,7 +33,9 @@ module.exports.routes = {
   ***************************************************************************/
 
   '/': {
-    view: 'homepage'
+    //view: 'homepage'
+    controller    : 'Sesiones',
+    action        : 'checklogin'
   },
 
   'GET /template/find/*:id?' : {

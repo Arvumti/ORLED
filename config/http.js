@@ -6,7 +6,7 @@
  * Only applies to HTTP requests (not WebSockets)
  *
  * For more information on configuration, check out:
- * http://sailsjs.org/#!/documentation/reference/sails.config/sails.config.http.html
+ * http://sailsjs.org/#/documentation/reference/sails.config/sails.config.http.html
  */
 
 module.exports.http = {
@@ -21,7 +21,29 @@ module.exports.http = {
   *                                                                           *
   ****************************************************************************/
 
-  // middleware: {
+  middleware: {
+    passportInit    : require('passport').initialize(),
+    passportSession : require('passport').session(),
+
+    order: [
+      'startRequestTimer',
+      'cookieParser',
+      'session',
+      'passportInit',     
+      'passportSession', 
+      'myRequestLogger',
+      'bodyParser',
+      'handleBodyParserError',
+      'compress',
+      'methodOverride',
+      'poweredBy',
+      '$custom',
+      'router',
+      'www',
+      'favicon',
+      '404',
+      '500'
+    ],
 
   /***************************************************************************
   *                                                                          *
@@ -71,7 +93,7 @@ module.exports.http = {
 
     // bodyParser: require('skipper')
 
-  // },
+  },
 
   /***************************************************************************
   *                                                                          *
