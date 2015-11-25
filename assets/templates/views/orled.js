@@ -304,6 +304,12 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 						var htmlComponente = that.tmp_componente_options({data:compuestos});
 						that.cboGenerador.html(htmlComponente);
 
+						var bombasFinish = Array(),
+							firstCompuestos = Array(),
+							firstidCompuesto = null,
+							firstidBomba = null,
+							find = false;
+
 						var dfdBombas = Array();
 						for (var i = 0; i < bombas.length; i++) {
 							var dfdBomba = $.Deferred();
@@ -311,7 +317,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 
 							dfdBomba.then(function(bomba) {
 								var dfdCompuesto = Array();
-								var find = false;
+								//var find = false;
 
 								debugger
 								var compuestos = _.sortBy(bomba.Compuestos, function(item) { return item.idArreglo.voltaje; });
@@ -329,13 +335,20 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 										debugger
 										init++;
 										if(diario >= rendimiento) {
-											find = true;
+											if(!find) {
+												firstidCompuesto = compuestos[init-1].idCompuesto;
+												firstidBomba = bomba.idBomba;
+
+												firstCompuestos = compuestos;
+												find = true;
+												that.$el.find('tr').removeClass('isActive');
+												that.$el.find('tr[data-idbomba="' + bomba.idBomba + '"]').addClass('isActive');
+											}
+
+											bombasFinish.push(bomba);
 											for (var k = init; k < finit; k++)
 												dfdCompuesto[k].reject();
 											init = finit;
-
-											that.$el.find('tr').removeClass('isActive');
-											that.$el.find('tr[data-idbomba="' + bomba.idBomba + '"]').addClass('isActive');
 										}
 
 										if(init < finit) {
@@ -343,16 +356,40 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 											bomba.CompuestoActivo = compuestos[init];
 											that.dimencionar(bomba, dfdInn);
 										}
-										else if(!find) {
-											var popBomba = dfdBombas.shift();
-											popBomba.dfd.resolve(popBomba.bomba);
-										}
-										else {
-											for (var k = 0; k < dfdBombas.length; k++)
-												dfdBombas[k].dfd.reject();
+										else {//if(!find) {
+											if(dfdBombas.length == 0) {
+												var tr = that.tmp_bombas({bombas:bombasFinish, diametro:value});
+												that.gvBombas.html(tr);
 
-											app.ut.hide();
+												that.cboBomba = that.gvBombas.find('[data-filed="bomba"]');
+												that.cboGenerador = that.gvBombas.find('[data-filed="generador"]');
+
+												var htmlBomba = that.tmp_bombas_options({data:bombasFinish});
+												that.cboBomba.html(htmlBomba);
+
+												var htmlComponente = that.tmp_componente_options({data:firstCompuestos});
+												that.cboGenerador.html(htmlComponente);
+
+												that.cboBomba.val(firstidBomba);
+												that.cboGenerador.val(firstidCompuesto);
+
+												that.$el.find('tr').removeClass('isActive');
+												that.$el.find('tr[data-idbomba="' + firstidBomba + '"]').addClass('isActive');
+
+												that.subViews.graficas.view.execute_graf();
+												app.ut.hide();
+											}
+											else {
+												var popBomba = dfdBombas.shift();
+												popBomba.dfd.resolve(popBomba.bomba);
+											}
 										}
+										// else {
+										// 	for (var k = 0; k < dfdBombas.length; k++)
+										// 		dfdBombas[k].dfd.reject();
+
+										// 	app.ut.hide();
+										// }
 									});
 								}
 
@@ -518,7 +555,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 					app.ut.hide();
 				
 				//that.popFormArreglo.render(modulosParalelo, modulosSerie, totalModulo, arregloFotovoltaico,aguaBombeada, currentBombaNombre, currentMotorNombre);
-				that.subViews.graficas.view.render(panelesInstalados, alturaDinamica, idLocalidad, data.gasto, bomba, dfd);
+				that.subViews.graficas.view.render(panelesInstalados, alturaDinamica, rendimientoDiario, idLocalidad, data.gasto, bomba, dfd);
 			}
 		},
 		change_cboDiametroTuberiaTh: function(e) {

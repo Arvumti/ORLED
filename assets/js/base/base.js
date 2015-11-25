@@ -120,9 +120,8 @@ function utilerias() {
 
 	function _WatchLoad() {
 		__petXHR--;
-		console.log('Watch :: __petXHR: ', __petXHR, ' __isLoading: ', __isLoading);
-		if(__petXHR == 0) {
-			console.log('Hide');
+		if(__petXHR <= 0) {
+			__petXHR = 0;
 			Hide();
 		}
 	}
@@ -432,7 +431,6 @@ function utilerias() {
 			async = options.async === undefined ? true : options.async,
 			form = options.form || null;
 
-		debugger
 		if (loading) {
 			__foreverLoad = true;
 			Show();
@@ -560,6 +558,7 @@ function utilerias() {
 	}
 
 	function hide() {
+		__petXHR = 0;
 		__foreverLoad = false;
 		$('#loading').fadeOut(function(){
 			$(this).addClass('isHidden')

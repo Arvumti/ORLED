@@ -56,11 +56,13 @@ define(deps, function (viewsBase, highcharts, html) {
 			};
 
 			this.tipo_grafica = "1";
+
+			this.isFirst = false;
 		},
 		/*------------------------- Base -----------------------------*/
-		render: function(totalModulo, cargaDinamica, idLocalidad, gasto, bomba, dfd) {
+		render: function(totalModulo, cargaDinamica, rendimientoDiario, idLocalidad, gasto, bomba, dfd) {
 			viewsBase.abc.prototype.render.call(this);
-			this.llenarGrafica(totalModulo, cargaDinamica, idLocalidad, gasto, bomba, dfd);
+			this.llenarGrafica(totalModulo, cargaDinamica, rendimientoDiario, idLocalidad, gasto, bomba, dfd);
 		},
 		close: function() {
 			viewsBase.abc.prototype.close.call(this);
@@ -68,6 +70,10 @@ define(deps, function (viewsBase, highcharts, html) {
 		clear: function() {
 			this.crear_GraficaMes([]);
 			this.crear_GraficaHora([]);
+		},
+		execute_graf: function() {
+			this.$el.find('.tipo-grafica[value="' + this.tipo_grafica + '"]').click();
+			this.isFirst = false;
 		},
 		/*------------------------- Eventos -----------------------------*/
 		crear_GraficaMes: function(jDatos) {
@@ -216,7 +222,7 @@ define(deps, function (viewsBase, highcharts, html) {
 
 			//this.crear_GraficaMes(datos);
 		},
-		llenarGrafica: function(totalModulo, cargaDinamica, idLocalidad, gasto, bomba, dfd) {
+		llenarGrafica: function(totalModulo, cargaDinamica, rendimientoDiario, idLocalidad, gasto, bomba, dfd) {
 			var that = this;
 
 			/*-------------------------------Datos por mes----------------------------------*/
@@ -434,20 +440,31 @@ define(deps, function (viewsBase, highcharts, html) {
 					row.septiembre.output + row.octubre.output + row.noviembre.output + row.diciembre.output ) / 12;
 				}
 
-				if(dfd && typeof dfd === 'object' && typeof dfd.resolve === 'function'){
-					dfd.resolve(sum);
+				if(dfd && typeof dfd === 'object' && typeof dfd.resolve === 'function') {
+					if(sum < (rendimientoDiario / 1000) || that.isFirst)
+						dfd.resolve(sum);
+					else {
+						that.isFirst = true;
 
-					if(sum < cargaDinamica)
-						return;
+						that.optionsGraficas.energiaMes.datos = energiaMes;
+						that.optionsGraficas.salidaMes.datos = outputMes;
+
+						that.optionsGraficas.energiaDia.datos = energiaDia;
+						that.optionsGraficas.salidaDia.datos = outputDia;
+
+						that.$el.find('.tipo-grafica[value="' + that.tipo_grafica + '"]').click();
+						dfd.resolve(sum);
+					}
 				}
+				else {
+					that.optionsGraficas.energiaMes.datos = energiaMes;
+					that.optionsGraficas.salidaMes.datos = outputMes;
 
-				that.optionsGraficas.energiaMes.datos = energiaMes;
-				that.optionsGraficas.salidaMes.datos = outputMes;
+					that.optionsGraficas.energiaDia.datos = energiaDia;
+					that.optionsGraficas.salidaDia.datos = outputDia;
 
-				that.optionsGraficas.energiaDia.datos = energiaDia;
-				that.optionsGraficas.salidaDia.datos = outputDia;
-
-				that.$el.find('.tipo-grafica[value="' + that.tipo_grafica + '"]').click();
+					that.$el.find('.tipo-grafica[value="' + that.tipo_grafica + '"]').click();
+				}
 			}
 		},
 	});
