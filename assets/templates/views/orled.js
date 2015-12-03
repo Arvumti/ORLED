@@ -251,7 +251,8 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 
 			app.ut.request({url:'/bombas/populate', data:{where:where}, loading:true, done:done});
 			function done(bombas) {
-				var arrBombas = Array();
+				var arrBombas = Array(),
+					diametro = that.$el.find('[data-field="diametroTuberia"]').val();
 				for (var i = 0; i < bombas.length; i++)
 					arrBombas.push(bombas[i].idBomba);
 
@@ -272,7 +273,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 
 					var tr = that.tmp_bombas({bombas:bombas, diametro:value});
 					that.gvBombas.html(tr);
-					var diametro = that.$el.find('[data-field="diametroTuberia"]').val();
+					//diametro = that.$el.find('[data-field="diametroTuberia"]').val();
 					that.gvBombas.find('[data-field="diametroTuberiaTh"]').val(diametro);
 
 					that.cboBomba = that.gvBombas.find('[data-filed="bomba"]');
@@ -360,6 +361,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 											if(dfdBombas.length == 0) {
 												var tr = that.tmp_bombas({bombas:bombasFinish, diametro:value});
 												that.gvBombas.html(tr);
+												that.gvBombas.find('[data-field="diametroTuberiaTh"]').val(diametro);
 
 												that.cboBomba = that.gvBombas.find('[data-filed="bomba"]');
 												that.cboGenerador = that.gvBombas.find('[data-filed="generador"]');
