@@ -319,7 +319,7 @@
 					{{#bombas}}
 						<tr class="selectCell" data-idbomba="{{idBomba}}">
 							<td>{{nombre}}</td>
-							<td class="compuesto">{{CompuestoActivo.idGenerador.nombre}} {{CompuestoActivo.idArreglo.potencia}} Wp ({{CompuestoActivo.idArreglo.serie}}x{{CompuestoActivo.idArreglo.paralelo}})</td>
+							<td class="compuesto">{{CompuestoActivo.idArreglo.potencia}} Wp Arreglo ({{CompuestoActivo.idArreglo.serie}}x{{CompuestoActivo.idArreglo.paralelo}}) Mod. 250 W</td>
 							<td>-</td>
 							<td>{{alturaMinima}}...{{alturaMaxima}}</td>
 						</tr>
@@ -352,7 +352,7 @@
 	</script>
 	<script type="text/template-handlebars-x" class="tmp_componente_options">
 		{{#data}}
-			<option value="{{idCompuesto}}">{{idGenerador.nombre}} {{idArreglo.potencia}} Wp ({{idArreglo.serie}}x{{idArreglo.paralelo}})</option>
+			<option value="{{idCompuesto}}">{{idArreglo.potencia}} Wp Arreglo ({{idArreglo.serie}}x{{idArreglo.paralelo}}) Mod. 250 W</option>
 		{{/data}}
 	</script>
 </section>

@@ -288,7 +288,6 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 					var tr = that.gvBombas.find('tbody tr:first-child');
 					if(tr.length > 0) {
 						//tr.click();
-						debugger
 
 						that.$el.find('tr').removeClass('isActive');
 						var row = tr.addClass('isActive');
@@ -320,7 +319,6 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 								var dfdCompuesto = Array();
 								//var find = false;
 
-								debugger
 								var compuestos = _.sortBy(bomba.Compuestos, function(item) { return item.idArreglo.voltaje; });
 								var init = 0,
 									finit = compuestos.length;
@@ -333,7 +331,6 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 									dfdCompuesto.push(dfd);
 
 									dfd.then(function(diario) {
-										debugger
 										init++;
 										if(diario >= rendimiento) {
 											if(!find) {
@@ -544,13 +541,13 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 				
 				if(aguaBombeada < rendimientoDiario || !aguaBombeada || !rendimientoDiario || arregloFotovoltaico < 0){
 					console.log('No valida')
-					that.cboGenerador.addClass('noValida');
-					that.cboBomba.addClass('noValida');
+					// that.cboGenerador.addClass('noValida');
+					// that.cboBomba.addClass('noValida');
 				}
 				else {
 					console.log('Valida')
-					that.cboGenerador.removeClass('noValida');
-					that.cboBomba.removeClass('noValida');
+					// that.cboGenerador.removeClass('noValida');
+					// that.cboBomba.removeClass('noValida');
 				}
 
 				if(dfd === undefined)
