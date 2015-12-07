@@ -197,7 +197,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 		change_cbobomba: function(e) {
 			var idBomba = $(e.currentTarget).find('option:selected').val();
 			var bomba = _.find(this.jBombas, {idBomba:parseInt(idBomba)});
-			var compuestos = _.sortBy(bomba.Compuestos, function(item) { return item.idArreglo.voltaje; })
+			var compuestos = _.sortBy(bomba.Compuestos, function(item) { return item.idArreglo.paralelo + '.' + item.idArreglo.serie; })
 
 			bomba.CompuestoActivo = compuestos[0];
 
@@ -213,8 +213,8 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			var bomba = _.find(this.jBombas, {idBomba:parseInt(idBomba)});
 			var compuesto = _.find(bomba.Compuestos, {idCompuesto:parseInt(idCompuesto)});
 
-			var td = this.gvBombas.find('[data-idbomba="' + idBomba + '"] .compuesto');
-			td.text(compuesto.idGenerador.nombre + ' ' + compuesto.idArreglo.potencia + ' Wp (' + compuesto.idArreglo.serie + 'x' + compuesto.idArreglo.paralelo + ')');
+			//var td = this.gvBombas.find('[data-idbomba="' + idBomba + '"] .compuesto');
+			//td.text(compuesto.idArreglo.potencia + ' Wp Arreglo (' + compuesto.idArreglo.serie + 'x' + compuesto.idArreglo.paralelo + ') Mod. 250');
 			
 			bomba.CompuestoActivo = compuesto;
 			this.dimencionar(bomba);
@@ -249,26 +249,33 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 				},
 			};
 
-			app.ut.request({url:'/bombas/populate', data:{where:where}, loading:true, done:done});
-			function done(bombas) {
+			app.ut.request({url:'/bombas/populate', /*data:{where:where},*/ loading:true, done:done});
+			function done(res_bombas) {
+				var bombas = Array();
+				debugger
 				var arrBombas = Array(),
 					diametro = that.$el.find('[data-field="diametroTuberia"]').val();
-				for (var i = 0; i < bombas.length; i++)
-					arrBombas.push(bombas[i].idBomba);
+
+				for (var i = 0; i < res_bombas.length; i++) {
+					if(res_bombas[i].alturaMaxima >= where.alturaMaxima['>='] && res_bombas[i].alturaMinima <= where.alturaMinima['<='])
+						bombas.push(res_bombas[i]);
+
+					arrBombas.push(res_bombas[i].idBomba);
+				}
 
 				app.ut.request({url:'/compuestos/populate', data:{where:{idBomba:arrBombas}}, done:doneCom});
 				function doneCom(compuestos) {
-					for (var i = 0; i < bombas.length; i++) {
+					for (var i = 0; i < res_bombas.length; i++) {
 						var comps = _.filter(compuestos, function(item) {
-							return item.idBomba.idBomba == bombas[i].idBomba;
+							return item.idBomba.idBomba == res_bombas[i].idBomba;
 						});
-						comps = _.sortBy(comps, function(item) { return item.idArreglo.voltaje; });
+						comps = _.sortBy(comps, function(item) { return item.idArreglo.paralelo + '.' + item.idArreglo.serie; });
 
-						bombas[i].Compuestos = comps;
-						bombas[i].CompuestoActivo = comps[0];
+						res_bombas[i].Compuestos = comps;
+						res_bombas[i].CompuestoActivo = comps[0];
 					}
 
-					that.jBombas = bombas;
+					that.jBombas = res_bombas;
 					var value = that.$el.find('[data-field="idLongitudTuberia"]').prop('checked');
 
 					var tr = that.tmp_bombas({bombas:bombas, diametro:value});
@@ -279,7 +286,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 					that.cboBomba = that.gvBombas.find('[data-filed="bomba"]');
 					that.cboGenerador = that.gvBombas.find('[data-filed="generador"]');
 
-					var htmlBomba = that.tmp_bombas_options({data:bombas});
+					var htmlBomba = that.tmp_bombas_options({data:res_bombas});
 					var htmlComponente = that.tmp_componente_options({});
 
 					that.cboBomba.html(htmlBomba);
@@ -293,8 +300,8 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 						var row = tr.addClass('isActive');
 						var idBomba = row.data("idbomba");
 
-						var bomba = _.findWhere(that.jBombas, {idBomba:idBomba});
-						var compuestos = _.sortBy(bomba.Compuestos, function(item) { return item.idArreglo.voltaje; });
+						var bomba = _.findWhere(bombas, {idBomba:idBomba});
+						var compuestos = _.sortBy(bomba.Compuestos, function(item) { return item.idArreglo.paralelo + '.' + item.idArreglo.serie; });
 
 						var init = 0,
 							finit = compuestos.length;
@@ -316,10 +323,11 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 							dfdBombas.push({dfd:dfdBomba, bomba:bombas[i] });
 
 							dfdBomba.then(function(bomba) {
+								debugger
 								var dfdCompuesto = Array();
 								//var find = false;
 
-								var compuestos = _.sortBy(bomba.Compuestos, function(item) { return item.idArreglo.voltaje; });
+								var compuestos = _.sortBy(bomba.Compuestos, function(item) { return item.idArreglo.paralelo + '.' + item.idArreglo.serie; });
 								var init = 0,
 									finit = compuestos.length;
 
@@ -331,6 +339,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 									dfdCompuesto.push(dfd);
 
 									dfd.then(function(diario) {
+										debugger
 										init++;
 										if(diario >= rendimiento) {
 											if(!find) {
@@ -348,6 +357,8 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 												dfdCompuesto[k].reject();
 											init = finit;
 										}
+										else
+											bomba.Compuestos.shift(init-1, 1);
 
 										if(init < finit) {
 											var dfdInn = dfdCompuesto[init];
@@ -363,7 +374,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 												that.cboBomba = that.gvBombas.find('[data-filed="bomba"]');
 												that.cboGenerador = that.gvBombas.find('[data-filed="generador"]');
 
-												var htmlBomba = that.tmp_bombas_options({data:bombasFinish});
+												var htmlBomba = that.tmp_bombas_options({data:res_bombas});
 												that.cboBomba.html(htmlBomba);
 
 												var htmlComponente = that.tmp_componente_options({data:firstCompuestos});
@@ -412,7 +423,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			var idBomba = row.data("idbomba");
 
 			var bomba = _.findWhere(this.jBombas, {idBomba:idBomba});
-			var compuestos = _.sortBy(bomba.Compuestos, function(item) { return item.idArreglo.voltaje; })
+			var compuestos = _.sortBy(bomba.Compuestos, function(item) { return item.idArreglo.paralelo + '.' + item.idArreglo.serie; })
 
 			bomba.CompuestoActivo = compuestos[0];
 
@@ -638,7 +649,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 		popRowSelected: function(e) {
 			var that  = this;
 			var rows = that.$el.find('tr').removeClass('isActive');
-			var row =$(e.currentTarget).addClass('isActive');
+			var row = $(e.currentTarget).addClass('isActive');
 		},
 		click_datoSeleccionado: function(options) {
 			var that  = this;
