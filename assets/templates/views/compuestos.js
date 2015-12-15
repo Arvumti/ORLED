@@ -51,8 +51,8 @@ define(['/js/base/viewsBase.js'], function (viewsBase) {
 			this.popAction = new ViPopAction({url:this.url, pk:this.pk, parentView:this, el:this.popSave});
 
 			var columns = [
-				{nombre:'Bomba', field:'idBomba.nombre', width:300},
-				//{nombre:'Generador', field:'idBomba', width:300},
+				//{nombre:'Bomba', field:'idBomba.nombre', width:300},
+				{nombre:'Generador', field:'idGenerador.nombre', width:300},
 				{nombre:'Arreglo', field:'idArreglo', width:300, tmp:'{{serie}}x{{paralelo}} {{potencia}}W {{voltaje}}V {{corriente}}amp'},
 			];
 			viewsBase.abc.prototype.initialize.call(this, columns, this.popAction);
