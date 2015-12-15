@@ -224,6 +224,12 @@ define(deps, function (viewsBase, highcharts, html) {
 		},
 		llenarGrafica: function(totalModulo, cargaDinamica, rendimientoDiario, idLocalidad, gasto, bomba, dfd) {
 			var that = this;
+			var meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+			var idMes = that.$el.find('[data-field="meses"]').val();
+			var mes = meses[idMes-1] || '';
+
+			if(typeof mes == 'string')
+				mes = mes.toLowerCase();
 
 			/*-------------------------------Datos por mes----------------------------------*/
 
@@ -263,6 +269,7 @@ define(deps, function (viewsBase, highcharts, html) {
 
 				var promMes = Object();
 				var promHora = Object();
+				var isMes = idMes > 0;
 
 				for (var i = 0; i < data.length; i++) {
 					var hora = data[i].hora;
@@ -277,7 +284,12 @@ define(deps, function (viewsBase, highcharts, html) {
 						if(key == 'idIrradianciaDia' || key == 'createdAt' || key == 'idLocalidad' || key == 'updatedAt' || key == 'hora')
 							continue;
 
-						if(data[i][key] > 0) {
+						if(isMes) {
+							if(mes == key.toLowerCase())
+								concentradoHora[hora].push(data[i][key]);
+							concentradoMes[key].push(data[i][key]);
+						}
+						else if(data[i][key] > 0) {
 							concentradoHora[hora].push(data[i][key]);
 							concentradoMes[key].push(data[i][key]);
 						}
@@ -398,7 +410,7 @@ define(deps, function (viewsBase, highcharts, html) {
 
 					for(var key in row) {
 						var subEnergiaDia = areaModulo * eficiencia * perdidas * Math.ceil(totalModulo) * row[key];
-
+						
 						var f1 = frecuencia / Math.pow((potencia / (subEnergiaDia * 1000)), (1/3));
 						var h1 = alturaMaxima / (Math.pow(frecuencia, 2)/Math.pow(f1, 2));
 						var q1 = 0;
@@ -420,24 +432,37 @@ define(deps, function (viewsBase, highcharts, html) {
 						//energiaMes[key] += datos.energia;
 						outputMes[key] += datos.output;
 
+						if(isMes) {
+							if(mes != key.toLowerCase())
+								datos.output = 0;
+						}
+
 						sumEne += datos.energia
 						sumOut += datos.output;
 					}
 
-					sumOut = sumOut / 12;
-					sumEne = sumEne / 12;
+					if(!isMes) {
+						sumOut = sumOut / 12;
+						sumEne = sumEne / 12;
+					}
 					horaAll[hora] = sumOut;
 
 					energiaDia[hora] = parseFloat(sumEne.toFixed(2));
 					outputDia[hora] = parseFloat(sumOut.toFixed(2));
 				}
 
+				debugger
 				var sum = 0;
 				for (var i = 0; i < allData.length; i++) {
 					var row = allData[i];
-					sum += (row.enero.output + row.febrero.output + row.marzo.output + row.abril.output + 
-					row.mayo.output + row.junio.output + row.julio.output + row.agosto.output + 
-					row.septiembre.output + row.octubre.output + row.noviembre.output + row.diciembre.output ) / 12;
+					if(isMes) {
+						sum += row[mes].output;
+					}
+					else {
+						sum += (row.enero.output + row.febrero.output + row.marzo.output + row.abril.output + 
+						row.mayo.output + row.junio.output + row.julio.output + row.agosto.output + 
+						row.septiembre.output + row.octubre.output + row.noviembre.output + row.diciembre.output ) / 12;
+					}
 				}
 
 				if(dfd && typeof dfd === 'object' && typeof dfd.resolve === 'function') {

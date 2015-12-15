@@ -28,5 +28,9 @@ module.exports = {
 		diagrama: {
 			type: 'string',
 		},
+		Compuestos: {
+			collection: 'Compuestos',
+			via: 'idGenerador'
+		},
 	}
 };

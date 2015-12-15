@@ -55,6 +55,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 
 			this.$el.find('.linker-spinner:not(.spinner-decimal)~.ui-button').on('click', function(e) {
 				//$(this).siblings('input').change();
+				//$(e.currentTarget).select();
 				var input = $(e.currentTarget).siblings('input');
 				var value = parseInt(input.val());
 				var isDown = $(e.currentTarget).hasClass('ui-spinner-down') ? -1 : 1;
@@ -78,11 +79,15 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 					value += isDown * -1 * 1;
 				}
 
-				input.val(value);
+				input.val(value).select();
 			});
 
 			this.spinnersDec = this.$el.find('.linker-spinner.spinner-decimal');
 			this.spinnersDec.spinner({step:0.1, numberFormat:'n'});
+
+			this.$el.find('.linker-spinner.spinner-decimal~.ui-button').on('click', function(e) {
+				$(e.currentTarget).siblings('input').select();
+			});
 
 			var tyas = this.$el.find('.tya');
 			viewsBase.popAbc.prototype.linkFks.call(this, tyas, this.fks);
@@ -252,22 +257,22 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			app.ut.request({url:'/bombas/populate', /*data:{where:where},*/ loading:true, done:done});
 			function done(res_bombas) {
 				var bombas = Array();
-				debugger
-				var arrBombas = Array(),
+				var arrGeneradres = Array(),
 					diametro = that.$el.find('[data-field="diametroTuberia"]').val();
 
 				for (var i = 0; i < res_bombas.length; i++) {
 					if(res_bombas[i].alturaMaxima >= where.alturaMaxima['>='] && res_bombas[i].alturaMinima <= where.alturaMinima['<='])
 						bombas.push(res_bombas[i]);
 
-					arrBombas.push(res_bombas[i].idBomba);
+					arrGeneradres.push(res_bombas[i].idGenerador.idGenerador);
 				}
-
-				app.ut.request({url:'/compuestos/populate', data:{where:{idBomba:arrBombas}}, done:doneCom});
+				arrGeneradres = _.unique(arrGeneradres);
+				debugger
+				app.ut.request({url:'/compuestos/populate', data:{where:{idGenerador:arrGeneradres}}, done:doneCom});
 				function doneCom(compuestos) {
 					for (var i = 0; i < res_bombas.length; i++) {
 						var comps = _.filter(compuestos, function(item) {
-							return item.idBomba.idBomba == res_bombas[i].idBomba;
+							return item.idGenerador.idGenerador == res_bombas[i].idGenerador.idGenerador;
 						});
 						comps = _.sortBy(comps, function(item) { return item.idArreglo.paralelo + '.' + item.idArreglo.serie; });
 
@@ -323,7 +328,6 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 							dfdBombas.push({dfd:dfdBomba, bomba:bombas[i] });
 
 							dfdBomba.then(function(bomba) {
-								debugger
 								var dfdCompuesto = Array();
 								//var find = false;
 
@@ -339,7 +343,6 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 									dfdCompuesto.push(dfd);
 
 									dfd.then(function(diario) {
-										debugger
 										init++;
 										if(diario >= rendimiento) {
 											if(!find) {
@@ -462,6 +465,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 		},	
 		click_calcular: function(){
 			var that = this;
+			this.subViews.graficas.view.isFirst = false;
 			var value = this.$el.find('[data-field="idLongitudTuberia"]').prop('checked');
 
 			var total = this.cargaTotal();
@@ -593,6 +597,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			var that=this;
 			var valor = parseInt(val);
 			//app.ut.request({url:'/bombas/populate', done:done});
+			debugger
 			app.ut.request({url:'/compuestos/populate', done:done});
 			function done(data) {
 				console.log(data);

@@ -22,8 +22,5 @@ module.exports = {
 		idGenerador: {
 			model: 'Generadores',
 		},
-		idBomba: {
-			model: 'Bombas',
-		},
 	}
 };

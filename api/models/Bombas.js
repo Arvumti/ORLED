@@ -64,10 +64,10 @@ module.exports = {
 			model: 'tazones',
 		},
 
-		Compuestos: {
-            collection: 'Compuestos',
-            via: 'idBomba'
-        },
+		// Compuestos: {
+  //           collection: 'Compuestos',
+  //           via: 'idGenerador'
+  //       },
         // Eficiencias: {
         //     collection: 'Eficiencias',
         //     via: 'idGenerador'
