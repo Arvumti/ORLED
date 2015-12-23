@@ -15,7 +15,8 @@ define(deps, function (viewsBase, highcharts, html) {
 		el: '#graficas',
 		events: {
 			//'click .btn-calcular' :'click_llenarGrafica',
-			'click .tipo-grafica' :'click_tipoGrafica',
+			'click .tipo-grafica': 'click_tipoGrafica',
+			'change [data-field="meses"]': 'change_cbomeses', 
 		},
 		initialize: function() {
 			this.PnlGraficaMes = this.$el.find('.pnl-grafica-mes');
@@ -433,8 +434,10 @@ define(deps, function (viewsBase, highcharts, html) {
 						outputMes[key] += datos.output;
 
 						if(isMes) {
-							if(mes != key.toLowerCase())
+							if(mes != key.toLowerCase()) {
+								datos.energia = 0;
 								datos.output = 0;
+							}
 						}
 
 						sumEne += datos.energia
@@ -491,6 +494,9 @@ define(deps, function (viewsBase, highcharts, html) {
 					that.$el.find('.tipo-grafica[value="' + that.tipo_grafica + '"]').click();
 				}
 			}
+		},
+		change_cbomeses: function() {
+			this.options.parentView.click_calcular();
 		},
 	});
 	return {view: ViGraficas, html:html};
