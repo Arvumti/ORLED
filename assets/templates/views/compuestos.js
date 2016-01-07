@@ -67,7 +67,7 @@ define(['/js/base/viewsBase.js'], function (viewsBase) {
 		getData: function() {
 			debugger
 			var json = viewsBase.popAbc.prototype.getData.call(this);
-			json.idGenerador = this.tyas.tyaidBomba.data('fn').current('idGenerador');
+			json.idGenerador = this.tyas.tyaidGenerador.data('fn').current('idGenerador');
 
 			return json;
 		},
