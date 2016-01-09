@@ -454,7 +454,6 @@ define(deps, function (viewsBase, highcharts, html) {
 					outputDia[hora] = parseFloat(sumOut.toFixed(2));
 				}
 
-				debugger
 				var sum = 0;
 				for (var i = 0; i < allData.length; i++) {
 					var row = allData[i];
@@ -469,6 +468,13 @@ define(deps, function (viewsBase, highcharts, html) {
 				}
 
 				if(dfd && typeof dfd === 'object' && typeof dfd.resolve === 'function') {
+					for(var key in outputMes) {
+						if(outputMes[key] == 0) {
+							sum = 0;
+							break;
+						}
+					}
+
 					if(sum < (rendimientoDiario / 1000) || that.isFirst)
 						dfd.resolve(sum);
 					else {
@@ -496,7 +502,7 @@ define(deps, function (viewsBase, highcharts, html) {
 			}
 		},
 		change_cbomeses: function() {
-			this.options.parentView.click_calcular();
+			this.options.parentView.click_calcular({recalculate:false});
 		},
 	});
 	return {view: ViGraficas, html:html};

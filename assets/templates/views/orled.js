@@ -24,6 +24,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 		},
 		initialize: function() {
 			var that = this;
+			this.bombasFinish = Array();
 			this.localidad = Object();
 
 			this.fks = {
@@ -240,7 +241,9 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			else
 				this.spnAltcarDinamica.text('Carga dinamica');
 		},
-		bombas: function(totalAltura) {
+		bombas: function(joptions) {
+			var totalAltura = joptions.total;
+
 			var that = this;
 			var rendimiento = this.txtRendimientoDiario.val();
 
@@ -254,7 +257,12 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 				},
 			};
 
-			app.ut.request({url:'/bombas/populate', /*data:{where:where},*/ loading:true, done:done});
+			debugger
+			if(joptions.recalculate)
+				app.ut.request({url:'/bombas/populate', /*data:{where:where},*/ loading:true, done:done});
+			else
+				done([]);
+
 			function done(res_bombas) {
 				var bombas = Array();
 				var arrGeneradres = Array(),
@@ -267,8 +275,12 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 					arrGeneradres.push(res_bombas[i].idGenerador.idGenerador);
 				}
 				arrGeneradres = _.unique(arrGeneradres);
-				debugger
-				app.ut.request({url:'/compuestos/populate', data:{where:{idGenerador:arrGeneradres}}, done:doneCom});
+
+				if(joptions.recalculate)
+					app.ut.request({url:'/compuestos/populate', data:{where:{idGenerador:arrGeneradres}}, done:doneCom});
+				else
+					doneCom();
+
 				function doneCom(compuestos) {
 					for (var i = 0; i < res_bombas.length; i++) {
 						var comps = _.filter(compuestos, function(item) {
@@ -278,6 +290,15 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 
 						res_bombas[i].Compuestos = comps;
 						res_bombas[i].CompuestoActivo = comps[0];
+					}
+
+					var idBombaPreActive = 0;
+					if(!joptions.recalculate) {
+						debugger
+						bombas = res_bombas = that.bombasFinish;
+						that.bombasFinish = [];
+
+						idBombaPreActive = that.gvBombas.find('tr.isActive').data('idbomba');
 					}
 
 					that.jBombas = res_bombas;
@@ -316,8 +337,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 						var htmlComponente = that.tmp_componente_options({data:compuestos});
 						that.cboGenerador.html(htmlComponente);
 
-						var bombasFinish = Array(),
-							firstCompuestos = Array(),
+						var	firstCompuestos = Array(),
 							firstidCompuesto = null,
 							firstidBomba = null,
 							find = false;
@@ -355,7 +375,8 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 												that.$el.find('tr[data-idbomba="' + bomba.idBomba + '"]').addClass('isActive');
 											}
 
-											bombasFinish.push(bomba);
+											bomba.diario = diario;
+											that.bombasFinish.push(bomba);
 											for (var k = init; k < finit; k++)
 												dfdCompuesto[k].reject();
 											init = finit;
@@ -370,7 +391,23 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 										}
 										else {//if(!find) {
 											if(dfdBombas.length == 0) {
-												var tr = that.tmp_bombas({bombas:bombasFinish, diametro:value});
+												debugger
+												if(that.bombasFinish.length == 0)
+													return;
+
+												if(joptions.recalculate)
+													that.bombasFinish = _.take(_.sortBy(that.bombasFinish, 'diario'), 4);
+
+												firstidCompuesto = that.bombasFinish[0].Compuestos[0].idCompuesto;
+												firstidBomba = that.bombasFinish[0].idBomba;
+
+												firstCompuestos = that.bombasFinish[0].Compuestos;
+												find = true;
+												that.$el.find('tr').removeClass('isActive');
+												that.$el.find('tr[data-idbomba="' + that.bombasFinish[0].idBomba + '"]').addClass('isActive');
+
+
+												var tr = that.tmp_bombas({bombas:that.bombasFinish, diametro:value});
 												that.gvBombas.html(tr);
 												that.gvBombas.find('[data-field="diametroTuberiaTh"]').val(diametro);
 
@@ -389,7 +426,13 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 												that.$el.find('tr').removeClass('isActive');
 												that.$el.find('tr[data-idbomba="' + firstidBomba + '"]').addClass('isActive');
 
-												that.subViews.graficas.view.execute_graf();
+												//that.subViews.graficas.view.execute_graf();
+												debugger;
+												var tr = that.gvBombas.find('tbody tr:first-child');
+												if(!joptions.recalculate)
+													tr = that.gvBombas.find('tbody tr[data-idbomba="' + idBombaPreActive + '"]');
+
+												tr.click();
 												app.ut.hide();
 											}
 											else {
@@ -463,7 +506,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 		click_buscar: function() {
 			this.form.submit();
 		},	
-		click_calcular: function(){
+		click_calcular: function(options){
 			var that = this;
 			this.subViews.graficas.view.isFirst = false;
 			var value = this.$el.find('[data-field="idLongitudTuberia"]').prop('checked');
@@ -472,7 +515,12 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 
 			var idLocalidad = this.tyas.tyaidLocalidad.data('fn').current('idLocalidad');
 			//that.subViews.graficas.view.render(0, 0, idLocalidad);
-			that.bombas(total);
+			var joptions = {
+				total: total,
+				recalculate: options.recalculate === undefined ? true : options.recalculate
+			}
+
+			that.bombas(joptions);
 			this.subViews.mapaElementos.view.close();
 		},
 		click_tabs: function(e) {
@@ -597,7 +645,6 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			var that=this;
 			var valor = parseInt(val);
 			//app.ut.request({url:'/bombas/populate', done:done});
-			debugger
 			app.ut.request({url:'/compuestos/populate', done:done});
 			function done(data) {
 				console.log(data);
