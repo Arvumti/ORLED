@@ -257,7 +257,6 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 				},
 			};
 
-			debugger
 			if(joptions.recalculate)
 				app.ut.request({url:'/bombas/populate', /*data:{where:where},*/ loading:true, done:done});
 			else
@@ -294,12 +293,13 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 
 					var idBombaPreActive = 0;
 					if(!joptions.recalculate) {
-						debugger
 						bombas = res_bombas = that.bombasFinish;
 						that.bombasFinish = [];
 
 						idBombaPreActive = that.gvBombas.find('tr.isActive').data('idbomba');
 					}
+					else
+						that.bombasFinish = [];
 
 					that.jBombas = res_bombas;
 					var value = that.$el.find('[data-field="idLongitudTuberia"]').prop('checked');
@@ -427,7 +427,6 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 												that.$el.find('tr[data-idbomba="' + firstidBomba + '"]').addClass('isActive');
 
 												//that.subViews.graficas.view.execute_graf();
-												debugger;
 												var tr = that.gvBombas.find('tbody tr:first-child');
 												if(!joptions.recalculate)
 													tr = that.gvBombas.find('tbody tr[data-idbomba="' + idBombaPreActive + '"]');
@@ -538,9 +537,21 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			}
 		},
 		dimencionar: function(bomba, dfd) {
-			var idBomba = bomba.idBomba, 
-				idGenerador = bomba.CompuestoActivo.idGenerador.idGenerador, 				
+			var idBomba = 0, 
+				idGenerador = 0,
+				idArreglo = 0;
+
+			try {
+				idBomba = bomba.idBomba;
+				idGenerador = bomba.CompuestoActivo.idGenerador.idGenerador;
 				idArreglo = bomba.CompuestoActivo.idArreglo.idArreglo;
+			}
+			catch(ex) {
+				if(dfd && typeof dfd === 'object' && typeof dfd.resolve === 'function')
+					dfd.resolve(0);
+				else
+					return 0;
+			}
 
 			var that =  this;
 			var datos = viewsBase.base.prototype.getData.call(this, this.formData);
