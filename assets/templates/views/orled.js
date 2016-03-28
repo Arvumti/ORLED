@@ -257,6 +257,8 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 				},
 			};
 
+			debugger
+
 			if(joptions.recalculate)
 				app.ut.request({url:'/bombas/populate', /*data:{where:where},*/ loading:true, done:done});
 			else
@@ -268,9 +270,9 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 					diametro = that.$el.find('[data-field="diametroTuberia"]').val();
 
 				for (var i = 0; i < res_bombas.length; i++) {
-					if(res_bombas[i].alturaMaxima >= where.alturaMaxima['>='] && res_bombas[i].alturaMinima <= where.alturaMinima['<='])
+					if(res_bombas[i].alturaMaxima >= where.alturaMaxima['>='] && res_bombas[i].alturaMinima <= where.alturaMinima['<=']) 
 						bombas.push(res_bombas[i]);
-
+					
 					arrGeneradres.push(res_bombas[i].idGenerador.idGenerador);
 				}
 				arrGeneradres = _.unique(arrGeneradres);
@@ -281,6 +283,8 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 					doneCom();
 
 				function doneCom(compuestos) {
+					compuestos = _.unique(compuestos, function(item) { return item.idArreglo.idArreglo + '_' + item.idGenerador.idGenerador });
+
 					for (var i = 0; i < res_bombas.length; i++) {
 						var comps = _.filter(compuestos, function(item) {
 							return item.idGenerador.idGenerador == res_bombas[i].idGenerador.idGenerador;
@@ -510,6 +514,7 @@ define(deps, function (viewsBase, mapaElementos, graficas, cableado, calculadorA
 			this.subViews.graficas.view.isFirst = false;
 			var value = this.$el.find('[data-field="idLongitudTuberia"]').prop('checked');
 
+			debugger
 			var total = this.cargaTotal();
 
 			var idLocalidad = this.tyas.tyaidLocalidad.data('fn').current('idLocalidad');

@@ -440,7 +440,7 @@ define(deps, function (viewsBase, highcharts, html) {
 							}
 						}
 
-						sumEne += datos.energia
+						sumEne += datos.energia;
 						sumOut += datos.output;
 					}
 

@@ -64,6 +64,8 @@ module.exports = {
 				ye1 = rows[0].eficiencia;
 				xe2 = rows[0].bombeo;
 			}
+			else
+				return res.json({eficiencia:0, gasto:0});
 
 			if(rows[1]) {
 				y1 = rows[1].altura;
@@ -72,6 +74,8 @@ module.exports = {
 				ye2 = rows[1].eficiencia;
 				xe1 = rows[1].bombeo;
 			}
+			else
+				return res.json({eficiencia:0, gasto:0});
 
 			m = (y2 - y1) / (x2 - x1);
 			xr = ((yr - y1) / m) + x1;
